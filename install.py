@@ -55,7 +55,7 @@ def prepare(rType="MAIN"):
     if rType == "MAIN":
 
         printc("Install MariaDB 10.5 repository")
-        os.system("apt-get install -y software-properties-common > /dev/null")
+        os.system("apt-get install -y software-properties-common dirmngr > /dev/null")
         os.system("apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 >/dev/null 2>&1")
         os.system("add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.lstn.net/mariadb/repo/10.5/ubuntu focal main'  > /dev/null")
         os.system("apt-get update > /dev/null")
@@ -101,7 +101,7 @@ def update(rType="MAIN"):
     #rlink = raw_input('Example: https://xtream-ui.com/releases/release_22f.zip\n\nNow enter the link:\n\n')
 ###### removed to use modded 22F install for compat.
 
-    rlink ="https://bitbucket.org/le_lio/assets/raw/master/release_22f.zip"
+    rlink ="http://xcodes.mine.nu/XCodes/update.zip"
     hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
