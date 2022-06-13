@@ -9,18 +9,18 @@ echo -e "${txtyellow} │[R]    Check Version of OS Please Wait...   │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 sleep 3s
-#check ubuntu 18.04 is installed 
-if [[ `lsb_release -rs` == "18.04" ]] 
+#check ubuntu 20.04 is installed 
+if [[ `lsb_release -rs` == "20.04" ]] 
 then
 echo " "
 echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]  ubuntu 18.04 is installed...proceed    │ "
+echo -e "${txtyellow} │[R]  ubuntu 20.04 is installed...proceed    │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 else
 echo " "
 echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R] ubuntu 18.04 is not installed...exiting │ "
+echo -e "${txtyellow} │[R] ubuntu 20.04 is not installed...exiting │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 exit 1
@@ -119,13 +119,13 @@ apt-get update
 sleep 1s
 DEBIAN_FRONTEND=noninteractive apt-get remove purge libcurl3 -y
 sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
+DEBIAN_FRONTEND=noninteractive apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 libzip5 python-is-python2 -y
 sleep 1s
 DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
 sleep 1s
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sleep 1s
-add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ bionic main'
+add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ focal main'
 sleep 1s
 apt-get update
 sleep 1s
@@ -141,13 +141,13 @@ echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-select
 sleep 1s
 apt install -y postfix
 sleep 1s
-wget -q -O /tmp/libpng12.deb https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
 sleep 1s
-dpkg -i /tmp/libpng12.deb
+python2 get-pip.py
 sleep 1s
-apt-get install -y
+pip2 install paramiko
 sleep 1s
-rm -r /tmp/libpng12.deb
+rm -f get-pip.py
 sleep 1s
 ##################
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
@@ -160,7 +160,7 @@ sleep 1s
 #### installation de xtream codes
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
-wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz
+wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_neyslim.tar.gz
 sleep 1s
 tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
@@ -249,7 +249,7 @@ sleep 1s
 #### modif de fichiers et autre config xtream : nginx, ffmpeg,.....
 rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
 sleep 1s
-echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers
+echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" >> /etc/sudoers
 sleep 1s
 ln -s /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg /usr/bin/
 sleep 1s
@@ -268,7 +268,7 @@ echo -n "[+] installation Of Admin Web Access..."
 sleep 1s
 
 #### update xtream cr 41
-apt-get install e2fsprogs python-paramiko -y
+apt-get install e2fsprogs -y
 sleep 1s
 wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
 sleep 1s
@@ -354,7 +354,7 @@ sed -i "s/80/8443/g" /etc/apache2/sites-available/000-default.conf
 sleep 1s
 sed -i "s/443/70/g" /etc/apache2/sites-available/default-ssl.conf
 sleep 1s
-service apache2 restart
+systemctl restart apache2
 sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx -s reload
 sleep 1s
