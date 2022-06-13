@@ -141,7 +141,7 @@ echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-select
 sleep 1s
 apt install -y postfix
 sleep 1s
-wget -q -O /tmp/libpng12.deb https://xtream-brutus.com/v3/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+wget -q -O /tmp/libpng12.deb https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libpng12-0_1.2.54-1ubuntu1_amd64.deb
 sleep 1s
 dpkg -i /tmp/libpng12.deb
 sleep 1s
@@ -273,7 +273,7 @@ sleep 1s
 #### update xtream r21
 apt-get install e2fsprogs python-paramiko -y
 sleep 1s
-wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/updat.zip
+wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/update.zip
 sleep 1s
 unzip -o /tmp/update.zip -d /tmp/update/
 sleep 1s
