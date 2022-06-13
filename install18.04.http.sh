@@ -32,9 +32,11 @@ echo -e "${txtyellow} â”Œâ”€â”€â”€â”€â”€â”€â�
 echo -e "${txtyellow} â”‚[R]      BRUTUS SCRIPT Please Wait...       â”‚ "
 echo -e "${txtyellow} â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ "
 echo " "
-apt-get update &> /dev/null
+apt-get update
 sleep 1s
-apt-get install net-tools curl -y &> /dev/null
+apt-get -y dist-upgrade
+sleep 1s
+apt-get install net-tools curl -y
 sleep 1s
 clear
 echo " "
