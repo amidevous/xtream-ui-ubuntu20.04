@@ -161,7 +161,7 @@ sleep 1s
 #### installation de xtream codes
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
-wget -q -O /tmp/xtreamcodes.tar.gz https://www.dropbox.com/s/5ol4aovtybpse6w/main_xtreamcodes_reborn.tar.gz?dl=1
+wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz
 sleep 1s
 tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
