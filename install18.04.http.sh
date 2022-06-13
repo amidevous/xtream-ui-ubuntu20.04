@@ -273,13 +273,13 @@ sleep 1s
 #### update xtream r21
 apt-get install e2fsprogs python-paramiko -y
 sleep 1s
-wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/update.zip
+wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
 sleep 1s
 unzip -o /tmp/update.zip -d /tmp/update/
 sleep 1s
-cp -rf /tmp/update/BRUTUS/* /home/xtreamcodes/iptv_xtream_codes/
+cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
 sleep 1s
-rm -rf /tmp/update/BRUTUS
+rm -rf /tmp/update/XtreamUI-master
 sleep 1s
 rm /tmp/update.zip
 sleep 1s
@@ -333,9 +333,9 @@ sleep 1s
 
 
 #### fix bug xtream a l install de phpmyadmin
-sudo apt-get remove --auto-remove libcurl4-openssl-dev -y
+sudo apt-get remove purge libcurl3 -y
 sleep 1s
-sudo apt-get install libcurl3 -y
+sudo apt-get install libcurl4 -y
 sleep 1s
 ##################
 } &> /dev/null & spinner $!
