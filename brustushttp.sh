@@ -32,9 +32,11 @@ echo -e "${txtyellow} ┌──────────────────�
 echo -e "${txtyellow} │[R]      BRUTUS SCRIPT Please Wait...       │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
-apt-get update &> /dev/null
+apt-get update
 sleep 1s
-apt-get install net-tools curl -y &> /dev/null
+apt-get -y dist-upgrade
+sleep 1s
+apt-get install net-tools curl -y
 sleep 1s
 clear
 echo " "
@@ -97,7 +99,7 @@ echo -e "\n\e[8mWelcome to XtreamCodes V2\e[0m"
 echo -n "[+] Installation Of Packages..."
 sleep 1
 
-{
+
 #### suprime des fichiers avant l'installation
 rm -r /var/lib/dpkg/lock-frontend
 sleep 1s
@@ -109,25 +111,29 @@ sleep 1s
 
 
 #### installation des essentiels
-apt-get install software-properties-common -y
+apt-get install software-properties-common dirmngr --install-recommends -y
 sleep 1s
-apt-get remove --auto-remove libcurl4 -y
-sleep 1s
-apt-get install libcurl3 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
-sleep 1s
-apt-get install dirmngr --install-recommends -y
-sleep 1s
-apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-sleep 1s
-add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.3/ubuntu/ bionic main'
+add-apt-repository ppa:andykimpe/curl -y -s
 sleep 1s
 apt-get update
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.3 mysql-server/root_password password $PASSMYSQL"
+apt-get remove purge libcurl3 -y
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.3 mysql-server/root_password_again password $PASSMYSQL"
+apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
 sleep 1s
-apt-get -y install mariadb-server-10.3
+apt-get dist-upgrade -y
+sleep 1s
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+sleep 1s
+add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ bionic main'
+sleep 1s
+apt-get update
+sleep 1s
+debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+sleep 1s
+debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+sleep 1s
+apt-get -y install mariadb-server-10.5 mariadb-server
 sleep 1s
 echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 sleep 1s
@@ -135,7 +141,7 @@ echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-select
 sleep 1s
 apt install -y postfix
 sleep 1s
-wget -q -O /tmp/libpng12.deb https://xtream-brutus.com/v3/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+wget -q -O /tmp/libpng12.deb https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libpng12-0_1.2.54-1ubuntu1_amd64.deb
 sleep 1s
 dpkg -i /tmp/libpng12.deb
 sleep 1s
@@ -144,18 +150,17 @@ sleep 1s
 rm -r /tmp/libpng12.deb
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
 sleep 1s
 echo -n "[+] Installation Of XtreamCodes..."
 sleep 1s
 
 
-{
+
 #### installation de xtream codes
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
-wget -q -O /tmp/xtreamcodes.tar.gz https://xtream-brutus.com/v3/mainbru2.tgz
+wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz
 sleep 1s
 tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
@@ -165,17 +170,15 @@ mv /etc/mysql/my.cnf /etc/mysql/my.cnf.xc
 sleep 1s
 echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > /etc/mysql/my.cnf
 sleep 1s
-service mysql restart
+systemctl restart mariadb
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
 
 echo -e "\\r${CHECK_MARK} Installation Of XtreamCodes Done"
 sleep 1s
 echo -n "[+] Configuration Of Mysql & Nginx..."
 sleep 1s
 
-{
 #### config base de données
 ## ajout de python script
 python << END
@@ -236,17 +239,17 @@ UPDATE reg_users SET username = '$adminn' WHERE id='1';
 UPDATE reg_users SET password = '$kkkk' WHERE id='1';
 eof
 #########################################
-} &> /dev/null & spinner $!
+
 
 echo -e "\\r${CHECK_MARK} Configuration Of Mysql & Nginx Done"
 sleep 1s
 echo -n "[+] Configuration Of Crons & Autorisations..."
 sleep 1s
-{
+
 #### modif de fichiers et autre config xtream : nginx, ffmpeg,.....
 rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
 sleep 1s
-echo "xtreamcodes ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers
 sleep 1s
 ln -s /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg /usr/bin/
 sleep 1s
@@ -257,23 +260,23 @@ sleep 1s
 chmod -R 0777 /home/xtreamcodes
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
+
 
 echo -e "\\r${CHECK_MARK} Configuration Of Crons & Autorisations Done"
 sleep 1s
 echo -n "[+] installation Of Admin Web Access..."
 sleep 1s
-{
-#### update xtream r21
+
+#### update xtream cr 41
 apt-get install e2fsprogs python-paramiko -y
 sleep 1s
-wget -q -O /tmp/update.zip https://xtream-brutus.com/v3/updssl/brutus_files.php?id=brutusroc
+wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
 sleep 1s
 unzip -o /tmp/update.zip -d /tmp/update/
 sleep 1s
-cp -rf /tmp/update/BRUTUS/* /home/xtreamcodes/iptv_xtream_codes/
+cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
 sleep 1s
-rm -rf /tmp/update/BRUTUS
+rm -rf /tmp/update/XtreamUI-master
 sleep 1s
 rm /tmp/update.zip
 sleep 1s
@@ -288,7 +291,7 @@ sleep 1s
 chmod -R 0777 /home/xtreamcodes/iptv_xtream_codes/crons
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
+
 
 echo -e "\\r${CHECK_MARK} installation Of Admin Web Access Done"
 sleep 1s
@@ -327,19 +330,18 @@ sleep 1s
 
 
 #### fix bug xtream a l install de phpmyadmin
-sudo apt-get remove --auto-remove libcurl4-openssl-dev -y
+sudo apt-get remove purge libcurl3 -y
 sleep 1s
-sudo apt-get install libcurl3 -y
+sudo apt-get install libcurl4 -y
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
 
 echo -e "\\r${CHECK_MARK} Installation Of PhpMyAdmin Done"
 sleep 1s
 echo -n "[+] Configuration Auto Start..."
 sleep 1s
 
-{
+
 #### demarre xtream au redemarage du server
 echo "@reboot root sudo /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab
 sleep 1s
@@ -356,30 +358,13 @@ service apache2 restart
 sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx -s reload
 sleep 1s
-sudo ufw default deny incoming
-sleep 1s
-sudo ufw default allow outgoing
-sleep 1s
-sudo ufw allow $PORTSSH
-sleep 1s
-sudo ufw allow $ACCESPORT
-sleep 1s
-sudo ufw allow 8443
-sleep 1s
-sudo ufw allow 2082
-sleep 1s
-sudo ufw allow 2083
-sleep 1s
-sudo ufw allow 2086
-sleep 1s
-echo y | sudo ufw enable
+sudo ufw disable
 sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 sleep 5s
 ##################
-} &> /dev/null & spinner $!
 
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
 sleep 1s
