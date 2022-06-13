@@ -34,7 +34,7 @@ echo -e "${txtyellow} └──────────────────�
 echo " "
 apt-get update
 sleep 1s
-apt-get -y dist-upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 sleep 1s
 apt-get install net-tools curl -y
 sleep 1s
@@ -117,11 +117,11 @@ add-apt-repository ppa:andykimpe/curl -y -s
 sleep 1s
 apt-get update
 sleep 1s
-apt-get remove purge libcurl3 -y
+DEBIAN_FRONTEND=noninteractive apt-get remove purge libcurl3 -y
 sleep 1s
-apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
+DEBIAN_FRONTEND=noninteractive apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
 sleep 1s
-apt-get dist-upgrade -y
+DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
 sleep 1s
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sleep 1s
