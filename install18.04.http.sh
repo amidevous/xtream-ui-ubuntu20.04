@@ -103,7 +103,6 @@ echo -e "\n\e[8mWelcome to XtreamCodes V2\e[0m"
 echo -n "[+] Installation Of Packages..."
 sleep 1
 
-{
 #### suprime des fichiers avant l'installation
 rm -r /var/lib/dpkg/lock-frontend
 sleep 1s
@@ -154,7 +153,6 @@ sleep 1s
 rm -r /tmp/libpng12.deb
 sleep 1s
 ##################
-} &> /dev/null & spinner $!
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
 sleep 1s
 echo -n "[+] Installation Of XtreamCodes..."
