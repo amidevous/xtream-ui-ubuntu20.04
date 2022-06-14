@@ -238,7 +238,7 @@ sleep 2s
 ##################
 
 ##############################
-mysql --user=root --password=$PASSMYSQL xtream_iptvpro << eof
+mysql -u root -p$PASSMYSQL xtream_iptvpro << eof
 DROP TABLE IF EXISTS `reg_users`;
 CREATE TABLE `reg_users` (
   `id` int(11) NOT NULL,
@@ -265,7 +265,7 @@ CREATE TABLE `reg_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `reg_users` (`id`, `username`, `password`, `email`, `ip`, `date_registered`, `verify_key`, `last_login`, `member_group_id`, `verified`, `credits`, `notes`, `status`, `default_lang`, `reseller_dns`, `owner_id`, `override_packages`, `google_2fa_sec`, `dark_mode`, `sidebar`, `expanded_sidebar`) VALUES
-(1, '$adminn', '$kkkk', '', NULL, 0, NULL, NULL, 1, 1, 0, NULL, 1, '', '', 0, NULL, '', 0, 0, 0);
+(1, '$adminn', '$kkkk', 'admin@localhost.localhost', NULL, 0, NULL, NULL, 1, 1, 0, NULL, 1, 'fr', '', 0, NULL, '', 0, 1, 1);
 
 
 ALTER TABLE `reg_users`
