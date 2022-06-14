@@ -128,7 +128,8 @@ apt-get update
 sleep 1s
 apt-get purge libcurl3 -y
 sleep 1s
-apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 libzip5 python2 -y
+apt-get -y install  python
+apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 libzip5 python2 python3 -y
 sleep 1s
 apt-get dist-upgrade -y
 sleep 1s
