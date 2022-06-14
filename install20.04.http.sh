@@ -135,6 +135,10 @@ debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again
 sleep 1s
 apt-get -y install mariadb-server-10.5 mariadb-server
 sleep 1s
+systemctl restart mariadb
+sleep 1s
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '30019295Ab'; flush privileges;"
+sleep 1s
 echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 sleep 1s
 echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
