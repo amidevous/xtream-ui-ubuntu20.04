@@ -440,6 +440,10 @@ unzip -o /tmp/update.zip -d /tmp/update/
 sleep 1s
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
 sleep 1s
+rm -rf /tmp/update/XtreamUI-master/php
+sleep 1s
+rm -rf /tmp/update/XtreamUI-master/GeoLite2.mmdb
+sleep 1s
 cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
 sleep 1s
 rm -rf /tmp/update/XtreamUI-master
