@@ -711,6 +711,8 @@ echo "${txtyellow}
 ${txtrst}"
 ######################################################################
 ## copier les infos dans un fichier text
+DEBIAN_FRONTEND=dialog
+export DEBIAN_FRONTEND=dialog
 echo "
 ───────────────────────────  INFO  ─────────────────────────────────
 │
