@@ -159,28 +159,29 @@ pip2 install paramiko
 sleep 1s
 rm -f get-pip.py
 sleep 1s
-#add pip3 and set pip3 by default to pip command
+#add pip3 and set pip2 by default to pip command
 #for change pip version use
 #update-alternatives --config pip
 apt-get -y install python3-pip
 sleep 1s
 rm -rf /usr/local/bin/pip /usr/bin/pip
 sleep 1s
-update-alternatives --remove pip /usr/bin/pip2
+update-alternatives --remove-all pip
 sleep 1s
-update-alternatives --remove pip /usr/bin/pip
-sleep 1s
-update-alternatives --remove pip /usr/local/lib/python2.7/dist-packages/pip
-sleep 1s
-update-alternatives --remove pip /usr/bin/pip3
-sleep 1s
-update-alternatives --remove pip /usr/local/pip
-sleep 1s
-update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip2 1
+update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip2 2
 sleep 1s
 ln -s /usr/bin/pip /usr/local/bin/pip
 sleep 1s
-update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 2
+update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+sleep 1s
+#add python on alternatives and set python2 by default to python command
+#for change python version use
+#update-alternatives --config python
+rm -f /usr/bin/python
+sleep 1s
+update-alternatives --install /usr/bin/python python /usr/local/bin/python2 2
+sleep 1s
+update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 1
 sleep 1s
 ##################
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
