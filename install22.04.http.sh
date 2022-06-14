@@ -10,18 +10,18 @@ echo -e "${txtyellow} │[R]    Check Version of OS Please Wait...   │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 sleep 3s
-#check ubuntu 20.04 is installed 
-if [[ `lsb_release -rs` == "20.04" ]] 
+#check ubuntu 22.04 is installed 
+if [[ `lsb_release -rs` == "22.04" ]] 
 then
 echo " "
 echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]  ubuntu 20.04 is installed...proceed    │ "
+echo -e "${txtyellow} │[R]  ubuntu 22.04 is installed...proceed    │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 else
 echo " "
 echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R] ubuntu 20.04 is not installed...exiting │ "
+echo -e "${txtyellow} │[R] ubuntu 22.04 is not installed...exiting │ "
 echo -e "${txtyellow} └────────────────────────────────────────────┘ "
 echo " "
 exit 1
