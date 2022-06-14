@@ -138,11 +138,11 @@ add-apt-repository -y 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.co
 sleep 1s
 apt-get update
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
 sleep 1s
-apt-get -y install mariadb-server-10.5 mariadb-server
+apt-get -y install mariadb-server-10.9 mariadb-server
 sleep 1s
 systemctl restart mariadb
 sleep 1s
