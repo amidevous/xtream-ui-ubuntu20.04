@@ -77,15 +77,21 @@ spinner()
 }
 ##################
 
-read -p "${txtgreen}...... Enter Your Desired Login Access: " adminn
+read -p "${txtgreen}...... Enter Your Desired Admin Login Access: " adminn
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Password Access: " adminpass
+read -p "${txtgreen}...... Enter Your Desired Admin Password Access: " adminpass
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Port Access: " ACCESPORT
+read -p "${txtgreen}...... Enter Your Desired Admin Port Access: " ACCESPORT
+echo " "
+read -p "${txtgreen}...... Enter Your Desired Client Port Access: " CLIENTACCESPORT
+echo " "
+read -p "${txtgreen}...... Enter Your Desired Apache Port Access: " APACHEACCESPORT
+echo " "
+read -p "${txtgreen}...... Enter Your Email Addres: " EMAIL
 echo " "
 read -p "${txtgreen}...... Enter Your Desired MYSQL Password: " PASSMYSQL
 echo " "
-read -p "${txtgreen}...... Enter Your ssh port: " PORTSSH
+PORTSSH=22
 echo " "
 kkkk=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "$alg" "$adminpass" "$salt")
 sleep 1
