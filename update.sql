@@ -32,3 +32,24 @@ ALTER TABLE `reg_users`
 ALTER TABLE `reg_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
+DROP TABLE IF EXISTS `admin_settings`;
+CREATE TABLE `admin_settings` (
+  `type` varchar(128) NOT NULL DEFAULT '',
+  `value` varchar(4096) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `admin_settings` (`type`, `value`) VALUES
+('active_mannuals', '1'),
+('auto_refresh', '1'),
+('cc_time', '1655207282'),
+('geolite2_version', '1'),
+('panel_version', '1'),
+('reseller_can_isplock', '1'),
+('reseller_reset_isplock', '1'),
+('reseller_reset_stb', '1'),
+('show_tickets', '1'),
+('stats_pid', ''),
+('tmdb_pid', ''),
+('watch_pid', '');
+ALTER TABLE `admin_settings`
+  ADD PRIMARY KEY (`type`);
+COMMIT;
