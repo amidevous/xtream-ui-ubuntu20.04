@@ -297,7 +297,6 @@ echo -e "\\r${CHECK_MARK} installation Of Admin Web Access Done"
 sleep 1s
 echo -n "[+] installation Of PhpMyAdmin..."
 sleep 1s
-{
 #### install phpmyadmin
 
 sudo apt-get -y install debconf-utils
