@@ -429,14 +429,18 @@ sleep 1s
 echo -n "[+] installation Of Admin Web Access..."
 sleep 1s
 
-#### update xtream cr 41
 apt-get install e2fsprogs -y
 sleep 1s
-wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
+#### update xtream cr 41
+# backup R41
+#wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
+#xcversion=41
+#install latest
+wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/update.zip
 sleep 1s
 unzip -o /tmp/update.zip -d /tmp/update/
 sleep 1s
-rm -rf /tmp/update/XtreamUI-master/php
+chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
 sleep 1s
 cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
 sleep 1s
@@ -445,6 +449,21 @@ sleep 1s
 rm /tmp/update.zip
 sleep 1s
 rm -rf /tmp/update
+sleep 1s
+apt-get -y install jq
+sleep 1s
+xcversion=$(wget -qO- http://xcodes.mine.nu/XCodes/current.json | jq -r ".version")
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
+sleep 1s
+chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
+sleep 1s
+wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb http://xcodes.mine.nu/XCodes/GeoLite2.mmdb
+sleep 1s
+chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
+sleep 1s
+geoliteversion=$(wget -qO- http://xcodes.mine.nu/XCodes/status.json | jq -r ".version")
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$geoliteversion' WHERE admin_settings.type = 'geolite2_version'; "
 sleep 1s
 chown xtreamcodes:xtreamcodes -R /home/xtreamcodes
 sleep 1s
