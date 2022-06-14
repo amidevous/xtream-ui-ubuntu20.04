@@ -550,6 +550,8 @@ killall php-fpm
 sleep 1s
 rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
 sleep 1s
+wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/balancer.py -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.py
+sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 sleep 5s
 ##################
