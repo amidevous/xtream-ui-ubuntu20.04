@@ -235,7 +235,6 @@ def modifyNginx():
 def mysql():
     os.system('mysql -u root%s -e "DROP DATABASE IF EXISTS xtream_iptvpro; CREATE DATABASE IF NOT EXISTS xtream_iptvpro;" > /dev/null' % rExtra)
     os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database.sql > /dev/null" % rExtra)
-    os.system('mysql -u root%s -e "USE xtream_iptvpro; UPDATE settings SET live_streaming_pass = \'%s\', unique_id = \'%s\', crypt_load_balancing = \'%s\', port_admin = \'%s\';" > /dev/null' % (rExtra, generate1, generate2, generate3, portadmin))
     os.system('mysql -u root%s -e "USE xtream_iptvpro; REPLACE INTO streaming_servers (id, server_name, domain_name, server_ip, vpn_ip, ssh_password, ssh_port, diff_time_main, http_broadcast_port, total_clients, system_os, network_interface, latency, status, enable_geoip, geoip_countries, last_check_ago, can_delete, server_hardware, total_services, persistent_connections, rtmp_port, geoip_type, isp_names, isp_type, enable_isp, boost_fpm, http_ports_add, network_guaranteed_speed, https_broadcast_port, https_ports_add, whitelist_ips, watchdog_data, timeshift_only) VALUES (1, \'Main Server\', \'\', \'%s\', \'\', NULL, \'%s\', 0, 2082, 1000, \'%s\', \'%s\', 0, 1, 0, \'\', 0, 0, \'{}\', 3, 0, 2086, \'low_priority\', \'\', \'low_priority\', 0, 0, \'\', 1000, 2083, \'\', \'[\"127.0.0.1\",\"\"]\', \'{}\', 0);" > /dev/null' % (rExtra, getIP, sshssh, getVersion, reseau))
     os.system('mysql -u root%s -e "GRANT ALL PRIVILEGES ON *.* TO \'%s\'@\'%%\' IDENTIFIED BY \'%s\' WITH GRANT OPTION; FLUSH PRIVILEGES;" > /dev/null' % (rExtra, rUsername, rPassword))
 mysql()
@@ -420,6 +419,111 @@ http {
 EOR
 sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE streaming_servers SET http_broadcast_port = '$CLIENTACCESPORT' WHERE streaming_servers.id = 1;"
+#solve setting no primary key
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "ALTER TABLE settings ADD PRIMARY KEY(id);"
+sleep 1s
+#update gen pass
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET live_streaming_pass = '$zzz' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET unique_id = '$eee' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
+#configure your timezone to ussing default to your server
+DEBIAN_FRONTEND=noninteractive apt-get -y install tzdata
+sleep 1s
+dpkg-reconfigure tzdata
+sleep 1s
+timezone=$(cat /etc/timezone)
+sleep 1s
+sed -i "s|;date.timezone =|date.timezone = $timezone|g" /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
+sleep 1s
+#replace python by python2
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = 'python2' WHERE admin_settings.type = 'release_parser'; "
+#local and security patching settings and admin_settings
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET default_locale = 'fr_FR.utf8' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET disallow_empty_user_agents = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET hash_lb = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'order_streams';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'ip_logout';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_restrictions';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_dns';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_email';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_password';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_lang';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_view_info';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'active_apps';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_mag_to_m3u';"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET audio_restart_loss = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET county_override_1st = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET disallow_2nd_ip_con = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET enable_isp_lock = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET vod_bitrate_plus = '300' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET vod_limit_at = '10' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET block_svp = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET priority_backup = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET mag_security = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET stb_change_pass = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET stalker_lock_images = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types = '["MAG200","MAG245","MAG245D","MAG250","MAG254","MAG255","MAG256","MAG257","MAG260","MAG270","MAG275","MAG322","MAG322w1","MAG322w2","MAG323","MAG324","MAG324C","MAG324w2","MAG325","MAG349","MAG350","MAG351","MAG352","MAG420","MAG420w1","MAG420w2","MAG422","MAG422A","MAG422Aw1","MAG424","MAG424w1","MAG424w2","MAG424w3","MAG424A","MAG424Aw3","MAG425","MAG425A","MAG520","MAG520W1","MAG520W2","MAG520W3","MAG520A","MAG520Aw3","MAG522","MAG522w1","MAG522w3","MAG524","MAG524W3","AuraHD","AuraHD0","AuraHD1","AuraHD2","AuraHD3","AuraHD4","AuraHD5","AuraHD6","AuraHD7","AuraHD8","AuraHD9","WR320","IM2100","IM2100w1","IM2100V","IM2100VI","IM2101","IM2101V","IM2101VI","IM2101VO","IM2101w2","IM2102","IM4410","IM4410w3","IM4411","IM4411w1","IM4412","IM4414","IM4414w1","IP_STB_HD",]' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types_rec = '1' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types_for_local_recording = '["MAG200","MAG245","MAG245D","MAG250","MAG254","MAG255","MAG256","MAG257","MAG260","MAG270","MAG275","MAG322","MAG322w1","MAG322w2","MAG323","MAG324","MAG324C","MAG324w2","MAG325","MAG349","MAG350","MAG351","MAG352","MAG420","MAG420w1","MAG420w2","MAG422","MAG422A","MAG422Aw1","MAG424","MAG424w1","MAG424w2","MAG424w3","MAG424A","MAG424Aw3","MAG425","MAG425A","MAG520","MAG520W1","MAG520W2","MAG520W3","MAG520A","MAG520Aw3","MAG522","MAG522w1","MAG522w3","MAG524","MAG524W3","AuraHD","AuraHD0","AuraHD1","AuraHD2","AuraHD3","AuraHD4","AuraHD5","AuraHD6","AuraHD7","AuraHD8","AuraHD9","WR320","IM2100","IM2100w1","IM2100V","IM2100VI","IM2101","IM2101V","IM2101VI","IM2101VO","IM2101w2","IM2102","IM4410","IM4410w3","IM4411","IM4411w1","IM4412","IM4414","IM4414w1","IP_STB_HD",]' WHERE settings.id = 1;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_auto', '1');"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_check', '$(date +"%s")');"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_tables', '["flushActivity","flushActivitynow","flushPanelogs","flushLoginlogs","flushLogins","flushMagclaims","flushStlogs","flushClientlogs","flushEvents","flushMaglogs"]');"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE user_activity;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE user_activity_now;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE panel_logs;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE login_logs;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE login_users;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_claims;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE stream_logs;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE client_logs;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_logs;"
+sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_events;"
+sleep 1s
 ##################
 
 
@@ -492,7 +596,7 @@ sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver mult
 sleep 1s
 sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
 sleep 1s
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y phpmyadmin
+DEBIAN_FRONTEND=noninteractive apt-get install -q -y phpmyadmin
 sleep 2s
 ##################
 
