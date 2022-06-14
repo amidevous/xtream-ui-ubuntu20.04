@@ -35,7 +35,9 @@ echo -e "${txtyellow} └──────────────────�
 echo " "
 apt-get update
 sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
+DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y dist-upgrade
 sleep 1s
 apt-get install net-tools curl -y
 sleep 1s
@@ -124,11 +126,11 @@ add-apt-repository ppa:andykimpe/curl -y -s
 sleep 1s
 apt-get update
 sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get purge libcurl3 -y
+apt-get purge libcurl3 -y
 sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 libzip5 python-is-python2 -y
+apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 libzip5 python-is-python2 -y
 sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+apt-get dist-upgrade -y
 sleep 1s
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sleep 1s
@@ -458,9 +460,11 @@ mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_bal
 sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
 #configure your timezone to ussing default to your server
-DEBIAN_FRONTEND=noninteractive apt-get -y install tzdata
+apt-get -y install tzdata
 sleep 1s
-dpkg-reconfigure tzdata
+DEBIAN_FRONTEND=dialog dpkg-reconfigure tzdata
+DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 sleep 1s
 timezone=$(cat /etc/timezone)
 sleep 1s
@@ -623,7 +627,7 @@ sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver mult
 sleep 1s
 sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
 sleep 1s
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y phpmyadmin
+apt-get install -q -y phpmyadmin
 sleep 2s
 ##################
 
