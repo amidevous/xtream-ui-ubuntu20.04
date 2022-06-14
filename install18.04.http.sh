@@ -142,7 +142,7 @@ apt-get -y install mariadb-server-10.5 mariadb-server
 sleep 1s
 systemctl restart mariadb
 sleep 1s
-mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '30019295Ab'; flush privileges;"
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$PASSMYSQL'; flush privileges;"
 sleep 1s
 echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 sleep 1s
@@ -273,7 +273,7 @@ CREATE TABLE `reg_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `reg_users` (`id`, `username`, `password`, `email`, `ip`, `date_registered`, `verify_key`, `last_login`, `member_group_id`, `verified`, `credits`, `notes`, `status`, `default_lang`, `reseller_dns`, `owner_id`, `override_packages`, `google_2fa_sec`, `dark_mode`, `sidebar`, `expanded_sidebar`) VALUES
-(1, '$adminn', '$kkkk', 'admin@localhost.localhost', NULL, 0, NULL, NULL, 1, 1, 0, NULL, 1, 'fr', '', 0, NULL, '', 0, 1, 1);
+(1, '$adminn', '$kkkk', '$EMAIL', NULL, 0, NULL, NULL, 1, 1, 0, NULL, 1, 'fr', '', 0, NULL, '', 0, 1, 1);
 
 
 ALTER TABLE `reg_users`
@@ -448,6 +448,7 @@ http {
 }
 EOR
 sleep 1s
+mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE streaming_servers SET http_broadcast_port = '$CLIENTACCESPORT' WHERE streaming_servers.id = 1;"
 ##################
 
 
