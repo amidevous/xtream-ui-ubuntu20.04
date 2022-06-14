@@ -151,7 +151,7 @@ echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-select
 sleep 1s
 apt install -y postfix
 sleep 1s
-curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 sleep 1s
 python2 get-pip.py
 sleep 1s
