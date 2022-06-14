@@ -536,11 +536,11 @@ sleep 1s
 echo "@reboot root sudo /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab
 sleep 1s
 #### demarage de xtreamcodes
-sed -i "s/Listen 80/Listen 8443/g" /etc/apache2/ports.conf
+sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/apache2/ports.conf
 sleep 1s
 sed -i "s/Listen 443/Listen 70/g" /etc/apache2/ports.conf
 sleep 1s
-sed -i "s/80/8443/g" /etc/apache2/sites-available/000-default.conf
+sed -i "s/80/$APACHEACCESPORT/g" /etc/apache2/sites-available/000-default.conf
 sleep 1s
 sed -i "s/443/70/g" /etc/apache2/sites-available/default-ssl.conf
 sleep 1s
