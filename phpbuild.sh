@@ -88,10 +88,6 @@ EOF
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
 fi
-
-
-
-apt-get update
 apt-get -y dist-upgrade
 apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 mkdir /root/phpbuild
@@ -105,6 +101,8 @@ apt-get -y build-dep php7.3
 wget https://www.php.net/distributions/php-7.3.33.tar.gz
 rm -rf php-7.3.33
 tar -xvf php-7.3.33.tar.gz
+echo "php download pause 60 seconds"
+sleep 60
 if [[ "$VER" = "22.04" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xvf debian.tar.xz
@@ -119,7 +117,11 @@ sed -i "s|/usr/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-co
 sed -i "s|/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 ./configure $(/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config --configure-options)
+echo "php configure pause 60 seconds"
+sleep 60
 make -j8
+echo "php build pause 60 seconds"
+sleep 60
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/GeoIP.dat
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/bin
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
@@ -146,6 +148,8 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-z
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
 make install
+echo "php install pause 60 seconds"
+sleep 60
 cd ..
 rm -rf php* debian
 apt-get -y install libmcrypt-dev mcrypt
@@ -153,19 +157,35 @@ wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
+echo "mcrypt phpize pause 60 seconds"
+sleep 60
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
+echo "mcrypt configure pause 60 seconds"
+sleep 60
 make -j8
+echo "mcrypt build pause 60 seconds"
+sleep 60
 make install
+echo "mcrypt install pause 60 seconds"
+sleep 60
 cd ..
-rm -f mcrypt*
+rm -rf mcrypt*
 apt-get -y install libgeoip-dev
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
 tar -xvf geoip-1.1.1.tgz
 cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
+echo "geoip phpize pause 60 seconds"
+sleep 60
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
+echo "geoip configure pause 60 seconds"
+sleep 60
 make -j8
+echo "geoip build pause 60 seconds"
+sleep 60
 make install
+echo "geoip install pause 60 seconds"
+sleep 60
 cd ..
 rm -rf geoip*
 rm -rf iptv_xtream_codes/php/GeoIP.dat
@@ -196,3 +216,4 @@ rm -rf iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcach
 cp -R /home/xtreamcodes/iptv_xtream_codes/php/* iptv_xtream_codes/php/
 rm -f main_xui_"$OS"_"$VER".tar.gz
 tar -cvf main_xui_"$OS"_"$VER".tar.gz iptv_xtream_codes/
+echo "finish"
