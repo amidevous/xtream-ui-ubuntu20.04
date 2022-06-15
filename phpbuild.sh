@@ -53,7 +53,7 @@ EOF
 	apt-get update
 	apt-get install software-properties-common dirmngr --install-recommends -y
 	add-apt-repository -y ppa:ondrej/apache2
-	add-apt-repository -y ppa:ondrej/php
+	add-apt-repository -y -s ppa:ondrej/php
 	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
@@ -89,7 +89,7 @@ EOF
 	apt-get update
 fi
 apt-get -y dist-upgrade
-apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make libxml2-dev libssl-dev
+apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 mkdir /root/phpbuild
 cd /root/phpbuild
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
