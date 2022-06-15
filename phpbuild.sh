@@ -30,63 +30,67 @@ else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
-if [[ "$OS" = "Ubuntu" ]]; then 
-    # Update the enabled Aptitude repositories
-    echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
 
-    mkdir -p "/etc/apt/sources.list.d.save"
-    cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
-    rm -rf "/etc/apt/sources.list/*"
-    cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
+
+if [[ "$OS" = "Ubuntu" ]]; then 
+	# Update the enabled Aptitude repositories
+	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	mkdir -p "/etc/apt/sources.list.d.save"
+	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
+	rm -rf "/etc/apt/sources.list/*"
+	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
 	cat > /etc/apt/sources.list <<EOF
-	#Depots main restricted universe multiverse
-	deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse
-	deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
-	deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
-	deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse 
-	deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
-	deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
-	deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
-	deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
-	EOF
+#Depots main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse 
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
+deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
+deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
+EOF
 	apt-get update
 	apt-get install software-properties-common dirmngr --install-recommends -y
 	add-apt-repository -y ppa:ondrej/apache2
-	add-apt-repository -y -s ppa:ondrej/php
+	add-apt-repository -y ppa:ondrej/php
 	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
-    # Update the enabled Aptitude repositories
-    echo -ne "Updating Aptitude Repos: " >/dev/tty
+	# Update the enabled Aptitude repositories
+	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
 	apt-get update
 	apt install curl wget apt-transport-https gnupg2 dirmngr -y
 	mkdir -p "/etc/apt/sources.list.d.save"
-    cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
-    rm -rf "/etc/apt/sources.list/*"
-    cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
+	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
+	rm -rf "/etc/apt/sources.list/*"
+	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
 	cat > /etc/apt/sources.list <<EOF
-	deb http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
-	deb-src http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
-	deb http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
-	deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
-	deb http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
-	deb-src http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
-	EOF
+deb http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
+deb http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
+deb http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
+EOF
 	cat > /etc/apt/sources.list/php.list <<EOF
-	deb https://packages.sury.org/php/ $(lsb_release -sc) main
-	deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
-	EOF
+deb https://packages.sury.org/php/ $(lsb_release -sc) main
+deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
+EOF
 	cat > /etc/apt/sources.list/apache2.list <<EOF
-	deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
-	deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
-	EOF
+deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
+deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
+EOF
 	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
 fi
+
+
+
 apt-get update
 apt-get -y dist-upgrade
 apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
