@@ -132,15 +132,15 @@ DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
 sleep 1s
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sleep 1s
-add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ focal main'
+add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main" 
 sleep 1s
 apt-get update
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
 sleep 1s
-apt-get -y install mariadb-server-10.5 mariadb-server
+apt-get -y install mariadb-server-10.9 mariadb-server
 sleep 1s
 systemctl restart mariadb
 sleep 1s
