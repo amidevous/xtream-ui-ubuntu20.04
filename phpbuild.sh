@@ -89,7 +89,7 @@ EOF
 	apt-get update
 fi
 apt-get -y dist-upgrade
-apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make libxml2-dev
+apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make libxml2-dev libssl-dev
 mkdir /root/phpbuild
 cd /root/phpbuild
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
