@@ -133,10 +133,7 @@ sleep 1s
 apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 python2 python3 -y
 apt-get -y install libmcrypt4 libmcrypt-dev
 sleep 1s
-wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libzip5_1.5.1-0ubuntu1_amd64_$(lsb_release -cs).deb
-dpkg -i libzip5_1.5.1-0ubuntu1_amd64_$(lsb_release -cs).deb
-apt-get -yf install
-rm -f libzip5_1.5.1-0ubuntu1_amd64_$(lsb_release -cs).deb
+apt-get -y install libzip5
 sleep 1s
 sleep 1s
 apt-get dist-upgrade -y
