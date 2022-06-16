@@ -30,6 +30,7 @@ else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
+echo -e "\n-- Updating repositories and packages sources"
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	if [[ "$OS" = "CentOs" ]]; then
 		#EPEL Repo Install
@@ -83,13 +84,13 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yumpurge() {
 	for package in $@
 	do
-	  echo "removing config files for $package"
-	  for file in $(rpm -q --configfiles $package)
- 	 do
-    	echo "  removing $file"
-   	rm -f $file
-  	done
-  	rpm -e $package
+		echo "removing config files for $package"
+		for file in $(rpm -q --configfiles $package)
+		do
+			echo "  removing $file"
+			rm -f $file
+		done
+		rpm -e $package
 	done
 	}
 cat > /etc/yum.repos.d/remi-source.repo <<EOF
@@ -100,6 +101,23 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 EOF
+	if [[ "$OS" = "CentOs" ]]; then
+cat > /etc/yum.repos.d/mariadb.repo <<EOF
+[mariadb]
+name=MariaDB RPM source
+baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
+enabled=1
+gpgcheck=0
+EOF
+	elif [[ "$OS" = "Fedora" ]]; then
+cat > /etc/yum.repos.d/mariadb.repo <<EOF
+[mariadb]
+name=MariaDB RPM source
+baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
+enabled=1
+gpgcheck=0
+EOF
+	fi
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -217,9 +235,7 @@ https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-insta
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
 yum -y install libzip-devel
 	fi
-	yum-builddep -y php73 php73-php
-
-	
+	yum-builddep -y php73 php73-php	
 fi
 echo "dep install pause 60 seconds"
 sleep 60
@@ -284,7 +300,11 @@ echo "php install pause 60 seconds"
 sleep 60
 cd ..
 rm -rf php* debian
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 apt-get -y install libmcrypt-dev mcrypt
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+yum -y install libmcrypt-devel mcrypt
+fi
 wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
@@ -302,7 +322,11 @@ echo "mcrypt install pause 60 seconds"
 sleep 60
 cd ..
 rm -rf mcrypt*
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 apt-get -y install libgeoip-dev
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+yum -y install GeoIP-devel
+fi
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
 tar -xvf geoip-1.1.1.tgz
 cd geoip-1.1.1
