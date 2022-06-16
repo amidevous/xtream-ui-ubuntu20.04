@@ -34,7 +34,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	if [[ "$OS" = "CentOs" ]]; then
 		#EPEL Repo Install
 		yum -y install epel-release
-		yum -y install https://rpms.remirepo.net/enterprise/remi-release-$VER.rpm
+		yum -y install https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
 		#To fix some problems of compatibility use of mirror centos.org to all users
 		#Replace all mirrors by base repos to avoid any problems.
 		sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
@@ -46,7 +46,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
 		fi
 	elif [[ "$OS" = "Fedora" ]]; then
-		yum -y install https://rpms.remirepo.net/fedora/remi-release-$VER.rpm
+		yum -y install https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
 	fi
 	#disable deposits that could result in installation errors
 	disablerepo() {
@@ -86,8 +86,8 @@ name=Remi's RPM source repository
 baseurl=https://rpms.remirepo.net/SRPMS/
 enabled=1
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi	
-EOF	
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
+EOF
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -97,7 +97,7 @@ EOF
 		systemctl  disabble sendmail.service
 	else
 		service sendmail stop
-	chkconfig sendmail off
+		chkconfig sendmail off
 	fi
 	# disable firewall
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
@@ -190,7 +190,7 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 fi
 echo "dep install pause 60 seconds"
 sleep 60
-mkdir /root/phpbuild
+mkdir -p /root/phpbuild
 cd /root/phpbuild
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
 tar -xvf main_xui_Ubuntu_18.04.tar.gz
