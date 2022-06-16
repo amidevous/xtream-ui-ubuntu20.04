@@ -202,6 +202,8 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y install dnf
 	yum-builddep -y php73
 	yum -y install libxml2-devel xz-devel zlib-devel openssl-devel bzip2-devel
+	yum -y install curl-devel
+	yum -y install libcurl-devel
 fi
 echo "dep install pause 60 seconds"
 sleep 60
