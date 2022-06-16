@@ -211,13 +211,14 @@ EOF
 fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
-	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
+	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 	apt-get -y build-dep php7.3
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y groupinstall "Fedora Packager" "Development Tools"
 	yum -y install yum-utils
 	yum -y install dnf-utils
 	yum -y install dnf
+	yum -y install wget
 	if [[ "$VER" = "7" ]]; then
 yum -y install https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
