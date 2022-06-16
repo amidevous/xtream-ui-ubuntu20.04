@@ -115,8 +115,8 @@ EOF
 		chkconfig "$FIREWALL_SERVICE" off
 	fi
 	# Removal of conflicting packages prior to installation.
-	$PACKAGE_REMOVER bind-chroot
-	$PACKAGE_REMOVER qpid-cpp-client
+	yum -y purge bind-chroot
+	yum -y purge qpid-cpp-client
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
@@ -188,6 +188,8 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y install dnf
 	yum-builddep -y php73
 fi
+echo "dep install pause 60 seconds"
+sleep 60
 mkdir /root/phpbuild
 cd /root/phpbuild
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
