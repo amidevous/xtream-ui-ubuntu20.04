@@ -201,9 +201,9 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y install dnf-utils
 	yum -y install dnf
 	yum-builddep -y php73
-	wget https://rpms.remirepo.net/SRPMS/php73-php-7.3.33-1.remi.src.rpm
-	yum-builddep -y php73-php-7.3.33-1.remi.src.rpm
-	rm -f php73-php-7.3.33-1.remi.src.rpm
+	yumdownloader --source php73-php
+	yum-builddep -y php73-php-7.3.*.remi.src.rpm
+	rm -f php73-php-7.3.*.remi.src.rpm
 #	yum -y install libxml2-devel xz-devel zlib-devel openssl-devel bzip2-devel
 #	yum -y install curl-devel
 #	yum -y install libcurl-devel
