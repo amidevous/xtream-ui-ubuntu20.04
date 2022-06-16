@@ -200,13 +200,22 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y install yum-utils
 	yum -y install dnf-utils
 	yum -y install dnf
-	yum-builddep -y php73
-	yumdownloader --source php73-php
-	yum-builddep -y php73-php-7.3.*.remi.src.rpm
-	rm -f php73-php-7.3.*.remi.src.rpm
-#	yum -y install libxml2-devel xz-devel zlib-devel openssl-devel bzip2-devel
-#	yum -y install curl-devel
-#	yum -y install libcurl-devel
+	if [[ "$VER" = "7" ]]; then
+yum -y install https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.x86_64.rpm
+	else
+yum -y install https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm	
+	fi
+	yum-builddep -y php73 php73-php
 fi
 echo "dep install pause 60 seconds"
 sleep 60
