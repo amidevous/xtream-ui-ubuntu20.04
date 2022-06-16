@@ -76,11 +76,11 @@ deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib no
 deb http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
 deb-src http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
 EOF
-	cat > /etc/apt/sources.list/php.list <<EOF
+	cat > /etc/apt/sources.list.d/php.list <<EOF
 deb https://packages.sury.org/php/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
 EOF
-	cat > /etc/apt/sources.list/apache2.list <<EOF
+	cat > /etc/apt/sources.list.d/apache2.list <<EOF
 deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
