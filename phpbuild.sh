@@ -100,6 +100,8 @@ EOF
 		chkconfig sendmail off
 	fi
 	# disable firewall
+	yum -y install iptables
+	yum -y install firewalld
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
 		FIREWALL_SERVICE="firewalld"
 	else
@@ -182,7 +184,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	yum -y groupinstall "Fedora Packager"
+	yum -y groupinstall "Fedora Packager" "Development Tools"
 	yum -y install yum-utils
 	yum -y install dnf-utils
 	yum -y install dnf
