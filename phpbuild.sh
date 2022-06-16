@@ -189,7 +189,7 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum -y install dnf-utils
 	yum -y install dnf
 	yum-builddep -y php73
-	yum -y install libxml2-devel xz-devel zlib-devel
+	yum -y install libxml2-devel xz-devel zlib-devel openssl-devel
 fi
 echo "dep install pause 60 seconds"
 sleep 60
@@ -205,7 +205,7 @@ rm -rf php-7.3.33
 tar -xvf php-7.3.33.tar.gz
 echo "php download pause 60 seconds"
 sleep 60
-if [[ "$VER" = "22.04" || "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+if [[ "$VER" = "22.04" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xvf debian.tar.xz
 rm -f debian.tar.xz
