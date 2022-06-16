@@ -80,6 +80,18 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum-config-manager --enable remi-safe
 	yum-config-manager --enable remi-php73
 	yum-config-manager --enable epel
+	yumpurge() {
+	for package in $@
+	do
+	  echo "removing config files for $package"
+	  for file in $(rpm -q --configfiles $package)
+ 	 do
+    	echo "  removing $file"
+   	rm -f $file
+  	done
+  	rpm -e $package
+	done
+	}
 cat > /etc/yum.repos.d/remi-source.repo <<EOF
 [remi-source]
 name=Remi's RPM source repository
@@ -117,8 +129,8 @@ EOF
 		chkconfig "$FIREWALL_SERVICE" off
 	fi
 	# Removal of conflicting packages prior to installation.
-	yum -y purge bind-chroot
-	yum -y purge qpid-cpp-client
+	yumpurge bind-chroot
+	yumpurge qpid-cpp-client
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
