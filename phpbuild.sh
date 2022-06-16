@@ -80,6 +80,14 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 	yum-config-manager --enable remi-safe
 	yum-config-manager --enable remi-php73
 	yum-config-manager --enable epel
+cat > /etc/yum.repos.d/remi-source.repo <<EOF
+[remi-source]
+name=Remi's RPM source repository
+baseurl=https://rpms.remirepo.net/SRPMS/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi	
+EOF	
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
