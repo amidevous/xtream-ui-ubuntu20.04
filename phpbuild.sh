@@ -1,6 +1,4 @@
 #!/bin/bash
-DEBIAN_FRONTEND=noninteractive
-export DEBIAN_FRONTEND=noninteractive
 echo -e "\nChecking that minimal requirements are ok"
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
@@ -23,16 +21,97 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 echo "Detected : $OS  $VER  $ARCH"
-if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+if [[ "$OS" = "CentOs" && ("$VER" = "7" || "$VER" = "8" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
     echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+	if [[ "$OS" = "CentOs" ]]; then
+		#EPEL Repo Install
+		yum -y install epel-release
+		yum -y install https://rpms.remirepo.net/enterprise/remi-release-$VER.rpm
+		#To fix some problems of compatibility use of mirror centos.org to all users
+		#Replace all mirrors by base repos to avoid any problems.
+		sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
+		sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
 
-
-if [[ "$OS" = "Ubuntu" ]]; then 
+		#check if the machine and on openvz
+		if [ -f "/etc/yum.repos.d/vz.repo" ]; then
+			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/centos-$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/os/|" "/etc/yum.repos.d/vz.repo"
+			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
+		fi
+	elif [[ "$OS" = "Fedora" ]]; then
+		yum -y install https://rpms.remirepo.net/fedora/remi-release-$VER.rpm
+	fi
+	#disable deposits that could result in installation errors
+	disablerepo() {
+	if [ -f "/etc/yum.repos.d/$1.repo" ]; then
+            sed -i 's/enabled=1/enabled=0/g' "/etc/yum.repos.d/$1.repo"
+        fi
+	}
+	disablerepo "elrepo"
+	disablerepo "epel-testing"
+	disablerepo "rpmforge"
+	disablerepo "rpmfusion-free-updates"
+	disablerepo "rpmfusion-free-updates-testing"
+	disablerepo "remi"
+	disablerepo "remi-php55"
+	disablerepo "remi-php56"
+	disablerepo "remi-test"
+	disablerepo "remi-safe"
+	disablerepo "remi-php73"
+	disablerepo "remi-php72"
+	disablerepo "remi-php71"
+	disablerepo "remi-php70"
+	disablerepo "remi-php54"
+	disablerepo "remi-glpi94"
+	disablerepo "remi-glpi93"
+	disablerepo "remi-glpi92"
+	disablerepo "remi-glpi91"
+	disablerepo "remi-php80"
+	disablerepo "remi-php81"
+	disablerepo "remi-modular"
+	yum-config-manager --enable remi
+	yum-config-manager --enable remi-safe
+	yum-config-manager --enable remi-php73
+	yum-config-manager --enable epel
+	# We need to disable SELinux...
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+	setenforce 0
+	# Stop conflicting services and iptables to ensure all services will work
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "31" || "$VER" = "32" ]]; then
+		systemctl  stop sendmail.service
+		systemctl  disabble sendmail.service
+	else
+		service sendmail stop
+	chkconfig sendmail off
+	fi
+	# disable firewall
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+		FIREWALL_SERVICE="firewalld"
+	else
+		FIREWALL_SERVICE="iptables"
+	fi
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+		systemctl  save "$FIREWALL_SERVICE".service
+		systemctl  stop "$FIREWALL_SERVICE".service
+		systemctl  disable "$FIREWALL_SERVICE".service
+	else
+		service "$FIREWALL_SERVICE" save
+		service "$FIREWALL_SERVICE" stop
+		chkconfig "$FIREWALL_SERVICE" off
+	fi
+	# Removal of conflicting packages prior to installation.
+	$PACKAGE_REMOVER bind-chroot
+	$PACKAGE_REMOVER qpid-cpp-client
+elif [[ "$OS" = "Ubuntu" ]]; then
+	DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
 	# Update the enabled Aptitude repositories
 	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
 	mkdir -p "/etc/apt/sources.list.d.save"
@@ -60,6 +139,8 @@ EOF
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
+	DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
 	# Update the enabled Aptitude repositories
 	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
 	apt-get update
@@ -88,8 +169,17 @@ EOF
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
 fi
-apt-get -y dist-upgrade
-apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+	apt-get -y dist-upgrade
+	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
+	apt-get -y build-dep php7.3
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+	yum -y groupinstall @development-tools @development-libraries
+	yum -y install yum-utils
+	yum -y install dnf-utils
+	yum -y install dnf
+	yum-builddep -y php73
+fi
 mkdir /root/phpbuild
 cd /root/phpbuild
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
@@ -97,7 +187,6 @@ tar -xvf main_xui_Ubuntu_18.04.tar.gz
 rm -f main_xui_Ubuntu_18.04.tar.gz
 mkdir -p /home/xtreamcodes/iptv_xtream_codes
 cp -R iptv_xtream_codes/* /home/xtreamcodes/iptv_xtream_codes/
-apt-get -y build-dep php7.3
 wget https://www.php.net/distributions/php-7.3.33.tar.gz
 rm -rf php-7.3.33
 tar -xvf php-7.3.33.tar.gz
