@@ -216,6 +216,7 @@ https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-insta
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm	
 	fi
 	yum-builddep -y php73 php73-php
+	yum -y install libzip-devel
 fi
 echo "dep install pause 60 seconds"
 sleep 60
