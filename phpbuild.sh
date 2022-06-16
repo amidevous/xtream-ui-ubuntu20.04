@@ -182,7 +182,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	yum -y groupinstall @development-tools @development-libraries
+	yum -y groupinstall "Fedora Packager"
 	yum -y install yum-utils
 	yum -y install dnf-utils
 	yum -y install dnf
