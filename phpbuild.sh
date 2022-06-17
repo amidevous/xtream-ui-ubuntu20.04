@@ -8,7 +8,7 @@ if [ -f /etc/centos-release ]; then
 elif [ -f /etc/fedora-release ]; then
     OS="Fedora"
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
-    VER=${VERFULL:0:2} # return 34 or 35
+    VER=${VERFULL:0:2} # return 34, 35 or 36
 elif [ -f /etc/lsb-release ]; then
     OS=$(grep DISTRIB_ID /etc/lsb-release | sed 's/^.*=//')
     VER=$(grep DISTRIB_RELEASE /etc/lsb-release | sed 's/^.*=//')
@@ -22,7 +22,7 @@ fi
 ARCH=$(uname -m)
 echo "Detected : $OS  $VER  $ARCH"
 if [[ "$OS" = "CentOs" && ("$VER" = "7" || "$VER" = "8" ) && "$ARCH" == "x86_64" ||
-"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
 "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
     echo "Ok."
@@ -132,12 +132,12 @@ EOF
 	# disable firewall
 	yum -y install iptables
 	yum -y install firewalld
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		FIREWALL_SERVICE="firewalld"
 	else
 		FIREWALL_SERVICE="iptables"
 	fi
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		systemctl  save "$FIREWALL_SERVICE".service
 		systemctl  stop "$FIREWALL_SERVICE".service
 		systemctl  disable "$FIREWALL_SERVICE".service
@@ -256,7 +256,7 @@ rm -rf php-7.3.33
 tar -xvf php-7.3.33.tar.gz
 echo "php download pause 60 seconds"
 sleep 60
-if [[ "$VER" = "22.04" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+if [[ "$VER" = "22.04" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xvf debian.tar.xz
 rm -f debian.tar.xz
