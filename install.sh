@@ -345,6 +345,9 @@ deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main
 deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 EOF
+if [[ "$VER" = "18.04" ]]; then
+sed -i "s|mirror://mirrors.ubuntu.com/mirrors.txt|http://archive.ubuntu.com/ubuntu|g" /etc/apt/sources.list
+fi
 	apt-get update
 	apt-get install software-properties-common dirmngr --install-recommends -y
 	add-apt-repository -y ppa:ondrej/apache2
@@ -452,31 +455,94 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	ufw disable
 	$PACKAGE_INSTALLER libmcrypt4 libmcrypt-dev mcrypt libgeoip-dev
 	$PACKAGE_INSTALLER libzip5
+	apt-get update
 	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
 	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
-	$PACKAGE_INSTALLER mariadb-server-10.9 mariadb-server
+	$PACKAGE_INSTALLER mariadb-client-10.9
+	$PACKAGE_INSTALLER  mariadb-client
+	$PACKAGE_INSTALLER mariadb-server-10.9
+	$PACKAGE_INSTALLER mariadb-server
 	systemctl restart mariadb
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 	$PACKAGE_INSTALLER postfix
-	$PACKAGE_INSTALLER python
-	$PACKAGE_INSTALLER python-paramiko 
-	$PACKAGE_INSTALLER python3-pip
-	$PACKAGE_INSTALLER python-pip
-	$PACKAGE_INSTALLER python2-pip
-	curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-	python2 get-pip.py
+	if [[ "$VER" = "18.04" ]]; then
+		$PACKAGE_INSTALLER python
+		$PACKAGE_INSTALLER python-paramiko
+		$PACKAGE_INSTALLER python-pip
+		$PACKAGE_INSTALLER python3-pip python3
+		upgrade pip3
+		pyfv=$(python3 --version | sed  "s|Python ||g")
+		pyv=${pyfv:0:3}
+		wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+		rm -rf /usr/local/bin/pip /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip3
+cat > /usr/bin/pip3 <<EOF
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+		chmod +x /usr/bin/pip3
+		ln -s /usr/bin/pip3 /usr/local/bin/pip3
+cat > /usr/bin/pip <<EOF
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+		chmod +x /usr/bin/pip
+		ln -s /usr/bin/pip /usr/local/bin/pip
+	else
+		$PACKAGE_INSTALLER python3-pip python3
+		#install pip2
+		wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
+		upgrade pip3
+		pyfv=$(python3 --version | sed  "s|Python ||g")
+		pyv=${pyfv:0:3}
+		wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+		rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
+cat > /usr/bin/pip2 <<EOF
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+chmod +x /usr/bin/pip2
+cat > /usr/bin/pip3 <<EOF
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+	chmod +x /usr/bin/pip3
+	ln -s /usr/bin/pip2 /usr/local/bin/pip2
+	ln -s /usr/bin/pip3 /usr/local/bin/pip3
 	pip2 install paramiko
-	rm -f get-pip.py
-	rm -rf /usr/local/bin/pip /usr/bin/pip
 	update-alternatives --remove-all pip
-	update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip2 2
+	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
 	ln -s /usr/bin/pip /usr/local/bin/pip
 	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 	rm -f /usr/bin/python
 	update-alternatives --remove-all python
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 2
 	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 1
+	fi
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/internal/skip-preseed boolean true'
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
