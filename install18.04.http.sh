@@ -1,5 +1,23 @@
 #!/bin/bash
 clear
+if [ -f /etc/centos-release ]; then
+    OS="CentOs"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
+    VER=${VERFULL:0:1} # return 6, 7 or 8
+elif [ -f /etc/fedora-release ]; then
+    OS="Fedora"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
+    VER=${VERFULL:0:2} # return 34 35 or 36
+elif [ -f /etc/lsb-release ]; then
+    OS=$(grep DISTRIB_ID /etc/lsb-release | sed 's/^.*=//')
+    VER=$(grep DISTRIB_RELEASE /etc/lsb-release | sed 's/^.*=//')
+elif [ -f /etc/os-release ]; then
+    OS=$(grep -w ID /etc/os-release | sed 's/^.*=//')
+    VER=$(grep VERSION_ID /etc/os-release | sed 's/^.*"\(.*\)"/\1/' | head -n 1 | tail -n 1)
+ else
+    OS=$(uname -s)
+    VER=$(uname -r)
+fi
 #### variable couleurs ...
 txtgreen=$(tput bold ; tput setaf 2) # GreenBold
 txtyellow=$(tput bold ; tput setaf 3) # YellowBold
@@ -169,7 +187,7 @@ sleep 1s
 #### installation de xtream codes
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
-wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz
+wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
 sleep 1s
 tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
