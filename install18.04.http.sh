@@ -283,7 +283,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.5/rhel/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -291,7 +291,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.5/fedora/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -357,7 +357,7 @@ fi
 	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -387,7 +387,7 @@ deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
+	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
 	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
@@ -461,11 +461,11 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER libmcrypt4 libmcrypt-dev mcrypt libgeoip-dev
 	$PACKAGE_INSTALLER libzip5
 	apt-get update
-	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
-	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
-	$PACKAGE_INSTALLER mariadb-client-10.5
+	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
+	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
+	$PACKAGE_INSTALLER mariadb-client-10.9
 	$PACKAGE_INSTALLER  mariadb-client
-	$PACKAGE_INSTALLER mariadb-server-10.5
+	$PACKAGE_INSTALLER mariadb-server-10.9
 	$PACKAGE_INSTALLER mariadb-server
 	systemctl restart mariadb
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
