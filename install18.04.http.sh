@@ -24,7 +24,6 @@
 # Debian /9/10/11
 # 64bit online system
 #
-clear
 txtgreen=$(tput bold ; tput setaf 2) # GreenBold
 txtyellow=$(tput bold ; tput setaf 3) # YellowBold
 txtwith=$(tput bold ; tput setaf 7) # YellowWithBold
@@ -140,7 +139,7 @@ spinner()
 if [[ "$tz" == "" ]] ; then
     # Propose selection list for the time zone
     echo "Preparing to select timezone, please wait a few seconds..."
-    sleep 30
+    sleep 60
     $PACKAGE_INSTALLER tzdata
     # setup server timezone
     if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
@@ -283,7 +282,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.5/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -291,7 +290,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.5/fedora/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -357,7 +356,7 @@ fi
 	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -387,7 +386,7 @@ deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
+	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
 	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
@@ -412,168 +411,39 @@ fi
 if [[ "$OS" = "Ubuntu" ]]; then
     apt-get purge libcurl3 -y
 fi
-#--- Install utility packages required by the installer and/or Sentora.
-echo -e "\n-- Downloading and installing required tools..."
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-    $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion
-    if  [["$VER" = "7" ]]; then
-    	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
-    else
-    	$PACKAGE_INSTALLER glibc32 bzip2-libs 
-    fi
-    $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
-    $PACKAGE_INSTALLER redhat-lsb-core ca-certificates e2fsprogs nano
-	yum -y groupinstall "Fedora Packager" "Development Tools"
-	$PACKAGE_INSTALLER yum-utils
-	$PACKAGE_INSTALLER dnf-utils
-	$PACKAGE_INSTALLER dnf
-	if [[ "$VER" = "7" ]]; then
-$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.x86_64.rpm
-$PACKAGE_INSTALLER http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm
-	else
-$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
-$PACKAGE_INSTALLER libzip-devel
-	fi
-	yumdownloader --source php73-php-7.3.33-3.remi.src
-	rpm -i php73-php-7.3.33-3.remi.src.rpm
-	yum-builddep -y /root/rpmbuild/SPECS/php.spec
-	yum-builddep -y php73
-	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
-	
-elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
-	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
-	apt-get -y build-dep php7.3
-    $PACKAGE_INSTALLER sudo vim make zip unzip debconf-utils at bash-completion ca-certificates e2fslibs jq
-	$PACKAGE_INSTALLER phpmyadmin net-tools curl 
-	apt-get purge libcurl3 -y
-	$PACKAGE_INSTALLER libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 python2 python3
-	ufw disable
-	$PACKAGE_INSTALLER libmcrypt4 libmcrypt-dev mcrypt libgeoip-dev
-	$PACKAGE_INSTALLER libzip5
-	apt-get update
-	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
-	debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
-	$PACKAGE_INSTALLER mariadb-client-10.9
-	$PACKAGE_INSTALLER  mariadb-client
-	$PACKAGE_INSTALLER mariadb-server-10.9
-	$PACKAGE_INSTALLER mariadb-server
-	systemctl restart mariadb
-	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
-	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
-	$PACKAGE_INSTALLER postfix
-	if [[ "$VER" = "18.04" ]]; then
-		$PACKAGE_INSTALLER python
-		$PACKAGE_INSTALLER python-paramiko
-		$PACKAGE_INSTALLER python-pip
-		$PACKAGE_INSTALLER python3-pip python3
-		#upgrade pip3
-		#pyfv=$(python3 --version | sed  "s|Python ||g")
-		#pyv=${pyfv:0:3}
-		#wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
-		#rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
-#cat > /usr/bin/pip3 <<EOF
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-#import re
-#import sys
-#from pip._internal.cli.main import main
-#if __name__ == '__main__':
-#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-#    sys.exit(main())
-#EOF
-#		chmod +x /usr/bin/pip3
-#		ln -s /usr/bin/pip3 /usr/local/bin/pip3
-#cat > /usr/bin/pip <<EOF
-##!/usr/bin/python2
-## GENERATED BY DEBIAN
-#import sys
-## Run the main entry point, similarly to how setuptools does it, but because
-## we didn't install the actual entry point from setup.py, don't use the
-## pkg_resources API.
-#from pip import main
-#if __name__ == '__main__':
-#    sys.exit(main())
-#EOF
-#		chmod +x /usr/bin/pip
-#		ln -s /usr/bin/pip /usr/local/bin/pip
-#cat > /usr/bin/pip2 <<EOF
-##!/usr/bin/python2
-## GENERATED BY DEBIAN
-#import sys
-## Run the main entry point, similarly to how setuptools does it, but because
-## we didn't install the actual entry point from setup.py, don't use the
-## pkg_resources API.
-#from pip import main
-#if __name__ == '__main__':
-#    sys.exit(main())
-#EOF
-#		chmod +x /usr/bin/pip2
-#		ln -s /usr/bin/pip2 /usr/local/bin/pip
-	else
-		$PACKAGE_INSTALLER python3-pip python3
-		#install pip2
-#		wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
-#		#upgrade pip3
-#		pyfv=$(python3 --version | sed  "s|Python ||g")
-#		pyv=${pyfv:0:3}
-#		wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
-#		rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
-#cat > /usr/bin/pip2 <<EOF
-##!/usr/bin/python2
-## -*- coding: utf-8 -*-
-#import re
-#import sys
-#from pip._internal.cli.main import main
-#if __name__ == '__main__':
-#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-#    sys.exit(main())
-#EOF
-#chmod +x /usr/bin/pip2
-#cat > /usr/bin/pip3 <<EOF
-##!/usr/bin/python3
-## -*- coding: utf-8 -*-
-#import re
-#import sys
-#from pip._internal.cli.main import main
-#if __name__ == '__main__':
-#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-#    sys.exit(main())
-#EOF
-#	chmod +x /usr/bin/pip3
-#	ln -s /usr/bin/pip2 /usr/local/bin/pip2
-#	ln -s /usr/bin/pip3 /usr/local/bin/pip3
-#	pip2 install paramiko
-#	update-alternatives --remove-all pip
-#	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
-#	ln -s /usr/bin/pip /usr/local/bin/pip
-#	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-#	rm -f /usr/bin/python
-#	update-alternatives --remove-all python
-#	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 2
-#	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 1
-	fi
-	debconf-set-selections <<<'phpmyadmin phpmyadmin/internal/skip-preseed boolean true'
-	debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
-	debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
-	$PACKAGE_INSTALLER  phpmyadmin
-fi
+sleep 1s
+apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
+debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+sleep 1s
+debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+sleep 1s
+apt-get -y install mariadb-server-10.5 mariadb-server
+sleep 1s
+systemctl restart mariadb
+sleep 1s
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$PASSMYSQL'; flush privileges;"
-
+sleep 1s
+echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
+sleep 1s
+echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
+sleep 1s
+apt install -y postfix
+sleep 1s
+wget -q -O /tmp/libpng12.deb https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+sleep 1s
+dpkg -i /tmp/libpng12.deb
+sleep 1s
+apt-get install -y
+sleep 1s
+rm -r /tmp/libpng12.deb
+sleep 1s
 ##################
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
 sleep 1s
 echo -n "[+] Installation Of XtreamCodes..."
 sleep 1s
+
+
 
 #### installation de xtream codes
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
@@ -681,36 +551,10 @@ sleep 1s
 echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers
 sleep 1s
 ln -s /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg /usr/bin/
-rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
-if ! grep -q "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" /etc/sudoers; then
-    echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" >> /etc/sudoers;
-fi
-ram_print(){
-while read KB dummy; do
-MB=$(((KB+512)/1024))
-GB=$(((MB+512)/1024))
-echo $GB
-done
-}
-ram=(grep MemTotal /proc/meminfo | sed "s|MemTotal:        ||g" | sed "s| kB||g" | ram_print)
-if [[ "$ram" < "3" ]]; then
-	if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=1G 0 0" /etc/fstab; then
-		echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=1G 0 0" >> /etc/fstab;
-	fi
-else
-	if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" /etc/fstab; then
-		echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" >> /etc/fstab;
-	fi
-fi
-if [[ "$ram" < "16" ]]; then
-	if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=50% 0 0" /etc/fstab; then
-		echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=50% 0 0" >> /etc/fstab;
-	fi
-else
-	if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" /etc/fstab; then
-		echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" >> /etc/fstab;
-	fi
-fi
+sleep 1s
+echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" >> /etc/fstab
+sleep 1s
+echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" >> /etc/fstab
 sleep 1s
 chmod -R 0777 /home/xtreamcodes
 sleep 1s
@@ -1128,3 +972,4 @@ echo "
 #### 
 sleep 1s
 ##################
+
