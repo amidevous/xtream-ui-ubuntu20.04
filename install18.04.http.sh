@@ -140,7 +140,7 @@ spinner()
 if [[ "$tz" == "" ]] ; then
     # Propose selection list for the time zone
     echo "Preparing to select timezone, please wait a few seconds..."
-    sleep 60
+    sleep 30
     $PACKAGE_INSTALLER tzdata
     # setup server timezone
     if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
