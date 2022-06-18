@@ -73,7 +73,7 @@ if [ $UID -ne 0 ]; then
     echo "Use command 'sudo -i', then enter root password and then try again."
     exit 1
 fi
-if [ -e /usr/local/cpanel ] || [ -e /usr/local/directadmin ] || [ -e /usr/local/solusvm/www ] || [ -e /usr/local/home/admispconfig ] || [ -e /usr/local/lxlabs/kloxo || [ -e /etc/zpanel || [ -e /etc/sentora ] ; then
+if [ -e /usr/local/cpanel ] || [ -e /usr/local/directadmin ] || [ -e /usr/local/solusvm/www ] || [ -e /usr/local/home/admispconfig ] || [ -e /usr/local/lxlabs/kloxo ] ; then
     echo "It appears that a control panel is already installed on your server; This installer"
     echo "is designed to install and configure Sentora on a clean OS installation only."
     echo -e "\nPlease re-install your OS before attempting to install using this script."
