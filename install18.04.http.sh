@@ -189,7 +189,8 @@ adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
 wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
 sleep 1s
-tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
+tar -xvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
+#tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
 rm -r /tmp/xtreamcodes.tar.gz
 sleep 1s
