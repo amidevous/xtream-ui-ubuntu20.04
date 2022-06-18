@@ -24,6 +24,7 @@
 # Debian /9/10/11
 # 64bit online system
 #
+clear
 txtgreen=$(tput bold ; tput setaf 2) # GreenBold
 txtyellow=$(tput bold ; tput setaf 3) # YellowBold
 txtwith=$(tput bold ; tput setaf 7) # YellowWithBold
