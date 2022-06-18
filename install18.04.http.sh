@@ -1,5 +1,41 @@
-#!/bin/bash
-clear
+#!/usr/bin/env bash
+# Official Xtream UI Automated Installation Script
+# =============================================
+# Beta Version dot not use in production
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Supported Operating Systems: 
+# Ubuntu server 18.04/20.04/22.04
+# soon
+# CentOS 7.*/8.*
+# Fedora 34/35
+# Debian /9/10/11
+# 64bit online system
+#
+txtgreen=$(tput bold ; tput setaf 2) # GreenBold
+txtyellow=$(tput bold ; tput setaf 3) # YellowBold
+txtwith=$(tput bold ; tput setaf 7) # YellowWithBold
+XC_VERSION="CR MOD 42"
+PANEL_PATH="/home/xtreamcodes/iptv_xtream_codes"
+#--- Display the 'welcome' splash/user warning info..
+echo ""
+echo "#############################################################"
+echo "#  Welcome to the Official Xtream UI Installer $XC_VERSION  #"
+echo "#############################################################"
+echo -e "\nChecking that minimal requirements are ok"
+# Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
@@ -18,63 +54,70 @@ elif [ -f /etc/os-release ]; then
     OS=$(uname -s)
     VER=$(uname -r)
 fi
-#### variable couleurs ...
-txtgreen=$(tput bold ; tput setaf 2) # GreenBold
-txtyellow=$(tput bold ; tput setaf 3) # YellowBold
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]    Check Version of OS Please Wait...   │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-echo " "
-sleep 3s
-#check ubuntu 18.04 is installed 
-if [[ `lsb_release -rs` == "18.04" ]] 
-then
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]  ubuntu 18.04 is installed...proceed    │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-echo " "
+ARCH=$(uname -m)
+echo "Detected : $OS  $VER  $ARCH"
+#if [[ "$OS" = "CentOs" && ("$VER" = "6" || "$VER" = "7" || "$VER" = "8" ) ||
+#      "$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" ) ||
+#      "$OS" = "Ubuntu" && ("$VER" = "12.04" || "$VER" = "14.04" || "$VER" = "16.04" || "$VER" = "18.04" ) || 
+#      "$OS" = "debian" && ("$VER" = "7" || "$VER" = "8" || "$VER" = "9" || "$VER" = "10" ) ]] ; then
+if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
+    echo "Ok."
 else
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R] ubuntu 18.04 is not installed...exiting │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-echo " "
-exit 1
+    echo "Sorry, this OS is not supported by Xtream UI."
+    exit 1
 fi
-sleep 3s
-clear
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]      BRUTUS SCRIPT Please Wait...       │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-echo " "
-apt-get update
-sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
-sleep 1s
-apt-get install net-tools curl -y
-sleep 1s
-clear
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]       STARTING BRUTUS SCRIPT...         │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-echo " "
-#### variable pour mysql : pass, host , carte reseau ...
+# Check if the user is 'root' before allowing installation to commence
+if [ $UID -ne 0 ]; then
+    echo "Install failed: you must be logged in as 'root' to install."
+    echo "Use command 'sudo -i', then enter root password and then try again."
+    exit 1
+fi
+if [ -e /usr/local/cpanel ] || [ -e /usr/local/directadmin ] || [ -e /usr/local/solusvm/www ] || [ -e /usr/local/home/admispconfig ] || [ -e /usr/local/lxlabs/kloxo ] ; then
+    echo "It appears that a control panel is already installed on your server; This installer"
+    echo "is designed to install and configure Sentora on a clean OS installation only."
+    echo -e "\nPlease re-install your OS before attempting to install using this script."
+    exit 1
+fi
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]] ; then
+    PACKAGE_INSTALLER="yum -y -q install"
+    PACKAGE_REMOVER="yum -y -q remove"
+    inst() {
+       rpm -q "$1" &> /dev/null
+    }
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    PACKAGE_INSTALLER="apt-get -yqq install"
+    PACKAGE_REMOVER="apt-get -yqq purge"
+    inst() {
+       dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
+    }
+fi
+#--- Prepare or query informations required to install
+# Update repositories and Install wget and util used to grab server IP
+echo -e "\n-- Installing wget and dns utils required to manage inputs"
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+	$PACKAGE_INSTALLER yum-utils
+	$PACKAGE_INSTALLER dnf dnf-utils
+    yum -y -q update
+    $PACKAGE_INSTALLER bind-utils
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+	DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
+    apt-get -qq update   #ensure we can install
+    $PACKAGE_INSTALLER dnsutils net-tools
+fi
+$PACKAGE_INSTALLER curl wget
+ipaddr="$(wget -qO- http://api.sentora.org/ip.txt)"
+local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')
+networkcard=$(route | grep default | awk '{print $8}')
 blofish=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
-CHECK_MARK="\033[0;32m\xE2\x9C\x94\033[0m"
 alg=6
 salt='rounds=20000$xtreamcodes'
 XPASS=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c16)
 zzz=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c20)
 eee=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c10)
 rrr=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c20)
-ipaddr=$(hostname -I | awk '{print $1}')
-sleep 1s
 versionn=$(lsb_release -d -s)
-cartereseau=$(route | grep default | awk '{print $8}')
 nginx111='$uri'
 nginx222='$document_root$fastcgi_script_name'
 nginx333='$fastcgi_script_name'
@@ -93,8 +136,24 @@ spinner()
     done
     printf "    \b\b\b\b"
 }
-##################
-
+if [[ "$tz" == "" ]] ; then
+    # Propose selection list for the time zone
+    echo "Preparing to select timezone, please wait a few seconds..."
+    sleep 60
+    $PACKAGE_INSTALLER tzdata
+    # setup server timezone
+    if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+        # make tzselect to save TZ in /etc/timezone
+        echo "echo \$TZ > /etc/timezone" >> /usr/bin/tzselect
+        tzselect
+        tz=$(cat /etc/timezone)
+    elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+        DEBIAN_FRONTEND=dialog dpkg-reconfigure tzdata
+		DEBIAN_FRONTEND=noninteractive
+		export DEBIAN_FRONTEND=noninteractive
+        tz=$(cat /etc/timezone)
+    fi
+fi
 read -p "${txtgreen}...... Enter Your Desired Admin Login Access: " adminn
 echo " "
 read -p "${txtgreen}...... Enter Your Desired Admin Password Access: " adminpass
@@ -108,50 +167,252 @@ echo " "
 read -p "${txtgreen}...... Enter Your Email Addres: " EMAIL
 echo " "
 read -p "${txtgreen}...... Enter Your Desired MYSQL Password: " PASSMYSQL
-echo " "
+echo "${txtwith} . "
 PORTSSH=22
+echo " "
 kkkk=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "$alg" "$adminpass" "$salt")
 sleep 1
+read -e -p "All is ok. Do you want to install Xtream UI now (y/n)? " yn
+case $yn in
+    [Yy]* ) break;;
+    [Nn]* ) exit;;
+esac
 clear
-echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]       STARTING INSTALLATION...          │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
-sleep 3s
-echo -e "\n\e[8mWelcome to XtreamCodes V2\e[0m"
-echo -n "[+] Installation Of Packages..."
-sleep 1
+# ***************************************
+# Installation really starts here
 
+#--- Set custom logging methods so we create a log file in the current working directory.
+logfile=$(date +%Y-%m-%d_%H.%M.%S_xtream_ui_install.log)
+touch "$logfile"
+exec > >(tee "$logfile")
+exec 2>&1
+echo "Installing Xtream UI $XC_VERSION at http://$ipaddr:$ACCESPORT"
+echo "on server under: $OS  $VER  $ARCH"
+uname -a
+# Function to disable a file by appending its name with _disabled
+disable_file() {
+    mv "$1" "$1_disabled_by_xtream_ui" &> /dev/null
+}
+#--- Ubuntu and Debian AppArmor must be disabled to avoid problems
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    [ -f /etc/init.d/apparmor ]
+    if [ $? = "0" ]; then
+        echo -e "\n-- Disabling and removing AppArmor, please wait..."
+        systemctl stop apparmor &> /dev/null
+        systemctl disable apparmor &> /dev/null
+        PACKAGE_REMOVER apparmor* &> /dev/null
+        disable_file /etc/init.d/apparmor &> /dev/null
+        echo -e "AppArmor has been removed."
+    fi
+	ufw disable
+fi
+#--- Adapt repositories and packages sources
+echo -e "\n-- Updating repositories and packages sources"
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+	if [[ "$OS" = "CentOs" ]]; then
+		#EPEL Repo Install
+		yum -y install epel-release
+		yum -y install https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
+		#To fix some problems of compatibility use of mirror centos.org to all users
+		#Replace all mirrors by base repos to avoid any problems.
+		sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
+		sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
 
-#### suprime des fichiers avant l'installation
-rm -r /var/lib/dpkg/lock-frontend
-sleep 1s
-rm -r /var/cache/apt/archives/lock
-sleep 1s
-rm -r /var/lib/dpkg/lock
-sleep 1s
-##################
+		#check if the machine and on openvz
+		if [ -f "/etc/yum.repos.d/vz.repo" ]; then
+			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/centos-$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/os/|" "/etc/yum.repos.d/vz.repo"
+			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
+		fi
+	elif [[ "$OS" = "Fedora" ]]; then
+		yum -y install https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
+	fi
+	#disable deposits that could result in installation errors
+	disablerepo() {
+	if [ -f "/etc/yum.repos.d/$1.repo" ]; then
+            sed -i 's/enabled=1/enabled=0/g' "/etc/yum.repos.d/$1.repo"
+        fi
+	}
+	disablerepo "elrepo"
+	disablerepo "epel-testing"
+	disablerepo "rpmforge"
+	disablerepo "rpmfusion-free-updates"
+	disablerepo "rpmfusion-free-updates-testing"
+	disablerepo "remi"
+	disablerepo "remi-php55"
+	disablerepo "remi-php56"
+	disablerepo "remi-test"
+	disablerepo "remi-safe"
+	disablerepo "remi-php73"
+	disablerepo "remi-php72"
+	disablerepo "remi-php71"
+	disablerepo "remi-php70"
+	disablerepo "remi-php54"
+	disablerepo "remi-glpi94"
+	disablerepo "remi-glpi93"
+	disablerepo "remi-glpi92"
+	disablerepo "remi-glpi91"
+	disablerepo "remi-php80"
+	disablerepo "remi-php81"
+	disablerepo "remi-modular"
+	yum-config-manager --enable remi
+	yum-config-manager --enable remi-safe
+	yum-config-manager --enable remi-php73
+	yum-config-manager --enable epel
+	yumpurge() {
+	for package in $@
+	do
+		echo "removing config files for $package"
+		for file in $(rpm -q --configfiles $package)
+		do
+			echo "  removing $file"
+			rm -f $file
+		done
+		rpm -e $package
+	done
+	}
+cat > /etc/yum.repos.d/remi-source.repo <<EOF
+[remi-source]
+name=Remi's RPM source repository
+baseurl=https://rpms.remirepo.net/SRPMS/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
+EOF
+	if [[ "$OS" = "CentOs" ]]; then
+cat > /etc/yum.repos.d/mariadb.repo <<EOF
+[mariadb]
+name=MariaDB RPM source
+baseurl=http://mirror.mariadb.org/yum/10.5/rhel/$VER/x86_64/
+enabled=1
+gpgcheck=0
+EOF
+	elif [[ "$OS" = "Fedora" ]]; then
+cat > /etc/yum.repos.d/mariadb.repo <<EOF
+[mariadb]
+name=MariaDB RPM source
+baseurl=http://mirror.mariadb.org/yum/10.5/fedora/$VER/x86_64/
+enabled=1
+gpgcheck=0
+EOF
+	fi
+	# We need to disable SELinux...
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+	setenforce 0
+	# Stop conflicting services and iptables to ensure all services will work
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "31" || "$VER" = "32" ]]; then
+		systemctl  stop sendmail.service
+		systemctl  disabble sendmail.service
+	else
+		service sendmail stop
+		chkconfig sendmail off
+	fi
+	# disable firewall
+	yum -y install iptables
+	yum -y install firewalld
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+		FIREWALL_SERVICE="firewalld"
+	else
+		FIREWALL_SERVICE="iptables"
+	fi
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+		systemctl  save "$FIREWALL_SERVICE".service
+		systemctl  stop "$FIREWALL_SERVICE".service
+		systemctl  disable "$FIREWALL_SERVICE".service
+	else
+		service "$FIREWALL_SERVICE" save
+		service "$FIREWALL_SERVICE" stop
+		chkconfig "$FIREWALL_SERVICE" off
+	fi
+	# Removal of conflicting packages prior to installation.
+	yumpurge bind-chroot
+	yumpurge qpid-cpp-client
+elif [[ "$OS" = "Ubuntu" ]]; then
+	DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
+	# Update the enabled Aptitude repositories
+	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	mkdir -p "/etc/apt/sources.list.d.save"
+	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
+	rm -rf "/etc/apt/sources.list/*"
+	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
+	cat > /etc/apt/sources.list <<EOF
+#Depots main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
+deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse 
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
+deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
+deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
+EOF
+if [[ "$VER" = "18.04" ]]; then
+sed -i "s|mirror://mirrors.ubuntu.com/mirrors.txt|http://archive.ubuntu.com/ubuntu|g" /etc/apt/sources.list
+fi
+	apt-get update
+	apt-get install software-properties-common dirmngr --install-recommends -y
+	add-apt-repository -y ppa:ondrej/apache2
+	add-apt-repository -y -s ppa:ondrej/php
+	add-apt-repository ppa:andykimpe/curl -y
+	apt-get update
+	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ $(lsb_release -cs) main"
+	apt-get update
+elif [[ "$OS" = "debian" ]]; then
+	DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
+	# Update the enabled Aptitude repositories
+	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	apt-get update
+	apt install curl wget apt-transport-https gnupg2 dirmngr -y
+	mkdir -p "/etc/apt/sources.list.d.save"
+	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
+	rm -rf "/etc/apt/sources.list/*"
+	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
+	cat > /etc/apt/sources.list <<EOF
+deb http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
+deb http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
+deb http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
+deb-src http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
+EOF
+	cat > /etc/apt/sources.list.d/php.list <<EOF
+deb https://packages.sury.org/php/ $(lsb_release -sc) main
+deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
+EOF
+	cat > /etc/apt/sources.list.d/apache2.list <<EOF
+deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
+deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
+EOF
+	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
+	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
+	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
+	apt-get update
 
-
-#### installation des essentiels
-apt-get install software-properties-common dirmngr --install-recommends -y
+fi
+#--- List all already installed packages (may help to debug)
+echo -e "\n-- Listing of all packages installed:"
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+    rpm -qa | sort
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    dpkg --get-selections
+fi
+	#--- Ensures that all packages are up to date
+echo -e "\n-- Updating+upgrading system, it may take some time..."
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+    yum -y update
+    yum -y upgrade
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    apt-get update
+    apt-get -y dist-upgrade
+fi
+if [[ "$OS" = "Ubuntu" ]]; then
+    apt-get purge libcurl3 -y
+fi
 sleep 1s
-add-apt-repository ppa:andykimpe/curl -y -s
-sleep 1s
-apt-get update
-sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get purge libcurl3 -y
-sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
-sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
-sleep 1s
-apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-sleep 1s
-add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ bionic main'
-sleep 1s
-apt-get update
-sleep 1s
+apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
 debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
 sleep 1s
 debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
@@ -450,12 +711,6 @@ sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
 sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
-#configure your timezone to ussing default to your server
-DEBIAN_FRONTEND=noninteractive apt-get -y install tzdata
-sleep 1s
-dpkg-reconfigure tzdata
-sleep 1s
-timezone=$(cat /etc/timezone)
 sleep 1s
 sed -i "s|;date.timezone =|date.timezone = $timezone|g" /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 sleep 1s
