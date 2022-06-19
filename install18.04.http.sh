@@ -19,9 +19,9 @@
 # Supported Operating Systems: 
 # Ubuntu server 18.04/20.04/22.04
 # soon
-# CentOS 7.*/8.*
+# CentOS 7.*
 # Fedora 34/35
-# Debian /9/10/11
+# Debian 10/11
 # 64bit online system
 #
 while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
@@ -503,15 +503,163 @@ fi
 if [[ "$OS" = "Ubuntu" ]]; then
     apt-get purge libcurl3 -y
 fi
+#--- Install utility packages required by the installer and/or Sentora.
+echo -e "\n-- Downloading and installing required tools..."
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+    $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion
+    if  [["$VER" = "7" ]]; then
+    	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
+    else
+    	$PACKAGE_INSTALLER glibc32 bzip2-libs 
+    fi
+    $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
+    $PACKAGE_INSTALLER redhat-lsb-core ca-certificates e2fsprogs nano
+	yum -y groupinstall "Fedora Packager" "Development Tools"
+	$PACKAGE_INSTALLER yum-utils
+	$PACKAGE_INSTALLER dnf-utils
+	$PACKAGE_INSTALLER dnf
+	if [[ "$VER" = "7" ]]; then
+$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.x86_64.rpm
+$PACKAGE_INSTALLER http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm
+	else
+$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.el8.x86_64.rpm \
+https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
+$PACKAGE_INSTALLER libzip-devel
+	fi
+	yumdownloader --source php73-php-7.3.33-3.remi.src
+	rpm -i php73-php-7.3.33-3.remi.src.rpm
+	yum-builddep -y /root/rpmbuild/SPECS/php.spec
+	yum-builddep -y php73
+	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
+	
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
+	apt-get -y build-dep php7.3
+    $PACKAGE_INSTALLER sudo vim make zip unzip debconf-utils at bash-completion ca-certificates e2fslibs jq
+	$PACKAGE_INSTALLER phpmyadmin net-tools curl 
+	apt-get purge libcurl3 -y
+	$PACKAGE_INSTALLER libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 python2 python3
+	ufw disable
+	$PACKAGE_INSTALLER libmcrypt4 libmcrypt-dev mcrypt libgeoip-dev
+	$PACKAGE_INSTALLER libzip5
+	apt-get update
+	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+	$PACKAGE_INSTALLER mariadb-client-10.5
+	$PACKAGE_INSTALLER  mariadb-client
+	$PACKAGE_INSTALLER mariadb-server-10.5
+	$PACKAGE_INSTALLER mariadb-server
+	systemctl restart mariadb
+	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
+	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
+	$PACKAGE_INSTALLER postfix
+	if [[ "$VER" = "18.04" ]]; then
+		$PACKAGE_INSTALLER python
+		$PACKAGE_INSTALLER python-paramiko
+		$PACKAGE_INSTALLER python-pip
+		$PACKAGE_INSTALLER python3-pip python3
+		#upgrade pip3
+		#pyfv=$(python3 --version | sed  "s|Python ||g")
+		#pyv=${pyfv:0:3}
+		#wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+		#rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
+#cat > /usr/bin/pip3 <<EOF
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#import re
+#import sys
+#from pip._internal.cli.main import main
+#if __name__ == '__main__':
+#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+#    sys.exit(main())
+#EOF
+#		chmod +x /usr/bin/pip3
+#		ln -s /usr/bin/pip3 /usr/local/bin/pip3
+#cat > /usr/bin/pip <<EOF
+##!/usr/bin/python2
+## GENERATED BY DEBIAN
+#import sys
+## Run the main entry point, similarly to how setuptools does it, but because
+## we didn't install the actual entry point from setup.py, don't use the
+## pkg_resources API.
+#from pip import main
+#if __name__ == '__main__':
+#    sys.exit(main())
+#EOF
+#		chmod +x /usr/bin/pip
+#		ln -s /usr/bin/pip /usr/local/bin/pip
+#cat > /usr/bin/pip2 <<EOF
+##!/usr/bin/python2
+## GENERATED BY DEBIAN
+#import sys
+## Run the main entry point, similarly to how setuptools does it, but because
+## we didn't install the actual entry point from setup.py, don't use the
+## pkg_resources API.
+#from pip import main
+#if __name__ == '__main__':
+#    sys.exit(main())
+#EOF
+#		chmod +x /usr/bin/pip2
+#		ln -s /usr/bin/pip2 /usr/local/bin/pip
+	else
+		$PACKAGE_INSTALLER python3-pip python3
+		#install pip2
+#		wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
+#		#upgrade pip3
+#		pyfv=$(python3 --version | sed  "s|Python ||g")
+#		pyv=${pyfv:0:3}
+#		wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+#		rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
+#cat > /usr/bin/pip2 <<EOF
+##!/usr/bin/python2
+## -*- coding: utf-8 -*-
+#import re
+#import sys
+#from pip._internal.cli.main import main
+#if __name__ == '__main__':
+#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+#    sys.exit(main())
+#EOF
+#chmod +x /usr/bin/pip2
+#cat > /usr/bin/pip3 <<EOF
+##!/usr/bin/python3
+## -*- coding: utf-8 -*-
+#import re
+#import sys
+#from pip._internal.cli.main import main
+#if __name__ == '__main__':
+#    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+#    sys.exit(main())
+#EOF
+#	chmod +x /usr/bin/pip3
+#	ln -s /usr/bin/pip2 /usr/local/bin/pip2
+#	ln -s /usr/bin/pip3 /usr/local/bin/pip3
+#	pip2 install paramiko
+#	update-alternatives --remove-all pip
+#	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
+#	ln -s /usr/bin/pip /usr/local/bin/pip
+#	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+#	rm -f /usr/bin/python
+#	update-alternatives --remove-all python
+#	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 2
+#	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 1
+	fi
+	debconf-set-selections <<<'phpmyadmin phpmyadmin/internal/skip-preseed boolean true'
+	debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
+	debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
+	$PACKAGE_INSTALLER  phpmyadmin
+fi
 sleep 1s
 apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
-debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
-sleep 1s
-debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
-sleep 1s
-apt-get -y install mariadb-server-10.9 mariadb-server
-sleep 1s
-systemctl restart mariadb
 sleep 1s
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$PASSMYSQL'; flush privileges;"
 sleep 1s
