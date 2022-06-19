@@ -25,9 +25,6 @@
 # 64bit online system
 #
 clear
-txtgreen=$(tput bold ; tput setaf 2) # GreenBold
-txtyellow=$(tput bold ; tput setaf 3) # YellowBold
-txtwith=$(tput bold ; tput setaf 7) # YellowWithBold
 XC_VERSION="CR MOD 42"
 PANEL_PATH="/home/xtreamcodes/iptv_xtream_codes"
 #--- Display the 'welcome' splash/user warning info..
@@ -155,20 +152,20 @@ if [[ "$tz" == "" ]] ; then
         tz=$(cat /etc/timezone)
     fi
 fi
-read -p "${txtgreen}...... Enter Your Desired Admin Login Access: " adminn
+read -p "...... Enter Your Desired Admin Login Access: " adminn
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Admin Password Access: " adminpass
+read -p "...... Enter Your Desired Admin Password Access: " adminpass
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Admin Port Access: " ACCESPORT
+read -p "...... Enter Your Desired Admin Port Access: " ACCESPORT
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Client Port Access: " CLIENTACCESPORT
+read -p "...... Enter Your Desired Client Port Access: " CLIENTACCESPORT
 echo " "
-read -p "${txtgreen}...... Enter Your Desired Apache Port Access: " APACHEACCESPORT
+read -p "...... Enter Your Desired Apache Port Access: " APACHEACCESPORT
 echo " "
-read -p "${txtgreen}...... Enter Your Email Addres: " EMAIL
+read -p "...... Enter Your Email Addres: " EMAIL
 echo " "
-read -p "${txtgreen}...... Enter Your Desired MYSQL Password: " PASSMYSQL
-echo "${txtwith} . "
+read -p "...... Enter Your Desired MYSQL Password: " PASSMYSQL
+echo " . "
 PORTSSH=22
 echo " "
 kkkk=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "$alg" "$adminpass" "$salt")
@@ -930,13 +927,13 @@ sleep 5s
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
 sleep 1s
 echo " "
-echo -e "${txtyellow} ┌────────────────────────────────────────────┐ "
-echo -e "${txtyellow} │[R]        XtreamCodes Is Ready...          │ "
-echo -e "${txtyellow} └────────────────────────────────────────────┘ "
+echo " ┌────────────────────────────────────────────┐ "
+echo " │[R]        XtreamCodes Is Ready...          │ "
+echo " └────────────────────────────────────────────┘ "
 
 ############## info install /root/infoinstall.txt ###################
 ## afficher les infos sur putty 
-echo "${txtyellow}
+echo "
 ─────────────────  Saved In: /root/Xtreaminfo.txt  ─────────────────
 │ PANEL ACCESS: http://$ipaddr:$ACCESPORT
 │ USERNAME: $adminn
@@ -944,7 +941,7 @@ echo "${txtyellow}
 │ MYSQL root PASS: $PASSMYSQL
 │ MYSQL user_iptvpro PASS: $XPASS
 ────────────────────────────────────────────────────────────────────
-${txtrst}"
+"
 ######################################################################
 ## copier les infos dans un fichier text
 echo "
