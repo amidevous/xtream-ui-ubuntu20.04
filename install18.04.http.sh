@@ -151,30 +151,63 @@ if [[ "$tz" == "" ]] ; then
 		export DEBIAN_FRONTEND=noninteractive
         tz=$(cat /etc/timezone)
     fi
+else
+	echo "time zone set $tz"
+	echo $tz > /etc/timezone
 fi
+if [[ "$adminn" == "" ]] ; then
 read -p "...... Enter Your Desired Admin Login Access: " adminn
+else
+	echo "Desired Admin Login Access set $adminn"
+fi
 echo " "
+if [[ "$adminpass" == "" ]] ; then
 read -p "...... Enter Your Desired Admin Password Access: " adminpass
+else
+	echo "Desired Admin Password Access set $adminpass"
+fi
 echo " "
+if [[ "$ACCESPORT" == "" ]] ; then
 read -p "...... Enter Your Desired Admin Port Access: " ACCESPORT
+else
+	echo "Desired Admin Port Access set $ACCESPORT"
+fi
 echo " "
+if [[ "$CLIENTACCESPORT" == "" ]] ; then
 read -p "...... Enter Your Desired Client Port Access: " CLIENTACCESPORT
+else
+	echo "Desired Client Port Access set $CLIENTACCESPORT"
+fi
 echo " "
+if [[ "$APACHEACCESPORT" == "" ]] ; then
 read -p "...... Enter Your Desired Apache Port Access: " APACHEACCESPORT
 echo " "
+else
+	echo "Desired Apache Port Acces set $APACHEACCESPORT"
+fi
+if [[ "$EMAIL" == "" ]] ; then
 read -p "...... Enter Your Email Addres: " EMAIL
+else
+	echo "Your Email Addres set $EMAIL"
+fi
 echo " "
+if [[ "$PASSMYSQL" == "" ]] ; then
 read -p "...... Enter Your Desired MYSQL Password: " PASSMYSQL
+else
+	echo "Desired MYSQL Password set $PASSMYSQL"
+fi
 echo " . "
 PORTSSH=22
 echo " "
 kkkk=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "$alg" "$adminpass" "$salt")
 sleep 1
+if [[ "$silent" != "yes" ]] ; then
 read -e -p "All is ok. Do you want to install Xtream UI now (y/n)? " yn
 case $yn in
     [Yy]* ) break;;
     [Nn]* ) exit;;
 esac
+fi
 clear
 # ***************************************
 # Installation really starts here
