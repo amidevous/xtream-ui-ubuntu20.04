@@ -24,6 +24,67 @@
 # Debian /9/10/11
 # 64bit online system
 #
+while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
+    case "${option}" in
+        t)
+            tz=${OPTARG}
+            ;;
+        a)
+            adminn=${OPTARG}
+            ;;
+        p)
+            adminpass=${OPTARG}
+            ;;
+        o)
+            ACCESPORT=${OPTARG}
+            ;;
+        c)
+            CLIENTACCESPORT=${OPTARG}
+            ;;
+        r)
+            APACHEACCESPORT=${OPTARG}
+            ;;
+        e)
+            EMAIL=${OPTARG}
+            ;;
+        m)
+            PASSMYSQL=${OPTARG}
+            ;;
+        s)
+            silent=yes
+            ;;
+        h)
+            echo "help usage"
+			echo "curl -L https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sh | sudo bash -s -- -a adminusername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
+			echo "./install.sh -a adminusernamesername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
+			echo "option -t for set Time Zone"
+			echo "option -a Enter Your Desired Admin Login Access"
+			echo "option -p Enter Your Desired Admin Password Access"
+			echo "option -o Enter Your Desired Admin Port Access"
+			echo "option -c Enter Your Desired Client Port Access"
+			echo "option -r Enter Your Desired Apache Port Access"
+			echo "option -e Enter Your Email Addres"
+			echo "option -m Enter Your Desired MYSQL Password"
+			echo "option -s for silent use yes option for remove confirm install"
+			echo "option -h for write this help"
+			echo "full exeple"
+			echo "curl -L https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sh | sudo bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
+			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
+			exit
+            ;;
+        *)
+            tz=
+			adminn=
+			adminpass=
+			ACCESPORT=
+			CLIENTACCESPORT=
+			APACHEACCESPORT=
+			EMAIL
+			PASSMYSQL=
+			silent=no
+            ;;
+    esac
+done
 clear
 XC_VERSION="CR MOD 42"
 PANEL_PATH="/home/xtreamcodes/iptv_xtream_codes"
