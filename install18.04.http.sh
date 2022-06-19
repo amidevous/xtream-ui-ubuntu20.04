@@ -283,7 +283,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.5/rhel/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -291,7 +291,7 @@ EOF
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.5/fedora/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
@@ -357,7 +357,7 @@ fi
 	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -387,7 +387,7 @@ deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.5/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
+	echo "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main" > /etc/apt/mariadb.list
 	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
@@ -414,11 +414,11 @@ if [[ "$OS" = "Ubuntu" ]]; then
 fi
 sleep 1s
 apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password password $PASSMYSQL"
 sleep 1s
-debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
+debconf-set-selections <<< "mariadb-server-10.9 mysql-server/root_password_again password $PASSMYSQL"
 sleep 1s
-apt-get -y install mariadb-server-10.5 mariadb-server
+apt-get -y install mariadb-server-10.9 mariadb-server
 sleep 1s
 systemctl restart mariadb
 sleep 1s
@@ -429,14 +429,6 @@ sleep 1s
 echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 sleep 1s
 apt install -y postfix
-sleep 1s
-wget -q -O /tmp/libpng12.deb https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/libpng12-0_1.2.54-1ubuntu1_amd64.deb
-sleep 1s
-dpkg -i /tmp/libpng12.deb
-sleep 1s
-apt-get install -y
-sleep 1s
-rm -r /tmp/libpng12.deb
 sleep 1s
 ##################
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
