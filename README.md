@@ -1,4 +1,9 @@
-# Xtream UI for Ubuntu 20.04 install
+# Xtream UI for Ubuntu 20.04 22.04 Debian 10 11 CentOS 7 Fedora 34 35 36 install
+
+dev version dot not use
+
+`curl -L https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sh | bash -s -- arg`
+
 This is an installation mirror for xtream ui software on Ubuntu 20.04.
 Includes NGINX 1.19.2 and PHP 7.3.25.
 
