@@ -485,8 +485,8 @@ deb http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
 deb-src http://deb.debian.org/debian/ $(lsb_release -sc) main contrib non-free
 deb http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
 deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
-deb http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
-deb-src http://deb.debian.org/debian/ $(lsb_release -sc)/updates main contrib non-free
+deb http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
+deb-src http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
 EOF
 	cat > /etc/apt/sources.list.d/php.list <<EOF
 deb https://packages.sury.org/php/ $(lsb_release -sc) main
