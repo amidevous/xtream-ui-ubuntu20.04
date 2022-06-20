@@ -425,7 +425,7 @@ elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
 	# Update the enabled Aptitude repositories
-	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	echo -e "\nUpdating Aptitude Repos: "
 	mkdir -p "/etc/apt/sources.list.d.save"
 	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
 	rm -rf "/etc/apt/sources.list/*"
@@ -444,15 +444,25 @@ EOF
 if [[ "$VER" = "18.04" ]]; then
 sed -i "s|mirror://mirrors.ubuntu.com/mirrors.txt|http://archive.ubuntu.com/ubuntu|g" /etc/apt/sources.list
 fi
+	echo "update mirror list"
 	apt-get update
+	echo "install software-properties-common"
 	apt-get install software-properties-common dirmngr --install-recommends -y
+	echo "install ppa apache2"
 	add-apt-repository -y ppa:ondrej/apache2
+	echo "install ppa php"
 	add-apt-repository -y -s ppa:ondrej/php
+	echo "install ppa curl"
 	add-apt-repository ppa:andykimpe/curl -y
+	echo "updatelist after ppa add"
 	apt-get update
+	echo "add mariadb key"
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+	echo "add mariadb repo"
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
+	echo "final update list"
 	apt-get update
+	echo "final update list end"
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
