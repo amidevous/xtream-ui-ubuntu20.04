@@ -432,18 +432,15 @@ elif [[ "$OS" = "Ubuntu" ]]; then
 	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
 	cat > /etc/apt/sources.list <<EOF
 #Depots main restricted universe multiverse
-deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse
-deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
-deb mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
-deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc) main restricted universe multiverse 
-deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-updates main restricted universe multiverse
-deb-src mirror://mirrors.ubuntu.com/mirrors.txt $(lsb_release -sc)-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main restricted universe multiverse 
+deb-src http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-updates main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
 deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 EOF
-if [[ "$VER" = "18.04" ]]; then
-sed -i "s|mirror://mirrors.ubuntu.com/mirrors.txt|http://archive.ubuntu.com/ubuntu|g" /etc/apt/sources.list
-fi
 	echo "update mirror list"
 	apt-get update
 	echo "install software-properties-common"
