@@ -34,13 +34,26 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	echo "Centos 8 obsolete udate to Centos Stream 8"
 	echo "this operation may take some time"
 	sleep 60
+	# change repository to use vault.centos.org CentOS 8 found online to vault.centos.org
 	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
 	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|' {} \;
+	#update package list
 	dnf update -y
+	#upgrade all packages to latest CentOS 8
 	dnf upgrade -y
+	#install Centos Stream 8 repository
 	dnf -y install centos-release-stream --allowerasing
+	#install rpmconf
+	dnf -y install rpmconf
+	#set config file with rpmconf
+	rpmconf -a
+	# remove Centos 8 repository and set CentOS Stream 8 repository by default
 	dnf -y swap centos-linux-repos centos-stream-repos
+	# system upgrade
 	dnf -y distro-sync
+	# ceanup old rpmconf file create
+	find /etc/yum.repos.d -name '*.rpmnew' -exec rm -f {} \;
+	find /etc/yum.repos.d -name '*.rpmsave' -exec rm -f {} \;
 	OS="Centos Stream"
 	fi
 
