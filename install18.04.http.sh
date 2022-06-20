@@ -166,7 +166,7 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	sed -i 's|DPkg::Post-Invoke|#DPkg::Post-Invoke|' "/etc/apt/apt.conf.d/99needrestart"
 	fi
     	apt-get -qq update   #ensure we can install
-    $PACKAGE_INSTALLER dnsutils net-tools
+    	$PACKAGE_INSTALLER dnsutils net-tools
 fi
 $PACKAGE_INSTALLER curl wget
 ipaddr="$(wget -qO- http://api.sentora.org/ip.txt)"
