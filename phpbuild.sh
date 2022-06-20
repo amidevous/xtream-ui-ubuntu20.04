@@ -84,7 +84,7 @@ elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
     PACKAGE_UTILS="dnf-utils" 
     PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="dnf download --source"
-    BUILDDEP="dnf build dep -y"
+    BUILDDEP="dnf build-dep -y"
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     PACKAGE_INSTALLER="apt-get -yqq install"
     PACKAGE_REMOVER="apt-get -yqq purge"
