@@ -111,7 +111,9 @@ if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
 	fi
 	$PACKAGE_INSTALLER $PACKAGE_UTILS
 	#disable deposits that could result in installation errors
+	# disable all repository
 	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|enabled=1|enabled=0|' {} \;
+	enable vz repository if present for openvz system
 	if [ -f "/etc/yum.repos.d/vz.repo" ]; then
 		sed -i "s|enabled=0|enabled=1|" "/etc/yum.repos.d/vz.repo"
 	fi
@@ -125,20 +127,31 @@ if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
 	if [ "$OS" = "CentOs" ]; then
 		enablerepo epel
 	elif [ "$OS" = "Centos Stream" ]; then
+		# enable official repository CentOs Stream BaseOS
 		enablerepo baseos
+		# enable official repository CentOs Stream AppStream
 		enablerepo appstream
+		# enable official repository CentOs Stream extra
 		enablerepo extras
+		# enable official repository CentOs Stream extra-common
 		enablerepo extras-common
+		# enable official repository CentOs Stream PowerTools
+		enablerepo powertools
+		# enable official repository Fedora Epel
 		enablerepo epel
+		# enable official repository Fedora Epel
 		enablerepo epel-modular
+		# install wget and add copr repo for devel package not build on official depots
+		# temporary solve bug
+		# https://bugzilla.redhat.com/show_bug.cgi?id=2099386
 		dnf -y install wget
 		wget https://copr.fedorainfracloud.org/coprs/andykimpe/Centos-Stream-Devel-php-build/repo/centos-stream-8/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo -O /etc/yum.repos.d/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo
 	elif [ "$OS" = "Fedora" ]; then
 		echo "fedora repo"
 	fi
+	# enable repository Remi's RPM repository
 	enablerepo remi
 	enablerepo remi-safe
-	enablerepo remi-php73
 	yumpurge() {
 	for package in $@
 	do
