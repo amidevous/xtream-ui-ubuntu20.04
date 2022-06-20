@@ -209,15 +209,24 @@ if [[ "$tz" == "" ]] ; then
         echo "echo \$TZ > /etc/timezone" >> /usr/bin/tzselect
         tzselect
         tz=$(cat /etc/timezone)
+	rm -f /etc/localtime
+	ln -s /usr/share/zoneinfo/$tz /etc/localtime
+	timedatectl set-timezone $tz
     elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
         DEBIAN_FRONTEND=dialog dpkg-reconfigure tzdata
 		DEBIAN_FRONTEND=noninteractive
 		export DEBIAN_FRONTEND=noninteractive
         tz=$(cat /etc/timezone)
+	rm -f /etc/localtime
+	ln -s /usr/share/zoneinfo/$tz /etc/localtime
+	timedatectl set-timezone $tz
     fi
 else
 	echo "time zone set $tz"
 	echo $tz > /etc/timezone
+	rm -f /etc/localtime
+	ln -s /usr/share/zoneinfo/$tz /etc/localtime
+	timedatectl set-timezone $tz
 fi
 if [[ "$adminn" == "" ]] ; then
 read -p "...... Enter Your Desired Admin Login Access: " adminn
