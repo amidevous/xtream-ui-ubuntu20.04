@@ -2,10 +2,20 @@
 echo -e "\nChecking that minimal requirements are ok"
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
+    inst() {
+       rpm -q "$1" &> /dev/null
+    } 
+    if (inst "centos-stream-repos"); then
+    OS="Centos Stream"
+    else
     OS="CentOs"
+    fi    
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
     VER=${VERFULL:0:1} # return 6, 7 or 8
 elif [ -f /etc/fedora-release ]; then
+    inst() {
+       rpm -q "$1" &> /dev/null
+    } 
     OS="Fedora"
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
     VER=${VERFULL:0:2} # return 34, 35 or 36
@@ -20,8 +30,23 @@ elif [ -f /etc/os-release ]; then
     VER=$(uname -r)
 fi
 ARCH=$(uname -m)
+if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
+	echo "Centos 8 obsolete udate to Centos Stream 8"
+	echo "this operation may take some time"
+	sleep 60
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|' {} \;
+	dnf update -y
+	dnf upgrade -y
+	dnf -y install centos-release-stream --allowerasing
+	dnf -y swap centos-linux-repos centos-stream-repos
+	dnf -y distro-sync
+	OS="Centos Stream"
+	fi
+
 echo "Detected : $OS  $VER  $ARCH"
-if [[ "$OS" = "CentOs" && ("$VER" = "7" || "$VER" = "8" ) && "$ARCH" == "x86_64" ||
+if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
+"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
 "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
@@ -31,56 +56,76 @@ else
     exit 1
 fi
 echo -e "\n-- Updating repositories and packages sources"
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	if [[ "$OS" = "CentOs" ]]; then
-		#EPEL Repo Install
-		yum -y install epel-release
-		yum -y install https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
+if [[ "$OS" = "CentOs" ]] ; then
+    PACKAGE_INSTALLER="yum -y -q install"
+    PACKAGE_REMOVER="yum -y -q remove"
+    PACKAGE_UPDATER="yum -y -q update"
+    PACKAGE_UTILS="yum-utils"
+    PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
+    BUILDDEP="yum-builddep -y"
+elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
+    PACKAGE_INSTALLER="dnf -y -q install"
+    PACKAGE_REMOVER="dnf -y -q remove"
+    PACKAGE_UPDATER="dnf -y -q update"
+    PACKAGE_UTILS="dnf-utils" 
+    PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="dnf download --source"
+    BUILDDEP="dnf build dep -y"
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    PACKAGE_INSTALLER="apt-get -yqq install"
+    PACKAGE_REMOVER="apt-get -yqq purge"
+    inst() {
+       dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
+    }
+fi
+if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 		#To fix some problems of compatibility use of mirror centos.org to all users
 		#Replace all mirrors by base repos to avoid any problems.
-		sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
-		sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
-
+		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
+		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' {} \;
 		#check if the machine and on openvz
 		if [ -f "/etc/yum.repos.d/vz.repo" ]; then
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/centos-$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/os/|" "/etc/yum.repos.d/vz.repo"
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
 		fi
+		#EPEL Repo Install
+		PACKAGE_INSTALLER epel-release
+		$PACKAGE_INSTALLER https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
 	elif [[ "$OS" = "Fedora" ]]; then
-		yum -y install https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
+		$PACKAGE_INSTALLER https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
 	fi
+	$PACKAGE_INSTALLER $PACKAGE_UTILS
 	#disable deposits that could result in installation errors
-	disablerepo() {
-	if [ -f "/etc/yum.repos.d/$1.repo" ]; then
-            sed -i 's/enabled=1/enabled=0/g' "/etc/yum.repos.d/$1.repo"
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|enabled=1|enabled=0|' {} \;
+	if [ -f "/etc/yum.repos.d/vz.repo" ]; then
+		sed -i "s|enabled=0|enabled=1|" "/etc/yum.repos.d/vz.repo"
+	fi
+	enablerepo() {
+	if [ "$OS" = "CentOs" ]; then
+        	yum-config-manager --enable $1
+	else
+		dnf config-manager --set-enabled $1
         fi
 	}
-	disablerepo "elrepo"
-	disablerepo "epel-testing"
-	disablerepo "rpmforge"
-	disablerepo "rpmfusion-free-updates"
-	disablerepo "rpmfusion-free-updates-testing"
-	disablerepo "remi"
-	disablerepo "remi-php55"
-	disablerepo "remi-php56"
-	disablerepo "remi-test"
-	disablerepo "remi-safe"
-	disablerepo "remi-php73"
-	disablerepo "remi-php72"
-	disablerepo "remi-php71"
-	disablerepo "remi-php70"
-	disablerepo "remi-php54"
-	disablerepo "remi-glpi94"
-	disablerepo "remi-glpi93"
-	disablerepo "remi-glpi92"
-	disablerepo "remi-glpi91"
-	disablerepo "remi-php80"
-	disablerepo "remi-php81"
-	disablerepo "remi-modular"
-	yum-config-manager --enable remi
-	yum-config-manager --enable remi-safe
-	yum-config-manager --enable remi-php73
-	yum-config-manager --enable epel
+	if [ "$OS" = "CentOs" ]; then
+		enablerepo epel
+	elif [ "$OS" = "Centos Stream" ]; then
+		enablerepo baseos
+		enablerepo appstream
+		enablerepo extras
+		enablerepo extras-common
+		enablerepo epel
+		enablerepo epel-modular
+		dnf -y install wget
+		wget https://copr.fedorainfracloud.org/coprs/andykimpe/Centos-Stream-Devel-php-build/repo/centos-stream-8/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo -O /etc/yum.repos.d/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo
+	elif [ "$OS" = "Fedora" ]; then
+		echo "fedora repo"
+	fi
+	enablerepo remi
+	enablerepo remi-safe
+	enablerepo remi-php73
 	yumpurge() {
 	for package in $@
 	do
@@ -101,7 +146,7 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 EOF
-	if [[ "$OS" = "CentOs" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -122,7 +167,7 @@ EOF
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
 	# Stop conflicting services and iptables to ensure all services will work
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "31" || "$VER" = "32" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		systemctl  stop sendmail.service
 		systemctl  disabble sendmail.service
 	else
@@ -130,8 +175,8 @@ EOF
 		chkconfig sendmail off
 	fi
 	# disable firewall
-	yum -y install iptables
-	yum -y install firewalld
+	$PACKAGE_INSTALLER iptables
+	$PACKAGE_INSTALLER firewalld
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		FIREWALL_SERVICE="firewalld"
 	else
@@ -213,33 +258,30 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 	apt-get -y build-dep php7.3
-elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	yum -y groupinstall "Fedora Packager" "Development Tools"
-	yum -y install yum-utils
-	yum -y install dnf-utils
-	yum -y install dnf
-	yum -y install wget
+elif [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
+	$PACKAGE_INSTALLER wget
 	if [[ "$VER" = "7" ]]; then
-yum -y install https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
+$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.x86_64.rpm
-yum -y install http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm
+$PACKAGE_INSTALLER http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm
 	else
-yum -y install https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
+$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.el8.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.el8.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.el8.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.el8.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
-yum -y install libzip-devel
+$PACKAGE_INSTALLER libzip-devel
 	fi
-	yumdownloader --source php73-php-7.3.33-3.remi.src
+	$PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
+	$PACKAGE_SOURCEDOWNLOAD php73-php-7.3.33-3.remi.src
 	rpm -i php73-php-7.3.33-3.remi.src.rpm
-	yum-builddep -y /root/rpmbuild/SPECS/php.spec
-	yum-builddep -y php73
+	$BUILDDEP -y /root/rpmbuild/SPECS/php.spec
+	$BUILDDEP -y php73
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
 fi
 echo "dep install pause 60 seconds"
@@ -308,7 +350,7 @@ rm -rf php* debian
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 apt-get -y install libmcrypt-dev mcrypt
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-yum -y install libmcrypt-devel mcrypt
+$PACKAGE_INSTALLER libmcrypt-devel mcrypt
 fi
 wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
@@ -330,7 +372,7 @@ rm -rf mcrypt*
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 apt-get -y install libgeoip-dev
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-yum -y install GeoIP-devel
+$PACKAGE_INSTALLER install GeoIP-devel
 fi
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
 tar -xvf geoip-1.1.1.tgz
