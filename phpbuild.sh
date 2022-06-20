@@ -104,7 +104,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
 		fi
 		#EPEL Repo Install
-		PACKAGE_INSTALLER epel-release
+		$PACKAGE_INSTALLER epel-release
 		$PACKAGE_INSTALLER https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
 	elif [[ "$OS" = "Fedora" ]]; then
 		$PACKAGE_INSTALLER https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
