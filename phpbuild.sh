@@ -113,7 +113,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
 	#disable deposits that could result in installation errors
 	# disable all repository
 	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|enabled=1|enabled=0|' {} \;
-	enable vz repository if present for openvz system
+	# enable vz repository if present for openvz system
 	if [ -f "/etc/yum.repos.d/vz.repo" ]; then
 		sed -i "s|enabled=0|enabled=1|" "/etc/yum.repos.d/vz.repo"
 	fi
