@@ -710,7 +710,7 @@ sleep 1s
 
 #### config base de données
 ## ajout de python script
-python << END
+python2 << END
 # coding: utf-8
 import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
