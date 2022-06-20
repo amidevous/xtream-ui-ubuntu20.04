@@ -86,7 +86,7 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
     esac
 done
 clear
-XC_VERSION="CR MOD 42"
+XC_VERSION="22 CK 41"
 PANEL_PATH="/home/xtreamcodes/iptv_xtream_codes"
 #--- Display the 'welcome' splash/user warning info..
 echo ""
@@ -162,7 +162,10 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
-    apt-get -qq update   #ensure we can install
+	if [ -f "/etc/apt/apt.conf.d/99needrestart" ]; then
+	sed -i 's|DPkg::Post-Invoke|#DPkg::Post-Invoke|' "/etc/apt/apt.conf.d/99needrestart"
+	fi
+    	apt-get -qq update   #ensure we can install
     $PACKAGE_INSTALLER dnsutils net-tools
 fi
 $PACKAGE_INSTALLER curl wget
