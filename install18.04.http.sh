@@ -96,10 +96,20 @@ echo "#############################################################"
 echo -e "\nChecking that minimal requirements are ok"
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
+    inst() {
+       rpm -q "$1" &> /dev/null
+    } 
+    if (inst "centos-stream-repos"); then
+    OS="Centos Stream"
+    else
     OS="CentOs"
+    fi    
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
     VER=${VERFULL:0:1} # return 6, 7 or 8
 elif [ -f /etc/fedora-release ]; then
+    inst() {
+       rpm -q "$1" &> /dev/null
+    } 
     OS="Fedora"
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
     VER=${VERFULL:0:2} # return 34 35 or 36
@@ -114,6 +124,32 @@ elif [ -f /etc/os-release ]; then
     VER=$(uname -r)
 fi
 ARCH=$(uname -m)
+if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
+	echo "Centos 8 obsolete udate to Centos Stream 8"
+	echo "this operation may take some time"
+	sleep 60
+	# change repository to use vault.centos.org CentOS 8 found online to vault.centos.org
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|' {} \;
+	#update package list
+	dnf update -y
+	#upgrade all packages to latest CentOS 8
+	dnf upgrade -y
+	#install Centos Stream 8 repository
+	dnf -y install centos-release-stream --allowerasing
+	#install rpmconf
+	dnf -y install rpmconf
+	#set config file with rpmconf
+	rpmconf -a
+	# remove Centos 8 repository and set CentOS Stream 8 repository by default
+	dnf -y swap centos-linux-repos centos-stream-repos
+	# system upgrade
+	dnf -y distro-sync
+	# ceanup old rpmconf file create
+	find / -name '*.rpmnew' -exec rm -f {} \;
+	find / -name '*.rpmsave' -exec rm -f {} \;
+	OS="Centos Stream"
+	fi
 echo "Detected : $OS  $VER  $ARCH"
 #if [[ "$OS" = "CentOs" && ("$VER" = "6" || "$VER" = "7" || "$VER" = "8" ) ||
 #      "$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" ) ||
@@ -138,15 +174,31 @@ if [ -e /usr/local/cpanel ] || [ -e /usr/local/directadmin ] || [ -e /usr/local/
     echo -e "\nPlease re-install your OS before attempting to install using this script."
     exit 1
 fi
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]] ; then
+if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_INSTALLER="yum -y -q install"
     PACKAGE_REMOVER="yum -y -q remove"
-    inst() {
-       rpm -q "$1" &> /dev/null
-    }
+    PACKAGE_UPDATER="yum -y -q update"
+    PACKAGE_UTILS="yum-utils"
+    PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
+    BUILDDEP="yum-builddep -y"
+    MYSQLCNF=/etc/my.cnf
+    MARIADBSERVICE=mariadbd
+elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
+    PACKAGE_INSTALLER="dnf -y -q install"
+    PACKAGE_REMOVER="dnf -y -q remove"
+    PACKAGE_UPDATER="dnf -y -q update"
+    PACKAGE_UTILS="dnf-utils" 
+    PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="dnf download --source"
+    BUILDDEP="dnf build-dep -y"
+    MYSQLCNF=/etc/my.cnf
+    MARIADBSERVICE=mariadbd
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     PACKAGE_INSTALLER="apt-get -yqq install"
     PACKAGE_REMOVER="apt-get -yqq purge"
+    MYSQLCNF=/etc/mysql/my.cnf
+    MARIADBSERVICE=mariadb
     inst() {
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
@@ -154,11 +206,10 @@ fi
 #--- Prepare or query informations required to install
 # Update repositories and Install wget and util used to grab server IP
 echo -e "\n-- Installing wget and dns utils required to manage inputs"
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	$PACKAGE_INSTALLER yum-utils
-	$PACKAGE_INSTALLER dnf dnf-utils
-    yum -y -q update
-    $PACKAGE_INSTALLER bind-utils
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
+	$PACKAGE_INSTALLER $PACKAGE_UTILS
+   	$PACKAGE_UPDATER
+        $PACKAGE_INSTALLER bind-utils
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
@@ -204,7 +255,7 @@ if [[ "$tz" == "" ]] ; then
     sleep 30
     $PACKAGE_INSTALLER tzdata
     # setup server timezone
-    if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+    if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
         # make tzselect to save TZ in /etc/timezone
         echo "echo \$TZ > /etc/timezone" >> /usr/bin/tzselect
         tzselect
@@ -312,56 +363,61 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 fi
 #--- Adapt repositories and packages sources
 echo -e "\n-- Updating repositories and packages sources"
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-	if [[ "$OS" = "CentOs" ]]; then
-		#EPEL Repo Install
-		yum -y install epel-release
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
+		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
+		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' {} \;
 		yum -y install https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
-		#To fix some problems of compatibility use of mirror centos.org to all users
-		#Replace all mirrors by base repos to avoid any problems.
-		sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
-		sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirror.centos.org|' "/etc/yum.repos.d/CentOS-Base.repo"
-
 		#check if the machine and on openvz
 		if [ -f "/etc/yum.repos.d/vz.repo" ]; then
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/centos-$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/os/|" "/etc/yum.repos.d/vz.repo"
 			sed -i "s|mirrorlist=http://vzdownload.swsoft.com/download/mirrors/updates-released-ce$VER|baseurl=http://vzdownload.swsoft.com/ez/packages/centos/$VER/$ARCH/updates/|" "/etc/yum.repos.d/vz.repo"
 		fi
+		$PACKAGE_INSTALLER epel-releas
+		$PACKAGE_INSTALLER https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
 	elif [[ "$OS" = "Fedora" ]]; then
 		yum -y install https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
 	fi
 	#disable deposits that could result in installation errors
-	disablerepo() {
-	if [ -f "/etc/yum.repos.d/$1.repo" ]; then
-            sed -i 's/enabled=1/enabled=0/g' "/etc/yum.repos.d/$1.repo"
+	find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|enabled=1|enabled=0|' {} \;
+	if [ -f "/etc/yum.repos.d/vz.repo" ]; then
+		sed -i "s|enabled=0|enabled=1|" "/etc/yum.repos.d/vz.repo"
+	fi
+	enablerepo() {
+	if [ "$OS" = "CentOs" ]; then
+        	yum-config-manager --enable $1
+	else
+		dnf config-manager --set-enabled $1
         fi
 	}
-	disablerepo "elrepo"
-	disablerepo "epel-testing"
-	disablerepo "rpmforge"
-	disablerepo "rpmfusion-free-updates"
-	disablerepo "rpmfusion-free-updates-testing"
-	disablerepo "remi"
-	disablerepo "remi-php55"
-	disablerepo "remi-php56"
-	disablerepo "remi-test"
-	disablerepo "remi-safe"
-	disablerepo "remi-php73"
-	disablerepo "remi-php72"
-	disablerepo "remi-php71"
-	disablerepo "remi-php70"
-	disablerepo "remi-php54"
-	disablerepo "remi-glpi94"
-	disablerepo "remi-glpi93"
-	disablerepo "remi-glpi92"
-	disablerepo "remi-glpi91"
-	disablerepo "remi-php80"
-	disablerepo "remi-php81"
-	disablerepo "remi-modular"
-	yum-config-manager --enable remi
-	yum-config-manager --enable remi-safe
-	yum-config-manager --enable remi-php73
-	yum-config-manager --enable epel
+	if [ "$OS" = "CentOs" ]; then
+		enablerepo epel
+	elif [ "$OS" = "Centos Stream" ]; then
+		# enable official repository CentOs Stream BaseOS
+		enablerepo baseos
+		# enable official repository CentOs Stream AppStream
+		enablerepo appstream
+		# enable official repository CentOs Stream extra
+		enablerepo extras
+		# enable official repository CentOs Stream extra-common
+		enablerepo extras-common
+		# enable official repository CentOs Stream PowerTools
+		enablerepo powertools
+		# enable official repository Fedora Epel
+		enablerepo epel
+		# enable official repository Fedora Epel
+		enablerepo epel-modular
+		# install wget and add copr repo for devel package not build on official depots
+		# temporary solve bug
+		# https://bugzilla.redhat.com/show_bug.cgi?id=2099386
+		dnf -y install wget
+		wget https://copr.fedorainfracloud.org/coprs/andykimpe/Centos-Stream-Devel-php-build/repo/centos-stream-8/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo -O /etc/yum.repos.d/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo
+	elif [ "$OS" = "Fedora" ]; then
+		echo "fedora repo"
+	fi
+	# enable repository Remi's RPM repository
+	enablerepo remi
+	enablerepo remi-safe
 	yumpurge() {
 	for package in $@
 	do
@@ -382,7 +438,7 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 EOF
-	if [[ "$OS" = "CentOs" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -411,8 +467,8 @@ EOF
 		chkconfig sendmail off
 	fi
 	# disable firewall
-	yum -y install iptables
-	yum -y install firewalld
+	$PACKAGE_INSTALLER iptables
+	$PACKAGE_INSTALLER firewalld
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
 		FIREWALL_SERVICE="firewalld"
 	else
@@ -505,7 +561,7 @@ EOF
 fi
 #--- List all already installed packages (may help to debug)
 echo -e "\n-- Listing of all packages installed:"
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
     rpm -qa | sort
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     dpkg --get-selections
@@ -513,8 +569,7 @@ fi
 	#--- Ensures that all packages are up to date
 echo -e "\n-- Updating+upgrading system, it may take some time..."
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
-    yum -y update
-    yum -y upgrade
+    $PACKAGE_UPDATER
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     apt-get update
     apt-get -y dist-upgrade
@@ -524,7 +579,7 @@ if [[ "$OS" = "Ubuntu" ]]; then
 fi
 #--- Install utility packages required by the installer and/or Sentora.
 echo -e "\n-- Downloading and installing required tools..."
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
     $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion
     if  [["$VER" = "7" ]]; then
     	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
@@ -533,10 +588,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
     fi
     $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
     $PACKAGE_INSTALLER redhat-lsb-core ca-certificates e2fsprogs nano
-	yum -y groupinstall "Fedora Packager" "Development Tools"
-	$PACKAGE_INSTALLER yum-utils
-	$PACKAGE_INSTALLER dnf-utils
-	$PACKAGE_INSTALLER dnf
+    $PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
 	if [[ "$VER" = "7" ]]; then
 $PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
@@ -554,22 +606,25 @@ https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-insta
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
 $PACKAGE_INSTALLER libzip-devel
 	fi
-	yumdownloader --source php73-php-7.3.33-3.remi.src
+	$PACKAGE_SOURCEDOWNLOAD php73-php-7.3.33-3.remi.src
 	rpm -i php73-php-7.3.33-3.remi.src.rpm
-	yum-builddep -y /root/rpmbuild/SPECS/php.spec
-	yum-builddep -y php73
+	$BUILDDEP /root/rpmbuild/SPECS/php.spec
+	$BUILDDEP php73
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
-	
+	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
+	$PACKAGE_INSTALLER libcurl-devel
+	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd zip mc libpng-devel python2 python3
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
-    $PACKAGE_INSTALLER sudo vim make zip unzip debconf-utils at bash-completion ca-certificates e2fslibs jq
+        $PACKAGE_INSTALLER sudo vim make zip unzip debconf-utils at bash-completion ca-certificates e2fslibs jq sshpass
 	$PACKAGE_INSTALLER net-tools curl 
 	apt-get purge libcurl3 -y
-	$PACKAGE_INSTALLER libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt nscd htop unzip ufw apache2 zip mc libpng16-16 python2 python3
+	$PACKAGE_INSTALLER libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget mcrypt libmcrypt-dev nscd htop unzip ufw apache2 zip mc libpng16-16 python2 python3
 	ufw disable
 	$PACKAGE_INSTALLER libmcrypt4 libmcrypt-dev mcrypt libgeoip-dev
 	$PACKAGE_INSTALLER libzip5
+	$PACKAGE_INSTALLER libzip4
 	apt-get update
 	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password password $PASSMYSQL"
 	debconf-set-selections <<< "mariadb-server-10.5 mysql-server/root_password_again password $PASSMYSQL"
@@ -577,7 +632,7 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER  mariadb-client
 	$PACKAGE_INSTALLER mariadb-server-10.5
 	$PACKAGE_INSTALLER mariadb-server
-	systemctl restart mariadb
+	systemctl restart $MARIADBSERVICE
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 	$PACKAGE_INSTALLER postfix
@@ -674,27 +729,27 @@ EOF
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
 	$PACKAGE_INSTALLER  phpmyadmin
-fi
-sleep 1s
-apt-get install libcurl4 libxslt1-dev libgeoip-dev e2fsprogs wget python mcrypt nscd htop unzip ufw apache2 -y
+	mv /usr/share/phpmyadmin/ /usr/share/phpmyadmin.bakkk
+	wget https://xtream-brutus.com/v3/phpMyAdmin-4.9.5-all-languages.zip
+	unzip phpMyAdmin-4.9.5-all-languages.zip
+	mv phpMyAdmin-4.9.5-all-languages /usr/share/phpmyadmin
+	rm -r phpMyAdmin-4.9.5-all-languages.zip
+	sed -i "s/blowfish_secret'] = '/blowfish_secret'] = '$blofish/g" /usr/share/phpmyadmin/libraries/config.default.php
+	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/apache2/ports.conf
+	sed -i "s/Listen 443/Listen 70/g" /etc/apache2/ports.conf
+	sed -i "s/80/$APACHEACCESPORT/g" /etc/apache2/sites-available/000-default.conf
+	sed -i "s/443/70/g" /etc/apache2/sites-available/default-ssl.conf
+	systemctl restart apache2
+	fi
 sleep 1s
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$PASSMYSQL'; flush privileges;"
-sleep 1s
-echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
-sleep 1s
-echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
-sleep 1s
-apt install -y postfix
-sleep 1s
-##################
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
 sleep 1s
 echo -n "[+] Installation Of XtreamCodes..."
 sleep 1s
-
-
-
 #### installation de xtream codes
+#usermod -s /bin/false xtreamcodes
+#mkdir -p /home/xtreamcodes/
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 sleep 1s
 wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
@@ -704,11 +759,11 @@ tar -xvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 sleep 1s
 rm -r /tmp/xtreamcodes.tar.gz
 sleep 1s
-mv /etc/mysql/my.cnf /etc/mysql/my.cnf.xc
+mv $MYSQLCNF MYSQLCNF.xc
 sleep 1s
-echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > /etc/mysql/my.cnf
+echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > MYSQLCNF
 sleep 1s
-systemctl restart mariadb
+systemctl restart $MARIADBSERVICE
 sleep 1s
 ##################
 
@@ -717,8 +772,8 @@ sleep 1s
 echo -n "[+] Configuration Of Mysql & Nginx..."
 sleep 1s
 
-#### config base de données
-## ajout de python script
+#### config database
+## add python script
 python2 << END
 # coding: utf-8
 import subprocess, os, random, string, sys, shutil, socket
@@ -739,7 +794,7 @@ rUsername = "user_iptvpro"
 rDatabase = "xtream_iptvpro"
 rPort = 7999
 rExtra = " -p$PASSMYSQL"
-reseau = "$cartereseau"
+reseau = "$networkcard"
 portadmin = "$ACCESPORT"
 getIP = "$ipaddr"
 sshssh = "$PORTSSH"
@@ -787,14 +842,10 @@ sleep 1s
 rm -f update.sql
 sleep 1s
 #########################################
-
-
 echo -e "\\r${CHECK_MARK} Configuration Of Mysql & Nginx Done"
 sleep 1s
 echo -n "[+] Configuration Of Crons & Autorisations..."
 sleep 1s
-
-#### modif de fichiers et autre config xtream : nginx, ffmpeg,.....
 rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
 sleep 1s
 echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers
@@ -1048,8 +1099,6 @@ sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_events;"
 sleep 1s
 ##################
-
-
 echo -e "\\r${CHECK_MARK} Configuration Of Crons & Autorisations Done"
 sleep 1s
 echo -n "[+] installation Of Admin Web Access..."
@@ -1079,8 +1128,6 @@ rm /tmp/update.zip
 sleep 1s
 rm -rf /tmp/update
 sleep 1s
-apt-get -y install jq
-sleep 1s
 xcversion=$(wget -qO- http://xcodes.mine.nu/XCodes/current.json | jq -r ".version")
 sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
@@ -1102,74 +1149,8 @@ chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sleep 1s
 chmod -R 0777 /home/xtreamcodes/iptv_xtream_codes/crons
 sleep 1s
-##################
-
-
-echo -e "\\r${CHECK_MARK} installation Of Admin Web Access Done"
-sleep 1s
-echo -n "[+] installation Of PhpMyAdmin..."
-sleep 1s
-#### install phpmyadmin
-
-sudo apt-get -y install debconf-utils
-sleep 1s
-sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/internal/skip-preseed boolean true'
-sleep 1s
-sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
-sleep 1s
-sudo debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
-sleep 1s
-DEBIAN_FRONTEND=noninteractive apt-get install -q -y phpmyadmin
-sleep 2s
-##################
-
-
-#### fix bug phpmyadmin
-mv /usr/share/phpmyadmin/ /usr/share/phpmyadmin.bakkk
-sleep 1s
-wget https://xtream-brutus.com/v3/phpMyAdmin-4.9.5-all-languages.zip
-sleep 1s
-unzip phpMyAdmin-4.9.5-all-languages.zip
-sleep 1s
-mv phpMyAdmin-4.9.5-all-languages /usr/share/phpmyadmin
-sleep 1s
-rm -r phpMyAdmin-4.9.5-all-languages.zip
-sleep 1s
-sed -i "s/blowfish_secret'] = '/blowfish_secret'] = '$blofish/g" /usr/share/phpmyadmin/libraries/config.default.php
-sleep 1s
-##################
-
-
-#### fix bug xtream a l install de phpmyadmin
-sudo apt-get purge libcurl3 -y
-sleep 1s
-sudo apt-get install libcurl4 -y
-sleep 1s
-##################
-
-echo -e "\\r${CHECK_MARK} Installation Of PhpMyAdmin Done"
-sleep 1s
-echo -n "[+] Configuration Auto Start..."
-sleep 1s
-
-
-#### demarre xtream au redemarage du server
+#### start xtream after boot
 echo "@reboot root sudo /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab
-sleep 1s
-#### demarage de xtreamcodes
-sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/apache2/ports.conf
-sleep 1s
-sed -i "s/Listen 443/Listen 70/g" /etc/apache2/ports.conf
-sleep 1s
-sed -i "s/80/$APACHEACCESPORT/g" /etc/apache2/sites-available/000-default.conf
-sleep 1s
-sed -i "s/443/70/g" /etc/apache2/sites-available/default-ssl.conf
-sleep 1s
-service apache2 restart
-sleep 1s
-/home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx -s reload
-sleep 1s
-sudo ufw disable
 sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sleep 1s
