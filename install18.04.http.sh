@@ -587,7 +587,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
     	$PACKAGE_INSTALLER glibc32 bzip2-libs 
     fi
     $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
-    $PACKAGE_INSTALLER redhat-lsb-core ca-certificates e2fsprogs nano
+    $PACKAGE_INSTALLER ca-certificates nano
     $PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
 	if [[ "$VER" = "7" ]]; then
 $PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
@@ -751,27 +751,14 @@ sleep 1s
 #usermod -s /bin/false xtreamcodes
 #mkdir -p /home/xtreamcodes/
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
-sleep 1s
 wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
-sleep 1s
-tar -xvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
-#tar -zxvf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
-sleep 1s
+tar -xf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 rm -r /tmp/xtreamcodes.tar.gz
-sleep 1s
-mv $MYSQLCNF MYSQLCNF.xc
-sleep 1s
-echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > MYSQLCNF
-sleep 1s
+mv $MYSQLCNF $MYSQLCNF.xc
+echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > $MYSQLCNF
 systemctl restart $MARIADBSERVICE
-sleep 1s
-##################
-
 echo -e "\\r${CHECK_MARK} Installation Of XtreamCodes Done"
-sleep 1s
 echo -n "[+] Configuration Of Mysql & Nginx..."
-sleep 1s
-
 #### config database
 ## add python script
 python2 << END
@@ -825,39 +812,26 @@ mysql()
 encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
 modifyNginx()
 END
-sleep 2s
-##################
-
-##############################
-wget -qO update.sql https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/update.sql
-sleep 1s
-sed -i "s|adminn|$adminn|g" update.sql
-sleep 1s
-sed -i "s|kkkk|$kkkk|g" update.sql
-sleep 1s
-sed -i "s|EMAIL|$EMAIL|g" update.sql
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro < update.sql
-sleep 1s
-rm -f update.sql
-sleep 1s
-#########################################
+wget -qO install.sql https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sql
+sed -i "s|adminn|$adminn|g" install.sql
+sed -i "s|kkkk|$kkkk|g" install.sql
+sed -i "s|EMAIL|$EMAIL|g" install.sql
+mysql -u root -p$PASSMYSQL xtream_iptvpro < install.sql
+rm -f install.sql
 echo -e "\\r${CHECK_MARK} Configuration Of Mysql & Nginx Done"
-sleep 1s
 echo -n "[+] Configuration Of Crons & Autorisations..."
-sleep 1s
 rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
-sleep 1s
-echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers
-sleep 1s
+if ! grep -q "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" /etc/sudoers; then
+    echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" >> /etc/sudoers;
+fi
 ln -s /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg /usr/bin/
-sleep 1s
-echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" >> /etc/fstab
-sleep 1s
-echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" >> /etc/fstab
-sleep 1s
+if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" /etc/fstab; then
+	echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" >> /etc/fstab;
+fi
+if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" /etc/fstab; then
+	echo "tmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0" >> /etc/fstab;
+fi
 chmod -R 0777 /home/xtreamcodes
-sleep 1s
 cat > /home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf <<EOR
 user  xtreamcodes;
 worker_processes  auto;
@@ -997,182 +971,63 @@ http {
     }
 }
 EOR
-sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE streaming_servers SET http_broadcast_port = '$CLIENTACCESPORT' WHERE streaming_servers.id = 1;"
-#solve setting no primary key
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "ALTER TABLE settings ADD PRIMARY KEY(id);"
-sleep 1s
 #update gen pass
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET live_streaming_pass = '$zzz' WHERE settings.id = 1;"
-sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET unique_id = '$eee' WHERE settings.id = 1;"
-sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
-sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
-sleep 1s
+#update php.ini timezone
 sed -i "s|;date.timezone =|date.timezone = $timezone|g" /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-sleep 1s
 #replace python by python2
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = 'python2' WHERE admin_settings.type = 'release_parser'; "
 #local and security patching settings and admin_settings
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET default_locale = 'fr_FR.utf8' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET disallow_empty_user_agents = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET hash_lb = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'order_streams';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'ip_logout';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_restrictions';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_dns';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_email';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_password';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'change_own_lang';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_view_info';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'active_apps';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '1' WHERE admin_settings.type = 'reseller_mag_to_m3u';"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET audio_restart_loss = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET county_override_1st = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET disallow_2nd_ip_con = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET enable_isp_lock = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET vod_bitrate_plus = '300' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET vod_limit_at = '10' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET block_svp = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET priority_backup = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET mag_security = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET stb_change_pass = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET stalker_lock_images = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types = '["MAG200","MAG245","MAG245D","MAG250","MAG254","MAG255","MAG256","MAG257","MAG260","MAG270","MAG275","MAG322","MAG322w1","MAG322w2","MAG323","MAG324","MAG324C","MAG324w2","MAG325","MAG349","MAG350","MAG351","MAG352","MAG420","MAG420w1","MAG420w2","MAG422","MAG422A","MAG422Aw1","MAG424","MAG424w1","MAG424w2","MAG424w3","MAG424A","MAG424Aw3","MAG425","MAG425A","MAG520","MAG520W1","MAG520W2","MAG520W3","MAG520A","MAG520Aw3","MAG522","MAG522w1","MAG522w3","MAG524","MAG524W3","AuraHD","AuraHD0","AuraHD1","AuraHD2","AuraHD3","AuraHD4","AuraHD5","AuraHD6","AuraHD7","AuraHD8","AuraHD9","WR320","IM2100","IM2100w1","IM2100V","IM2100VI","IM2101","IM2101V","IM2101VI","IM2101VO","IM2101w2","IM2102","IM4410","IM4410w3","IM4411","IM4411w1","IM4412","IM4414","IM4414w1","IP_STB_HD",]' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types_rec = '1' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET allowed_stb_types_for_local_recording = '["MAG200","MAG245","MAG245D","MAG250","MAG254","MAG255","MAG256","MAG257","MAG260","MAG270","MAG275","MAG322","MAG322w1","MAG322w2","MAG323","MAG324","MAG324C","MAG324w2","MAG325","MAG349","MAG350","MAG351","MAG352","MAG420","MAG420w1","MAG420w2","MAG422","MAG422A","MAG422Aw1","MAG424","MAG424w1","MAG424w2","MAG424w3","MAG424A","MAG424Aw3","MAG425","MAG425A","MAG520","MAG520W1","MAG520W2","MAG520W3","MAG520A","MAG520Aw3","MAG522","MAG522w1","MAG522w3","MAG524","MAG524W3","AuraHD","AuraHD0","AuraHD1","AuraHD2","AuraHD3","AuraHD4","AuraHD5","AuraHD6","AuraHD7","AuraHD8","AuraHD9","WR320","IM2100","IM2100w1","IM2100V","IM2100VI","IM2101","IM2101V","IM2101VI","IM2101VO","IM2101w2","IM2102","IM4410","IM4410w3","IM4411","IM4411w1","IM4412","IM4414","IM4414w1","IP_STB_HD",]' WHERE settings.id = 1;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_auto', '1');"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_check', '$(date +"%s")');"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "INSERT INTO admin_settings (type, value) VALUES ('clear_log_tables', '["flushActivity","flushActivitynow","flushPanelogs","flushLoginlogs","flushLogins","flushMagclaims","flushStlogs","flushClientlogs","flushEvents","flushMaglogs"]');"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE user_activity;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE user_activity_now;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE panel_logs;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE login_logs;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE login_users;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_claims;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE stream_logs;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE client_logs;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_logs;"
-sleep 1s
-mysql -u root -p$PASSMYSQL xtream_iptvpro -e "TRUNCATE mag_events;"
-sleep 1s
-##################
 echo -e "\\r${CHECK_MARK} Configuration Of Crons & Autorisations Done"
-sleep 1s
 echo -n "[+] installation Of Admin Web Access..."
-sleep 1s
-apt-get install e2fsprogs python-paramiko -y
-sleep 1s
 #### update xtream cr 41
 # backup R41
 #wget -q -O /tmp/update.zip https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip
 #xcversion=41
 #install latest
 wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/update.zip
-sleep 1s
 unzip -o /tmp/update.zip -d /tmp/update/
-sleep 1s
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-sleep 1s
 rm -rf /tmp/update/XtreamUI-master/php
-sleep 1s
 rm -rf /tmp/update/XtreamUI-master/GeoLite2.mmdb
-sleep 1s
 cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
-sleep 1s
 rm -rf /tmp/update/XtreamUI-master
-sleep 1s
 rm /tmp/update.zip
-sleep 1s
 rm -rf /tmp/update
-sleep 1s
 xcversion=$(wget -qO- http://xcodes.mine.nu/XCodes/current.json | jq -r ".version")
-sleep 1s
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
-sleep 1s
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-sleep 1s
 wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb http://xcodes.mine.nu/XCodes/GeoLite2.mmdb
-sleep 1s
 chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-sleep 1s
 geoliteversion=$(wget -qO- http://xcodes.mine.nu/XCodes/status.json | jq -r ".version")
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$geoliteversion' WHERE admin_settings.type = 'geolite2_version'; "
-sleep 1s
 chown xtreamcodes:xtreamcodes -R /home/xtreamcodes
-sleep 1s
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-sleep 1s
 chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
-sleep 1s
 chmod -R 0777 /home/xtreamcodes/iptv_xtream_codes/crons
-sleep 1s
 #### start xtream after boot
 echo "@reboot root sudo /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab
-sleep 1s
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
-sleep 1s
 killall php-fpm
-sleep 1s
 rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
-sleep 1s
-wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/balancer.py -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.py
-sleep 1s
+rm -f /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.py
+rm -f /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.php -O /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.sh -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
+chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-sleep 5s
 ##################
-
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
-sleep 1s
 echo " "
 echo " ┌────────────────────────────────────────────┐ "
 echo " │[R]        XtreamCodes Is Ready...          │ "
 echo " └────────────────────────────────────────────┘ "
 
 ############## info install /root/infoinstall.txt ###################
-## afficher les infos sur putty 
+## print infos on putty or openssh client
 echo "
 ─────────────────  Saved In: /root/Xtreaminfo.txt  ─────────────────
 │ PANEL ACCESS: http://$ipaddr:$ACCESPORT
@@ -1183,7 +1038,7 @@ echo "
 ────────────────────────────────────────────────────────────────────
 "
 ######################################################################
-## copier les infos dans un fichier text
+## copy info to file text
 echo "
 ───────────────────────────  INFO  ─────────────────────────────────
 │
@@ -1199,7 +1054,3 @@ echo "
 │ 
 ────────────────────────────────────────────────────────────────────
 " >> /root/Xtreaminfo.txt
-#### 
-sleep 1s
-##################
-
