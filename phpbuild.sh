@@ -52,8 +52,8 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	# system upgrade
 	dnf -y distro-sync
 	# ceanup old rpmconf file create
-	find /etc/yum.repos.d -name '*.rpmnew' -exec rm -f {} \;
-	find /etc/yum.repos.d -name '*.rpmsave' -exec rm -f {} \;
+	find / -name '*.rpmnew' -exec rm -f {} \;
+	find / -name '*.rpmsave' -exec rm -f {} \;
 	OS="Centos Stream"
 	fi
 
