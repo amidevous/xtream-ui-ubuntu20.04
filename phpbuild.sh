@@ -306,8 +306,8 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
 	$PACKAGE_SOURCEDOWNLOAD php73-php-7.3.33-3.remi.src
 	rpm -i php73-php-7.3.33-3.remi.src.rpm
-	$BUILDDEP -y /root/rpmbuild/SPECS/php.spec
-	$BUILDDEP -y php73
+	$BUILDDEP /root/rpmbuild/SPECS/php.spec
+	$BUILDDEP php73
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
 fi
 echo "dep install pause 60 seconds"
