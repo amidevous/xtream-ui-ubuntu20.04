@@ -183,7 +183,7 @@ if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_UTILS="yum-utils"
     PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
-    BUILDDEP="yum-builddep -y"
+    BUILDDEP="yum-builddep -y -q"
     MYSQLCNF=/etc/my.cnf
     MARIADBSERVICE=mariadbd
 elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
@@ -193,7 +193,7 @@ elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
     PACKAGE_UTILS="dnf-utils" 
     PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="dnf download --source"
-    BUILDDEP="dnf build-dep -y"
+    BUILDDEP="dnf build-dep -y -q"
     MYSQLCNF=/etc/my.cnf
     MARIADBSERVICE=mariadbd
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
