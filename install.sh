@@ -1077,6 +1077,9 @@ rm -f /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.php -O /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.sh -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
+rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ##################
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
