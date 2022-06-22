@@ -21,7 +21,6 @@ INSERT INTO `admin_settings` (`type`, `value`) VALUES
 ('change_own_dns', '1'),
 ('change_own_email', '1'),
 ('change_own_password', '1'),
-('ip_logout', '1'),
 ('change_own_lang', '1'),
 ('reseller_view_info', '1'),
 ('active_apps', '1'),
