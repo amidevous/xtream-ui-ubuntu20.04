@@ -468,7 +468,7 @@ EOF
 	# Stop conflicting services and iptables to ensure all services will work
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "31" || "$VER" = "32" ]]; then
 		systemctl  stop sendmail.service
-		systemctl  disabble sendmail.service
+		systemctl  disable sendmail.service
 	else
 		service sendmail stop
 		chkconfig sendmail off
