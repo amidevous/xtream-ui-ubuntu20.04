@@ -619,7 +619,11 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_INSTALLER libcurl-devel
 	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
+	systemctl start mariadb
 	$PACKAGE_INSTALLER python3-pip python3
+	if [[ "$VER" = "7" ]]; then
+	$PACKAGE_INSTALLER python python-paramiko python-pip
+	else	
 	#install pip2
 	wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
 	#upgrade pip3
@@ -652,6 +656,7 @@ EOF
 	ln -s /usr/bin/pip2 /usr/local/bin/pip2
 	ln -s /usr/bin/pip3 /usr/local/bin/pip3
 	pip2 install paramiko
+	
 	update-alternatives --remove-all pip
 	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
 	ln -s /usr/bin/pip /usr/local/bin/pip
@@ -660,6 +665,7 @@ EOF
 	update-alternatives --remove-all python
 	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 2
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
+	fi
 	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/httpd/conf/httpd.conf
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
