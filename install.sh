@@ -620,6 +620,7 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
 	systemctl start mariadb
+	systemctl enable mariadb
 	$PACKAGE_INSTALLER python3-pip python3
 	if [[ "$VER" = "7" ]]; then
 	$PACKAGE_INSTALLER python python-paramiko python-pip
@@ -667,6 +668,8 @@ EOF
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
 	fi
 	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/httpd/conf/httpd.conf
+	systemctl restart httpd
+	systemctl enable httpd
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
