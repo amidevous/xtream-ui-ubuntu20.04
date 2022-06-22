@@ -588,7 +588,7 @@ fi
 echo -e "\n-- Downloading and installing required tools..."
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
     $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion
-    if  [["$VER" = "7" ]]; then
+    if  [[ "$VER" = "7" ]]; then
     	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
     else
     	$PACKAGE_INSTALLER glibc32 bzip2-libs 
