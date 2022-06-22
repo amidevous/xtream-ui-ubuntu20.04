@@ -414,8 +414,8 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 		# install wget and add copr repo for devel package not build on official depots
 		# temporary solve bug
 		# https://bugzilla.redhat.com/show_bug.cgi?id=2099386
-		dnf -y install wget
-		wget https://copr.fedorainfracloud.org/coprs/andykimpe/Centos-Stream-Devel-php-build/repo/centos-stream-8/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo -O /etc/yum.repos.d/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo
+		# final bug solved packages found on PowerTools
+		# just enable official repository CentOs Stream PowerTools for solve
 	elif [ "$OS" = "Fedora" ]; then
 		echo "fedora repo"
 	fi
