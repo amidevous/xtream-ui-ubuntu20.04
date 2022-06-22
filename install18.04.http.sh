@@ -805,6 +805,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
 else
 adduser --system --shell /bin/false --group xtreamcodes
+mkdir -p /home/xtreamcodes
 fi
 wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
 tar -xf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
