@@ -79,7 +79,7 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
 			ACCESPORT=
 			CLIENTACCESPORT=
 			APACHEACCESPORT=
-			EMAIL
+			EMAIL=
 			PASSMYSQL=
 			silent=no
             ;;
@@ -208,7 +208,7 @@ echo -e "\n-- Installing wget and dns utils required to manage inputs"
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 	$PACKAGE_INSTALLER $PACKAGE_UTILS
    	$PACKAGE_UPDATER
-        $PACKAGE_INSTALLER bind-utils
+        $PACKAGE_INSTALLER bind-utils perl
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
@@ -229,7 +229,7 @@ XPASS=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c16)
 zzz=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c20)
 eee=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c10)
 rrr=$(</dev/urandom tr -dc A-Z-a-z-0-9 | head -c20)
-versionn=$(lsb_release -d -s)
+versionn="$OS $VER"
 nginx111='$uri'
 nginx222='$document_root$fastcgi_script_name'
 nginx333='$fastcgi_script_name'
@@ -591,7 +591,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
     	$PACKAGE_INSTALLER glibc32 bzip2-libs 
     fi
     $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
-    $PACKAGE_INSTALLER ca-certificates nano
+    $PACKAGE_INSTALLER ca-certificates nano psmisc
     $PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
 	if [[ "$VER" = "7" ]]; then
 $PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
