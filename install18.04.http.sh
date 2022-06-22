@@ -185,7 +185,6 @@ if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
     BUILDDEP="yum-builddep -y -q"
     MYSQLCNF=/etc/my.cnf
-    MARIADBSERVICE=mariadbd
 elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
     PACKAGE_INSTALLER="dnf -y -q install"
     PACKAGE_REMOVER="dnf -y -q remove"
@@ -195,12 +194,10 @@ elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
     PACKAGE_SOURCEDOWNLOAD="dnf download --source"
     BUILDDEP="dnf build-dep -y -q"
     MYSQLCNF=/etc/my.cnf
-    MARIADBSERVICE=mariadbd
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     PACKAGE_INSTALLER="apt-get -yqq install"
     PACKAGE_REMOVER="apt-get -yqq purge"
     MYSQLCNF=/etc/mysql/my.cnf
-    MARIADBSERVICE=mariadb
     inst() {
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
@@ -682,7 +679,7 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER  mariadb-client
 	$PACKAGE_INSTALLER mariadb-server-10.5
 	$PACKAGE_INSTALLER mariadb-server
-	systemctl restart $MARIADBSERVICE
+	systemctl restart mariadb
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 	$PACKAGE_INSTALLER postfix
@@ -808,7 +805,7 @@ tar -xf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 rm -r /tmp/xtreamcodes.tar.gz
 mv $MYSQLCNF $MYSQLCNF.xc
 echo IyBYdHJlYW0gQ29kZXMNCg0KW2NsaWVudF0NCnBvcnQgICAgICAgICAgICA9IDMzMDYNCg0KW215c3FsZF9zYWZlXQ0KbmljZSAgICAgICAgICAgID0gMA0KDQpbbXlzcWxkXQ0KdXNlciAgICAgICAgICAgID0gbXlzcWwNCnBvcnQgICAgICAgICAgICA9IDc5OTkNCmJhc2VkaXIgICAgICAgICA9IC91c3INCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsDQp0bXBkaXIgICAgICAgICAgPSAvdG1wDQpsYy1tZXNzYWdlcy1kaXIgPSAvdXNyL3NoYXJlL215c3FsDQpza2lwLWV4dGVybmFsLWxvY2tpbmcNCnNraXAtbmFtZS1yZXNvbHZlPTENCg0KYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqDQprZXlfYnVmZmVyX3NpemUgPSAxMjhNDQoNCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0NCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gNjRNDQpteWlzYW0tcmVjb3Zlci1vcHRpb25zID0gQkFDS1VQDQptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyDQpxdWVyeV9jYWNoZV9saW1pdCAgICAgICA9IDRNDQpxdWVyeV9jYWNoZV9zaXplICAgICAgICA9IDI1Nk0NCg0KDQpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwDQptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0NCg0KbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAwDQpiYWNrX2xvZyA9IDQwOTYNCm9wZW5fZmlsZXNfbGltaXQgPSAyMDI0MA0KaW5ub2RiX29wZW5fZmlsZXMgPSAyMDI0MA0KbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mg0KdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYNCnRhYmxlX2RlZmluaXRpb25fY2FjaGUgPSA0MDk2DQoNCg0KdG1wX3RhYmxlX3NpemUgPSAxRw0KbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHDQoNCmlubm9kYl9idWZmZXJfcG9vbF9zaXplID0gMTBHDQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTANCmlubm9kYl9yZWFkX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NA0KaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDANCmlubm9kYl9mbHVzaF9sb2dfYXRfdHJ4X2NvbW1pdCA9IDANCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVA0KcGVyZm9ybWFuY2Vfc2NoZW1hID0gMA0KaW5ub2RiLWZpbGUtcGVyLXRhYmxlID0gMQ0KaW5ub2RiX2lvX2NhcGFjaXR5PTIwMDAwDQppbm5vZGJfdGFibGVfbG9ja3MgPSAwDQppbm5vZGJfbG9ja193YWl0X3RpbWVvdXQgPSAwDQppbm5vZGJfZGVhZGxvY2tfZGV0ZWN0ID0gMA0KDQoNCnNxbC1tb2RlPSJOT19FTkdJTkVfU1VCU1RJVFVUSU9OIg0KDQpbbXlzcWxkdW1wXQ0KcXVpY2sNCnF1b3RlLW5hbWVzDQptYXhfYWxsb3dlZF9wYWNrZXQgICAgICA9IDE2TQ0KDQpbbXlzcWxdDQoNCltpc2FtY2hrXQ0Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQ0K | base64 --decode > $MYSQLCNF
-systemctl restart $MARIADBSERVICE
+systemctl restart mariadb
 echo -e "\\r${CHECK_MARK} Installation Of XtreamCodes Done"
 echo -n "[+] Configuration Of Mysql & Nginx..."
 #### config database
