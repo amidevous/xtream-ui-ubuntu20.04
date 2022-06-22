@@ -391,6 +391,11 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
         fi
 	}
 	if [ "$OS" = "CentOs" ]; then
+		# enable official repository CentOs Base
+		enablerepo base
+		# enable official repository CentOs Updates
+		enablerepo updates
+		
 		enablerepo epel
 	elif [ "$OS" = "Centos Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
@@ -405,7 +410,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 		enablerepo powertools
 		# enable official repository Fedora Epel
 		enablerepo epel
-		# enable official repository Fedora Epel
+		# enable official repository Fedora Epel Modular
 		enablerepo epel-modular
 		# install wget and add copr repo for devel package not build on official depots
 		# temporary solve bug
@@ -614,6 +619,48 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
 	$PACKAGE_INSTALLER libcurl-devel
 	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd zip mc libpng-devel python2 python3
+	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
+	$PACKAGE_INSTALLER python3-pip python3
+	#install pip2
+	wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
+	#upgrade pip3
+	pyfv=$(python3 --version | sed  "s|Python ||g")
+	pyv=${pyfv:0:3}
+	wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+	rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
+cat > /usr/bin/pip2 <<EOF
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+chmod +x /usr/bin/pip2
+cat > /usr/bin/pip3 <<EOF
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+	chmod +x /usr/bin/pip3
+	ln -s /usr/bin/pip2 /usr/local/bin/pip2
+	ln -s /usr/bin/pip3 /usr/local/bin/pip3
+	pip2 install paramiko
+	update-alternatives --remove-all pip
+	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
+	ln -s /usr/bin/pip /usr/local/bin/pip
+	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+	rm -f /usr/bin/python
+	update-alternatives --remove-all python
+	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 2
+	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
@@ -741,16 +788,18 @@ EOF
 	sed -i "s/443/70/g" /etc/apache2/sites-available/default-ssl.conf
 	systemctl restart apache2
 	fi
-sleep 1s
+$PACKAGE_INSTALLER daemonize
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$PASSMYSQL'; flush privileges;"
 echo -e "\\r${CHECK_MARK} Installation Of Packages Done"
 sleep 1s
 echo -n "[+] Installation Of XtreamCodes..."
 sleep 1s
 #### installation de xtream codes
-#usermod -s /bin/false xtreamcodes
-#mkdir -p /home/xtreamcodes/
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 adduser --system --shell /bin/false --group --disabled-login xtreamcodes
+else
+adduser --system --shell /bin/false --group xtreamcodes
+fi
 wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
 tar -xf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 rm -r /tmp/xtreamcodes.tar.gz
