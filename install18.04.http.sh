@@ -73,7 +73,7 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
 			exit
             ;;
         *)
-            tz=
+            		tz=
 			adminn=
 			adminpass=
 			ACCESPORT=
@@ -156,7 +156,9 @@ echo "Detected : $OS  $VER  $ARCH"
 #      "$OS" = "Ubuntu" && ("$VER" = "12.04" || "$VER" = "14.04" || "$VER" = "16.04" || "$VER" = "18.04" ) || 
 #      "$OS" = "debian" && ("$VER" = "7" || "$VER" = "8" || "$VER" = "9" || "$VER" = "10" ) ]] ; then
 if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
-"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
+"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64"
+"$OS" = "CentOs" && ("$VER" = "6" || "$VER" = "7" || "$VER" = "8" ) && "$ARCH" == "x86_64"
+"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ]] ; then
     echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
@@ -618,7 +620,7 @@ $PACKAGE_INSTALLER libzip-devel
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
 	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
 	$PACKAGE_INSTALLER libcurl-devel
-	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd zip mc libpng-devel python2 python3
+	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
 	$PACKAGE_INSTALLER python3-pip python3
 	#install pip2
@@ -661,6 +663,7 @@ EOF
 	update-alternatives --remove-all python
 	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 2
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
+	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/httpd/conf/httpd.conf
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	$PACKAGE_INSTALLER debhelper cdbs lintian build-essential fakeroot devscripts dh-make
 	apt-get -y build-dep php7.3
