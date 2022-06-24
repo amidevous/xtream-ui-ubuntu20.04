@@ -602,9 +602,6 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
 	$PACKAGE_INSTALLER libcurl-devel
 	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
-	$PACKAGE_INSTALLER  boost-program-options
-	dnf module reset mariadb -y
-	dnf clean all
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
 	systemctl start mariadb
 	systemctl enable mariadb
