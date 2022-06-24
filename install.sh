@@ -68,7 +68,7 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
 			echo "option -s for silent use yes option for remove confirm install"
 			echo "option -h for write this help"
 			echo "full exeple"
-			echo "curl -L https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sh | sudo bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
+			echo "curl -L https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/install.sh | bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
 			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
 			exit
             ;;
@@ -442,23 +442,7 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 EOF
-	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
-cat > /etc/yum.repos.d/mariadb.repo <<EOF
-[mariadb]
-name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
-enabled=1
-gpgcheck=0
-EOF
-	elif [[ "$OS" = "Fedora" ]]; then
-cat > /etc/yum.repos.d/mariadb.repo <<EOF
-[mariadb]
-name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
-enabled=1
-gpgcheck=0
-EOF
-	fi
+curl -L https://downloads.mariadb.com/MariaDB/mariadb_repo_setup  | bash -s -- --mariadb-server-version=10.9
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -618,6 +602,9 @@ $PACKAGE_INSTALLER libzip-devel
 	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
 	$PACKAGE_INSTALLER libcurl-devel
 	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
+	$PACKAGE_INSTALLER  boost-program-options
+	dnf module reset mariadb -y
+	dnf clean all
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
 	systemctl start mariadb
 	systemctl enable mariadb
@@ -810,7 +797,8 @@ else
 adduser --system --shell /bin/false xtreamcodes
 mkdir -p /home/xtreamcodes
 fi
-wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OS"_"$VER".tar.gz
+OSNAME=$(echo $OS | sed  "s| |.|g" )
+wget -q -O /tmp/xtreamcodes.tar.gz https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_"$OSNAME"_"$VER".tar.gz
 tar -xf "/tmp/xtreamcodes.tar.gz" -C "/home/xtreamcodes/"
 rm -r /tmp/xtreamcodes.tar.gz
 mv $MYSQLCNF $MYSQLCNF.xc
