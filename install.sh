@@ -1072,6 +1072,44 @@ chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+if [[ "$OS" = "Centos Stream" ]] ; then
+echo "CentOS Stream Require nginx rebuild"
+echo "please wait this operation can be long"
+sleep 60
+$PACKAGE_INSTALLER libaio-devel libmaxminddb-devel
+cd /tmp/
+sudo wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz
+tar -xzvf OpenSSL_1_1_1h.tar.gz
+cd /root
+wget http://nginx.org/download/nginx-1.19.5.tar.gz
+tar -xzvf nginx-1.19.5.tar.gz
+git clone https://github.com/leev/ngx_http_geoip2_module.git
+cd nginx-1.19.5
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp --http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp --lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock --http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp --http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp --conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf --error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/error.log --http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/access.log --pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx/nginx.pid --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_v2_module --with-pcre --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-threads --with-mail --with-mail_ssl_module --with-file-aio --with-cpu-opt=generic --add-module=/root/ngx_http_geoip2_module --with-openssl=/tmp/openssl-OpenSSL_1_1_1h
+make
+rm -f /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
+cp objs/nginx /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/
+chmod +x /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
+cd /tmp/
+rm -rf openssl-OpenSSL_1_1_1h
+tar -xzvf OpenSSL_1_1_1h.tar.gz
+cd /root
+rm -rf nginx-1.19.5 ngx_http_geoip2_module
+tar -xzvf nginx-1.19.5.tar.gz
+git clone https://github.com/leev/ngx_http_geoip2_module.git
+wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.zip
+unzip v1.2.1.zip
+cd nginx-1.19.5
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ --lock-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx_rtmp.lock --conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf --error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_error.log --http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_access.log --pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx.pid --add-module=/root/nginx-rtmp-module-1.2.1 --with-pcre --without-http_rewrite_module --with-file-aio --with-cpu-opt=generic --with-openssl=/tmp/openssl-OpenSSL_1_1_1h --add-module=/root/ngx_http_geoip2_module --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0"
+make
+cd objs
+mv nginx nginx_rtmp
+rm -f /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
+cp nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
+chmod +x /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
+cd /root
+rm -rf /tmp/OpenSSL_1_1_1h /tmp/openssl-OpenSSL_1_1_1h nginx-1.19.5 v1.2.1.zip nginx-rtmp-module-1.2.1 ngx_http_geoip2_module nginx-1.19.5.tar.gz
+fi
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ##################
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
