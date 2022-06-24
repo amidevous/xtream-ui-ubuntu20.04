@@ -655,7 +655,7 @@ EOF
 	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 	rm -f /usr/bin/python
 	update-alternatives --remove-all python
-	update-alternatives --install /usr/bin/python pythonp /usr/bin/python3 2
+	update-alternatives --install /usr/bin/python python /usr/bin/python3 2
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
 	fi
 	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/httpd/conf/httpd.conf
