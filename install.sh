@@ -599,16 +599,23 @@ $PACKAGE_INSTALLER libzip-devel
 	$BUILDDEP /root/rpmbuild/SPECS/php.spec
 	$BUILDDEP php73
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
-	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates e2fslibs jq sshpass net-tools curl
+	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates jq sshpass net-tools curl
+	$PACKAGE_INSTALLER e2fslibs
+	$PACKAGE_INSTALLER e2fsprogs
+	$PACKAGE_INSTALLER e2fsprogs-libs
 	$PACKAGE_INSTALLER libcurl-devel
-	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel e2fsprogs wget mcrypt nscd htop unzip httpd httpd-devel zip mc libpng-devel python2 python3
+	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel wget nscd htop unzip httpd httpd-devel zip mc libpng-devel python3 python3-pip
+	$PACKAGE_INSTALLER mcrypt
+	$PACKAGE_INSTALLER mcrypt-devel
+	$PACKAGE_INSTALLER libmcrypt
+	$PACKAGE_INSTALLER libmcrypt-devel
 	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
 	systemctl start mariadb
 	systemctl enable mariadb
-	$PACKAGE_INSTALLER python3-pip python3
 	if [[ "$VER" = "7" ]]; then
 	$PACKAGE_INSTALLER python python-paramiko python-pip
-	else	
+	else
+	$PACKAGE_INSTALLER python2
 	#install pip2
 	wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
 	#upgrade pip3
