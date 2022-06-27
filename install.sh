@@ -463,7 +463,7 @@ fi
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
 	# Stop conflicting services and iptables to ensure all services will work
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "31" || "$VER" = "32" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		systemctl  stop sendmail.service
 		systemctl  disable sendmail.service
 	else
@@ -473,12 +473,12 @@ fi
 	# disable firewall
 	$PACKAGE_INSTALLER iptables
 	$PACKAGE_INSTALLER firewalld
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		FIREWALL_SERVICE="firewalld"
 	else
 		FIREWALL_SERVICE="iptables"
 	fi
-	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" ]]; then
+	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		systemctl  save "$FIREWALL_SERVICE".service
 		systemctl  stop "$FIREWALL_SERVICE".service
 		systemctl  disable "$FIREWALL_SERVICE".service
