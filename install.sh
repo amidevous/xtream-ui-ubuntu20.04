@@ -209,6 +209,7 @@ fi
 echo -e "\n-- Installing wget and dns utils required to manage inputs"
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 	$PACKAGE_INSTALLER $PACKAGE_UTILS
+	$PACKAGE_INSTALLER crontabs
    	$PACKAGE_UPDATER
         $PACKAGE_INSTALLER bind-utils perl
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
@@ -1088,8 +1089,8 @@ chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-if [[ "$OS" = "Centos Stream" ]] ; then
-echo "CentOS Stream Require nginx rebuild"
+if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
+echo "CentOS or Fedora Require nginx rebuild"
 echo "please wait this operation can be long"
 sleep 60
 $PACKAGE_INSTALLER libaio-devel libmaxminddb-devel
