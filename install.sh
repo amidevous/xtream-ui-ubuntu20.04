@@ -450,7 +450,7 @@ EOF
 
 if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 curl -L https://downloads.mariadb.com/MariaDB/mariadb_repo_setup  | bash -s -- --mariadb-server-version=10.9
-	elif [[ "$OS" = "Fedora" ]]; then
+elif [[ "$OS" = "Fedora" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -458,6 +458,7 @@ baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
+fi
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
