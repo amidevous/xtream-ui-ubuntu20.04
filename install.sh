@@ -20,7 +20,8 @@
 # Ubuntu server 18.04/20.04/22.04
 # soon
 # CentOS 7.*
-# Fedora 34/35
+# CentOS Stream 8.*
+# Fedora 34/35/36
 # Debian 10/11
 # 64bit online system
 #
@@ -158,7 +159,8 @@ echo "Detected : $OS  $VER  $ARCH"
 if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ||
 "$OS" = "CentOs" && ("$VER" = "6" || "$VER" = "7" || "$VER" = "8" ) && "$ARCH" == "x86_64" ||
-"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ]] ; then
+"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
+"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64"]] ; then
     echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
@@ -394,7 +396,6 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 		enablerepo base
 		# enable official repository CentOs Updates
 		enablerepo updates
-		
 		enablerepo epel
 	elif [ "$OS" = "Centos Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
@@ -417,7 +418,11 @@ if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 		# final bug solved packages found on PowerTools
 		# just enable official repository CentOs Stream PowerTools for solve
 	elif [ "$OS" = "Fedora" ]; then
-		echo "fedora repo"
+		enablerepo fedora
+		enablerepo fedora-cisco-openh264
+		enablerepo fedora-modular
+		enablerepo updates-modular
+		enablerepo updates
 	fi
 	# enable repository Remi's RPM repository
 	enablerepo remi
