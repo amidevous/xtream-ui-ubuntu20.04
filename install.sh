@@ -794,10 +794,16 @@ EOF
 	debconf-set-selections <<<'phpmyadmin phpmyadmin/dbconfig-install boolean false'
 	$PACKAGE_INSTALLER  phpmyadmin
 	mv /usr/share/phpmyadmin/ /usr/share/phpmyadmin.bakkk
-	wget https://xtream-brutus.com/v3/phpMyAdmin-4.9.5-all-languages.zip
-	unzip phpMyAdmin-4.9.5-all-languages.zip
+	cd /usr/share/
+	wget https://files.phpmyadmin.net/phpMyAdmin/4.9.5/phpMyAdmin-4.9.5-all-languages.tar.xz
+	tar -xvf phpMyAdmin-4.9.5-all-languages.tar.xz
+	rm -f phpMyAdmin-4.9.5-all-languages.tar.xz
 	mv phpMyAdmin-4.9.5-all-languages /usr/share/phpmyadmin
-	rm -r phpMyAdmin-4.9.5-all-languages.zip
+	chmod 777 -R phpmyadmin
+	chmod 777 -R phpmyadmin/*
+	ln -s /etc/phpmyadmin/config.inc.php /usr/share/phpmyadmin/config.inc.php
+	chmod 644 /etc/phpmyadmin/config.inc.php
+	cd
 	sed -i "s/blowfish_secret'] = '/blowfish_secret'] = '$blofish/g" /usr/share/phpmyadmin/libraries/config.default.php
 	sed -i "s/Listen 80/Listen $APACHEACCESPORT/g" /etc/apache2/ports.conf
 	sed -i "s/Listen 443/Listen 70/g" /etc/apache2/ports.conf
