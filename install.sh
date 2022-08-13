@@ -1095,11 +1095,11 @@ chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 wget https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 echo "CentOS or Fedora Require nginx rebuild"
 echo "please wait this operation can be long"
 sleep 60
 $PACKAGE_INSTALLER libaio-devel libmaxminddb-devel
+$PACKAGE_INSTALLER libaio-dev libmaxminddb-dev
 cd /tmp/
 sudo wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz
 tar -xzvf OpenSSL_1_1_1h.tar.gz
@@ -1132,7 +1132,6 @@ cp nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
 chmod +x /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
 cd /root
 rm -rf /tmp/OpenSSL_1_1_1h /tmp/openssl-OpenSSL_1_1_1h nginx-1.19.5 v1.2.1.zip nginx-rtmp-module-1.2.1 ngx_http_geoip2_module nginx-1.19.5.tar.gz
-fi
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ##################
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
