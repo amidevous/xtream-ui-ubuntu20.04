@@ -492,7 +492,17 @@ cd freetype-2.12.0
 ./configure --enable-freetype-config --prefix=/opt/freetype2
 make
 $PACKAGE_INSTALLER checkinstall
-checkinstall
+checkinstall \
+    --pkgsource="" \
+    --pkglicense="GPL3" \
+    --deldesc=no \
+    --nodoc \
+    --maintainer="amidevous@gmail.com" \
+    --pkgarch=$(dpkg --print-architecture) \
+    --pkgversion="2.12" \
+    --pkgrelease="1" \
+    --pkgname=xcfreetype2 \
+    --requires="" -y
 cd ..
 cd php-7.3.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/opt/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-mcrypt' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-mysql=mysqlnd' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--enable-gd-native-ttf' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
@@ -526,7 +536,17 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-z
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
 $PACKAGE_INSTALLER checkinstall
-checkinstall
+checkinstall \
+    --pkgsource="" \
+    --pkglicense="GPL3" \
+    --deldesc=no \
+    --nodoc \
+    --maintainer="amidevous@gmail.com" \
+    --pkgarch=$(dpkg --print-architecture) \
+    --pkgversion="7.3.33" \
+    --pkgrelease="1" \
+    --pkgname=xcphp \
+    --requires="" -y
 cd ..
 rm -rf debian
 $PACKAGE_INSTALLER libmcrypt-devel mcrypt
@@ -537,7 +557,17 @@ cd mcrypt-1.0.5
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
 $PACKAGE_INSTALLER checkinstall
-checkinstall
+checkinstall \
+    --pkgsource="" \
+    --pkglicense="GPL3" \
+    --deldesc=no \
+    --nodoc \
+    --maintainer="amidevous@gmail.com" \
+    --pkgarch=$(dpkg --print-architecture) \
+    --pkgversion="1.0.5" \
+    --pkgrelease="1" \
+    --pkgname=xcphpmcrypt \
+    --requires="" -y
 cd ..
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 $PACKAGE_INSTALLER libgeoip-dev
@@ -550,7 +580,17 @@ cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
-checkinstall
+checkinstall \
+    --pkgsource="" \
+    --pkglicense="GPL3" \
+    --deldesc=no \
+    --nodoc \
+    --maintainer="amidevous@gmail.com" \
+    --pkgarch=$(dpkg --print-architecture) \
+    --pkgversion="1.1.1" \
+    --pkgrelease="1" \
+    --pkgname=xcphpgeoip \
+    --requires="" -y
 cd ..
 find ./ -name '*.deb'
 echo "finish"
