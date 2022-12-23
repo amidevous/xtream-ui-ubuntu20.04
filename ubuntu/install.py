@@ -38,23 +38,22 @@ def printc(rText, rColour=col.OKBLUE, rPadding=0):
     print " "
 
 def prepare(rType="MAIN"):
-    global rPackages
-    if rType <> "MAIN": rPackages = rPackages[:-1]
-    printc("Preparing Installation")
-    for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
-        try: os.remove(rFile)
-        except: pass
-    os.system("apt-get update > /dev/null")
-    printc("Removing libcurl4 if installed")
-    os.system("apt-get remove --auto-remove libcurl4 -y > /dev/null")
-    for rPackage in rPackages:
-        printc("Installing %s" % rPackage)
-        os.system("apt-get install %s -y > /dev/null" % rPackage) 
-    printc("Installing libpng")
-    os.system("wget -q -O /tmp/libpng12.deb https://www.dropbox.com/s/qqz00uqtnx869yp/libpng12-0_1.2.54-1ubuntu1.1%2B1_ppa0_eoan_amd64.deb?dl=1")
-    os.system("dpkg -i /tmp/libpng12.deb > /dev/null")
-    os.system("apt-get install -y > /dev/null") # Clean up above
-    try: os.remove("/tmp/libpng12.deb")
+#    global rPackages
+#    if rType <> "MAIN": rPackages = rPackages[:-1]
+#    printc("Preparing Installation")
+#    for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
+#        try: os.remove(rFile)
+#        except: pass
+#    os.system("apt-get update > /dev/null")
+#    for rPackage in rPackages:
+#        printc("Installing %s" % rPackage)
+#        os.system("apt-get install %s -y > /dev/null" % rPackage) 
+#    printc("Installing libpng")
+#    os.system("wget -q -O /tmp/libpng12.deb https://www.dropbox.com/s/qqz00uqtnx869yp/libpng12-0_1.2.54-1ubuntu1.1%2B1_ppa0_eoan_amd64.deb?dl=1")
+#    os.system("dpkg -i /tmp/libpng12.deb > /dev/null")
+#    os.system("apt-get install -y > /dev/null") # Clean up above
+#    try: os.remove("/tmp/libpng12.deb")
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash -s")    
     except: pass
     try:
         subprocess.check_output("getent passwd xtreamcodes > /dev/null".split())
@@ -93,7 +92,7 @@ def mysql(rUsername, rPassword):
         rFile = open("/etc/mysql/mariadb.cnf", "w")
         rFile.write(rMySQLCnf)
         rFile.close()
-        os.system("service mysql restart > /dev/null")
+        os.system("systemctl restart mariadb > /dev/null")
     printc("Enter MySQL Root Password:", col.WARNING)
     for i in range(5):
         rMySQLRoot = raw_input("  ")
@@ -133,13 +132,18 @@ def configure():
         rFile.close()
     if not "xtreamcodes" in open("/etc/sudoers").read():
         os.system('echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers')
-    if not os.path.exists("/etc/init.d/xtreamcodes"):
-        rStart = open("/etc/init.d/xtreamcodes", "w")
-        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamcodes\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamcodes if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+    os.system('systemctl disable xtreamcodes > /dev/null')    
+    try: os.remove("/etc/init.d/xtreamcodes")
+    except: pass    
+    if not os.path.exists("/etc/systemd/system/xtreamcodes.service"):
+        rStart = open("/etc/systemd/system/xtreamcodes.service", "w")
+#        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamcodes\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamcodes if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+        rStart.write("[Unit]\nDescription=xtreamcodes systemd service\nAfter=network-online.target\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/home/xtreamcodes/iptv_xtream_codes/start_services.sh\n\n[Install]\nWantedBy=multi-user.target > /dev/null")               
         rStart.close()
-        os.system("chmod +x /etc/init.d/xtreamcodes")
-        os.system("update-rc.d xtreamcodes defaults")
-        os.system("update-rc.d xtreamcodes enable")
+        os.system("chmod +x /etc/systemd/system/xtreamcodes.service")
+        os.system("ln -s /etc/systemd/system/xtreamcodes.service /etc/systemd/system/multi-user.target.wants/xtreamcodes.service")
+        os.system("systemctl daemon-reload")
+        os.system("systemctl enable xtreamcodes")
     try: os.remove("/usr/bin/ffmpeg")
     except: pass
     if not os.path.exists("/home/xtreamcodes/iptv_xtream_codes/tv_archive"): os.mkdir("/home/xtreamcodes/iptv_xtream_codes/tv_archive/")
@@ -152,8 +156,9 @@ def configure():
     if not "api.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    api.xtream-codes.com" >> /etc/hosts')
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not " xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
-    os.system('apt-get install unzip e2fsprogs python3-paramiko -y && chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>/dev/null && wget -q "https://www.dropbox.com/s/42fjxiob12hw009/update.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
+    os.system('chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>/dev/null && wget -q "https://www.dropbox.com/s/42fjxiob12hw009/update.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
     os.system("sed -i 's|echo \"Xtream Codes Reborn\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/posinstall.sh | bash -s")
     os.system("sudo wget -q https://www.dropbox.com/s/3h3cc5rnipdni39/youtube-dl?dl=1 -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
 
