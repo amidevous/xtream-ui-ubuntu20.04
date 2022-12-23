@@ -86,11 +86,11 @@ def mysql(rUsername, rPassword):
     global rMySQLCnf
     printc("Configuring MySQL")
     rCreate = True
-    if os.path.exists("/etc/mysql/mysql.cnf"):
-        if open("/etc/mysql/mysql.cnf", "r").read(14) == "# Xtream Codes": rCreate = False
+    if os.path.exists("/etc/mysql/mariadb.cnf"):
+        if open("/etc/mysql/mariadb.cnf", "r").read(14) == "# Xtream Codes": rCreate = False
     if rCreate:
-        shutil.copy("/etc/mysql/mysql.cnf", "/etc/mysql/mysql.cnf.xc")
-        rFile = open("/etc/mysql/mysql.cnf", "w")
+        shutil.copy("/etc/mysql/mariadb.cnf", "/etc/mysql/mariadb.cnf.xc")
+        rFile = open("/etc/mysql/mariadb.cnf", "w")
         rFile.write(rMySQLCnf)
         rFile.close()
         os.system("service mysql restart > /dev/null")
