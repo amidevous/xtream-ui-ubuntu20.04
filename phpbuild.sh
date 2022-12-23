@@ -499,6 +499,14 @@ else
 $PACKAGE_INSTALLER checkinstall
 fi
 $PACKAGE_REMOVER xcfreetype2
+mkdir -p /opt/freetype2
+mkdir -p /opt/freetype2/include
+mkdir -p /opt/freetype2/lib
+mkdir -p /opt/freetype2/include
+mkdir -p /opt/freetype2/include/freetype2
+mkdir -p /opt/freetype2/include/freetype2/freetype
+mkdir -p /opt/freetype2/share
+mkdir -p /opt/freetype2/share/man
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
