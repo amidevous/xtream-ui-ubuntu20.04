@@ -491,6 +491,7 @@ cd freetype-2.12.0
 ./configure --enable-freetype-config --prefix=/opt/freetype2
 make
 $PACKAGE_INSTALLER checkinstall
+PACKAGE_REMOVER xcfreetype2
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -535,6 +536,7 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-z
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
 $PACKAGE_INSTALLER checkinstall
+PACKAGE_REMOVER xcphp
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -556,6 +558,7 @@ cd mcrypt-1.0.5
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
 $PACKAGE_INSTALLER checkinstall
+PACKAGE_REMOVER xcphpmcrypt
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -579,6 +582,7 @@ cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
+PACKAGE_REMOVER xcphpgeoip
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
