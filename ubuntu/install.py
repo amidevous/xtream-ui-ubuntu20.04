@@ -175,6 +175,7 @@ def configure():
     os.system("sudo chmod a+rx /usr/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/bin/youtube")
     os.system("sudo chmod a+rx /usr/bin/yt-dlp")
+    
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp")
