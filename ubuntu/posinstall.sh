@@ -63,7 +63,7 @@ tar -zxvf ioncube_loaders_lin_x86*
 cp ioncube/ioncube_loader_lin_7.3.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 rm -f ioncube*
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk
+rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
 fi
 apt-get -y install daemonize
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
