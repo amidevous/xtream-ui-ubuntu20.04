@@ -308,8 +308,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install python-paramiko
 	if [[ "$VER" = "20.04" ]]; then
 	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1.1+1_ppa0_eoan_amd64.deb"
-	elif
-	if [[ "$VER" = "18.04" ]]; then
+	elif [[ "$VER" = "18.04" ]]; then
 	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1_amd64.deb"
 	fi
 	dpkg -i /tmp/libpng12.deb
