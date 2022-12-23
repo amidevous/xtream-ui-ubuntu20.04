@@ -14,14 +14,14 @@ def getVersion():
     except: return ""
 
 def prepare():
-    global rPackages
-    for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
-        try: os.remove(rFile)
-        except: pass
-    os.system("apt-get update > /dev/null")
-#    os.system("apt-get remove --auto-remove libcurl4 -y > /dev/null")
-    for rPackage in rPackages: os.system("apt-get install %s -y > /dev/null" % rPackage)
-    os.system("apt-get install -y > /dev/null") # Clean up above
+#    global rPackages
+#    for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
+#        try: os.remove(rFile)
+#        except: pass
+#    os.system("apt-get update > /dev/null")
+##    os.system("apt-get remove --auto-remove libcurl4 -y > /dev/null")
+#    for rPackage in rPackages: os.system("apt-get install %s -y > /dev/null" % rPackage)
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash -s > /dev/null")
     os.system("adduser --system --shell /bin/false --group --disabled-login xtreamcodes > /dev/null")
     if not os.path.exists("/home/xtreamcodes"): os.mkdir("/home/xtreamcodes")
     return True
@@ -50,12 +50,20 @@ def configure():
         rFile = open("/etc/fstab", "a")
         rFile.write("tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0\ntmpfs /home/xtreamcodes/iptv_xtream_codes/tmp tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=2G 0 0")
         rFile.close()
-    if not "xtreamcodes" in open("/etc/sudoers").read(): os.system('echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables" >> /etc/sudoers')
-    if not os.path.exists("/etc/init.d/xtreamcodes"):
-        rFile = open("/etc/init.d/xtreamcodes", "w")
-        rFile.write("#! /bin/bash\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh")
-        rFile.close()
-        os.system("chmod +x /etc/init.d/xtreamcodes > /dev/null")
+    if not "xtreamcodes" in open("/etc/sudoers").read():
+    os.system('echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers')
+    os.system('systemctl disable xtreamcodes > /dev/null')    
+    try: os.remove("/etc/init.d/xtreamcodes")
+    except: pass    
+    if not os.path.exists("/etc/systemd/system/xtreamcodes.service"):
+        rStart = open("/etc/systemd/system/xtreamcodes.service", "w")
+#        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamcodes\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamcodes if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+        rStart.write("[Unit]\nDescription=xtreamcodes systemd service\nAfter=network-online.target\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/home/xtreamcodes/iptv_xtream_codes/start_services.sh\n\n[Install]\nWantedBy=multi-user.target")               
+        rStart.close()
+        os.system("chmod +x /etc/systemd/system/xtreamcodes.service")
+        os.system("ln -s /etc/systemd/system/xtreamcodes.service /etc/systemd/system/multi-user.target.wants/xtreamcodes.service")
+        os.system("systemctl daemon-reload")
+        os.system("systemctl enable xtreamcodes")
     try: os.remove("/usr/bin/ffmpeg")
     except: pass
     if not os.path.exists("/home/xtreamcodes/iptv_xtream_codes/tv_archive"): os.mkdir("/home/xtreamcodes/iptv_xtream_codes/tv_archive/")
@@ -74,9 +82,32 @@ def configure():
     if not "api.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    api.xtream-codes.com" >> /etc/hosts')
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not "xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
-    if not "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" in open("/etc/crontab").read(): os.system('echo "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab')
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/posinstall.sh | bash -s > /dev/null")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/youtube-dl")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/youtube")    
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/bin/youtube-dl")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/bin/youtube")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/bin/yt-dlp")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
+    os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp") 
+    os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
+    os.system("sudo chmod a+rx /usr/local/bin/youtube")
+    os.system("sudo chmod a+rx /usr/local/bin/yt-dlp")
+    os.system("sudo chmod a+rx /usr/bin/youtube-dl")
+    os.system("sudo chmod a+rx /usr/bin/youtube")
+    os.system("sudo chmod a+rx /usr/bin/yt-dlp") 
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp")
+    
 
-def start(): os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+def start(first=True):
+    if first: printc("Starting Xtream Codes")
+    else: printc("Restarting Xtream Codes")
+    os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
+    os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh 2>/dev/null")
 
 def setPorts(rPorts):
     os.system("sed -i 's/listen 25461;/listen %d;/g' /home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf" % rPorts[0])
