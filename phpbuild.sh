@@ -323,7 +323,7 @@ cd /root/phpbuild
 wget https://www.php.net/distributions/php-7.3.33.tar.gz
 rm -rf php-7.3.33
 tar -xf php-7.3.33.tar.gz
-if [[ "$VER" = "22.04" ]]; then
+if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xf debian.tar.xz
 rm -f debian.tar.xz
@@ -536,7 +536,13 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/mcrypt.so
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
+if [[ "$VER" = "10" ]]; then
+wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
+dpkg -i checkinstall_1.6.2-4_amd64.deb
+rm -f checkinstall_1.6.2-4_amd64.deb
+else
 $PACKAGE_INSTALLER checkinstall
+fi
 $PACKAGE_REMOVER xcphp
 checkinstall \
     --pkgsource="" \
@@ -558,7 +564,13 @@ cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
+if [[ "$VER" = "10" ]]; then
+wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
+dpkg -i checkinstall_1.6.2-4_amd64.deb
+rm -f checkinstall_1.6.2-4_amd64.deb
+else
 $PACKAGE_INSTALLER checkinstall
+fi
 $PACKAGE_REMOVER xcphpmcrypt
 checkinstall \
     --pkgsource="" \
