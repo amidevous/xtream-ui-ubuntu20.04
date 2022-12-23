@@ -321,12 +321,10 @@ cd /root/phpbuild
 #cp -R iptv_xtream_codes/* /home/xtreamcodes/iptv_xtream_codes/
 wget https://www.php.net/distributions/php-7.3.33.tar.gz
 rm -rf php-7.3.33
-tar -xvf php-7.3.33.tar.gz
-echo "php download pause 60 seconds"
-sleep 60
+tar -xf php-7.3.33.tar.gz
 if [[ "$VER" = "22.04" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
-tar -xvf debian.tar.xz
+tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.3.33
 #patch -p1 < ../debian/patches/0001-libtool_fixes.patch
@@ -396,14 +394,14 @@ patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
 #patch -p1 < ../debian/patches/0065-NEWS.patch
 elif [[ "$VER" = "20.04" ]]; then
 wget https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-8+ubuntu20.04.1+deb.sury.org+1/php7.3_7.3.33-8+ubuntu20.04.1+deb.sury.org+1.debian.tar.xz -O debian.tar.xz
-tar -xvf debian.tar.xz
+tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.3.33
 #patch -p1 < ../debian/patches/0001-libtool_fixes.patch
 fi
 elif [[ "$VER" = "18.04" ]]; then
 wget https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-8+ubuntu18.04.1+deb.sury.org+1/php7.3_7.3.33-8+ubuntu18.04.1+deb.sury.org+1.debian.tar.xz -O debian.tar.xz
-tar -xvf debian.tar.xz
+tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.3.33
 patch -p1 < ../debian/patches/0001-libtool_fixes.patch
@@ -488,12 +486,12 @@ sed -i "s|/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 if [[ "$VER" = "22.04" ]]; then
 cd ..
 wget https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
-tar -xvf freetype-2.12.0.tar.xz
+tar -xf freetype-2.12.0.tar.xz
 cd freetype-2.12.0
 ./autogen.sh
 ./configure --enable-freetype-config --prefix=/opt/freetype2
 make
-apt-get -y install checkinstall
+$PACKAGE_INSTALLER checkinstall
 checkinstall
 cd ..
 cd php-7.3.33
@@ -527,31 +525,27 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/mcrypt.so
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
-apt-get -y install checkinstall
+$PACKAGE_INSTALLER checkinstall
 checkinstall
 cd ..
 rm -rf debian
-if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
-apt-get -y install libmcrypt-dev mcrypt
-elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 $PACKAGE_INSTALLER libmcrypt-devel mcrypt
-fi
 wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
-apt-get -y install checkinstall
+$PACKAGE_INSTALLER checkinstall
 checkinstall
 cd ..
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
-apt-get -y install libgeoip-dev
+$PACKAGE_INSTALLER libgeoip-dev
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 $PACKAGE_INSTALLER install GeoIP-devel
 fi
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
-tar -xvf geoip-1.1.1.tgz
+tar -xf geoip-1.1.1.tgz
 cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
