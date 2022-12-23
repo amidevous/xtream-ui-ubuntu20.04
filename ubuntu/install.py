@@ -54,7 +54,7 @@ def prepare(rType="MAIN"):
 #    os.system("apt-get install -y > /dev/null") # Clean up above
 #    try: os.remove("/tmp/libpng12.deb")
     os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash -s")    
-    except: pass
+#    except: pass
     try:
         subprocess.check_output("getent passwd xtreamcodes > /dev/null".split())
     except:
