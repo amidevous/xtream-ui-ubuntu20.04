@@ -398,7 +398,6 @@ tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.3.33
 #patch -p1 < ../debian/patches/0001-libtool_fixes.patch
-fi
 elif [[ "$VER" = "18.04" ]]; then
 wget https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-8+ubuntu18.04.1+deb.sury.org+1/php7.3_7.3.33-8+ubuntu18.04.1+deb.sury.org+1.debian.tar.xz -O debian.tar.xz
 tar -xf debian.tar.xz
