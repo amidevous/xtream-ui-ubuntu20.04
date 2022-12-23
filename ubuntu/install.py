@@ -138,7 +138,7 @@ def configure():
     if not os.path.exists("/etc/systemd/system/xtreamcodes.service"):
         rStart = open("/etc/systemd/system/xtreamcodes.service", "w")
 #        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamcodes\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamcodes if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
-        rStart.write("[Unit]\nDescription=xtreamcodes systemd service\nAfter=network-online.target\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/home/xtreamcodes/iptv_xtream_codes/start_services.sh\n\n[Install]\nWantedBy=multi-user.target > /dev/null")               
+        rStart.write("[Unit]\nDescription=xtreamcodes systemd service\nAfter=network-online.target\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/home/xtreamcodes/iptv_xtream_codes/start_services.sh\n\n[Install]\nWantedBy=multi-user.target")               
         rStart.close()
         os.system("chmod +x /etc/systemd/system/xtreamcodes.service")
         os.system("ln -s /etc/systemd/system/xtreamcodes.service /etc/systemd/system/multi-user.target.wants/xtreamcodes.service")
