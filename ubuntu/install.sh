@@ -1,5 +1,5 @@
 #!/bin/bash
-wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/depbuild.sh | bash -s
+wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash -s
 apt-get update
 apt-get -y dist-upgrade
 apt-get -y install mariadb-server
