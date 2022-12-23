@@ -509,6 +509,8 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xcfreetype2 \
     --requires="" -y
+echo "pause 60 seconde checkinstall xcfreetype2"
+sleep 60
 cd ..
 cd php-7.3.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/opt/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-mcrypt' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-mysql=mysqlnd' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--enable-gd-native-ttf' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
@@ -560,6 +562,8 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xcphp \
     --requires="" -y
+echo "pause 60 seconde checkinstall xcphp"
+sleep 60
 cd ..
 rm -rf debian
 $PACKAGE_INSTALLER libmcrypt-devel mcrypt
@@ -588,6 +592,8 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xcphpmcrypt \
     --requires="" -y
+echo "pause 60 seconde checkinstall xcphpmcrypt"
+sleep 60
 cd ..
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 $PACKAGE_INSTALLER libgeoip-dev
@@ -612,6 +618,8 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xcphpgeoip \
     --requires="" -y
+echo "pause 60 seconde checkinstall xcphpgeoip"
+sleep 60
 cd ..
 find ./ -name '*.deb'
 echo "finish"
