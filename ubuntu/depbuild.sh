@@ -307,10 +307,10 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install python3-paramiko
 	apt-get -y install python-paramiko
 	if [[ "$VER" = "20.04" ]]; then
-	wget -q -O /tmp/libpng12.deb "https://www.dropbox.com/s/qqz00uqtnx869yp/libpng12-0_1.2.54-1ubuntu1.1%2B1_ppa0_eoan_amd64.deb?dl=1"
+	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1.1+1_ppa0_eoan_amd64.deb"
 	elif
 	if [[ "$VER" = "18.04" ]]; then
-	wget -q -O /tmp/libpng12.deb "https://www.dropbox.com/s/u12csy63mmayii1/libpng12-0_1.2.54-1ubuntu1_amd64.deb?dl=1"
+	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1_amd64.deb"
 	fi
 	dpkg -i /tmp/libpng12.deb
 	apt-get -yf install
