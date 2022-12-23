@@ -3,7 +3,7 @@
 import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
 
-rDownloadURL = {"main": "https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz", "sub": "https://www.dropbox.com/s/nzgidrjy4ju6w1z/sub_xtreamcodes_reborn.tar.gz?dl=1"}
+rDownloadURL = {"main": "https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xtreamcodes_reborn.tar.gz", "sub": "https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/sub_xtreamcodes_reborn.tar.gz"}
 rPackages = ["libcurl3-gnutls", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "mcrypt", "nscd", "htop", "zip", "unzip", "mc", "mariadb-server"]
 rInstall = {"MAIN": "main", "LB": "sub"}
 rMySQLCnf = "IyBYdHJlYW0gQ29kZXMKCltjbGllbnRdCnBvcnQgICAgICAgICAgICA9IDMzMDYKCltteXNxbGRfc2FmZV0KbmljZSAgICAgICAgICAgID0gMAoKW215c3FsZF0KdXNlciAgICAgICAgICAgID0gbXlzcWwKcG9ydCAgICAgICAgICAgID0gNzk5OQpiYXNlZGlyICAgICAgICAgPSAvdXNyCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsCnRtcGRpciAgICAgICAgICA9IC90bXAKbGMtbWVzc2FnZXMtZGlyID0gL3Vzci9zaGFyZS9teXNxbApza2lwLWV4dGVybmFsLWxvY2tpbmcKc2tpcC1uYW1lLXJlc29sdmU9MQoKYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqCmtleV9idWZmZXJfc2l6ZSA9IDEyOE0KCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0KbWF4X2FsbG93ZWRfcGFja2V0ICAgICAgPSA2NE0KbXlpc2FtLXJlY292ZXItb3B0aW9ucyA9IEJBQ0tVUAptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyCnF1ZXJ5X2NhY2hlX2xpbWl0ICAgICAgID0gNE0KcXVlcnlfY2FjaGVfc2l6ZSAgICAgICAgPSAwCnF1ZXJ5X2NhY2hlX3R5cGUJPSAwCgpleHBpcmVfbG9nc19kYXlzICAgICAgICA9IDEwCm1heF9iaW5sb2dfc2l6ZSAgICAgICAgID0gMTAwTQoKbWF4X2Nvbm5lY3Rpb25zICA9IDIwMDAgI3JlY29tbWVuZGVkIGZvciAxNkdCIHJhbSAKYmFja19sb2cgPSA0MDk2Cm9wZW5fZmlsZXNfbGltaXQgPSAxNjM4NAppbm5vZGJfb3Blbl9maWxlcyA9IDE2Mzg0Cm1heF9jb25uZWN0X2Vycm9ycyA9IDMwNzIKdGFibGVfb3Blbl9jYWNoZSA9IDQwOTYKdGFibGVfZGVmaW5pdGlvbl9jYWNoZSA9IDQwOTYKCgp0bXBfdGFibGVfc2l6ZSA9IDFHCm1heF9oZWFwX3RhYmxlX3NpemUgPSAxRwoKaW5ub2RiX2J1ZmZlcl9wb29sX3NpemUgPSAxMkcgI3JlY29tbWVuZGVkIGZvciAxNkdCIHJhbQppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMQppbm5vZGJfcmVhZF9pb190aHJlYWRzID0gNjQKaW5ub2RiX3dyaXRlX2lvX3RocmVhZHMgPSA2NAppbm5vZGJfdGhyZWFkX2NvbmN1cnJlbmN5ID0gMAppbm5vZGJfZmx1c2hfbG9nX2F0X3RyeF9jb21taXQgPSAwCmlubm9kYl9mbHVzaF9tZXRob2QgPSBPX0RJUkVDVApwZXJmb3JtYW5jZV9zY2hlbWEgPSBPTgppbm5vZGItZmlsZS1wZXItdGFibGUgPSAxCmlubm9kYl9pb19jYXBhY2l0eT0yMDAwMAppbm5vZGJfdGFibGVfbG9ja3MgPSAwCmlubm9kYl9sb2NrX3dhaXRfdGltZW91dCA9IDAKaW5ub2RiX2RlYWRsb2NrX2RldGVjdCA9IDAKaW5ub2RiX2xvZ19maWxlX3NpemUgPSA1MTJNCgpzcWwtbW9kZT0iTk9fRU5HSU5FX1NVQlNUSVRVVElPTiIKCltteXNxbGR1bXBdCnF1aWNrCnF1b3RlLW5hbWVzCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gMTZNCgpbbXlzcWxdCgpbaXNhbWNoa10Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQo=".decode("base64")
@@ -159,9 +159,25 @@ def configure():
     os.system('chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>/dev/null && wget -q "https://www.dropbox.com/s/42fjxiob12hw009/update.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
     os.system("sed -i 's|echo \"Xtream Codes Reborn\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
     os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/posinstall.sh | bash -s > /dev/null")
-    os.system("sudo wget -q https://www.dropbox.com/s/3h3cc5rnipdni39/youtube-dl?dl=1 -O /usr/local/bin/youtube-dl")
+#    os.system("sudo wget -q https://www.dropbox.com/s/3h3cc5rnipdni39/youtube-dl?dl=1 -O /usr/local/bin/youtube-dl")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/local/bin/youtube-dl")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/local/bin/youtube")    
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/local/bin/yt-dlp")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/bin/youtube-dl")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/bin/youtube")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /usr/bin/yt-dlp")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
+    os.system("sudo wget -q "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" -O /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp") 
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
-
+    os.system("sudo chmod a+rx /usr/local/bin/youtube")
+    os.system("sudo chmod a+rx /usr/local/bin/yt-dlp")
+    os.system("sudo chmod a+rx /usr/bin/youtube-dl")
+    os.system("sudo chmod a+rx /usr/bin/youtube")
+    os.system("sudo chmod a+rx /usr/bin/yt-dlp")
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
+    os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp")
 def start(first=True):
     if first: printc("Starting Xtream Codes")
     else: printc("Restarting Xtream Codes")
