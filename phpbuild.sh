@@ -285,6 +285,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 	apt-get -y build-dep php7.3
+	apt-get -y install libmariadb-dev libmariadb-dev-compat libmariadbclient-dev libmariadbd-dev dbconfig-mysql mariadb-server
 elif [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 	$PACKAGE_INSTALLER wget
 	if [[ "$VER" = "7" ]]; then
