@@ -310,7 +310,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	wget -q -O /tmp/libpng12.deb "https://www.dropbox.com/s/qqz00uqtnx869yp/libpng12-0_1.2.54-1ubuntu1.1%2B1_ppa0_eoan_amd64.deb?dl=1"
 	elif
 	if [[ "$VER" = "18.04" ]]; then
-	wget -q -O /tmp/libpng12.deb https://www.dropbox.com/s/u12csy63mmayii1/libpng12-0_1.2.54-1ubuntu1_amd64.deb?dl=1
+	wget -q -O /tmp/libpng12.deb "https://www.dropbox.com/s/u12csy63mmayii1/libpng12-0_1.2.54-1ubuntu1_amd64.deb?dl=1"
 	fi
 	dpkg -i /tmp/libpng12.deb
 	apt-get -yf install
