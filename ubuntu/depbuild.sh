@@ -282,8 +282,30 @@ EOF
 fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
-	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
+	apt-get -y install debhelper 
+	apt-get -y install cdbs
+	apt-get -y install lintian
+	apt-get -y install build-essential
+	apt-get -y install fakeroot
+	apt-get -y install devscripts
+	apt-get -y install dh-make
 	apt-get -y build-dep php7.3
+	apt-get -y install mariadb-server
+	apt-get -y install curl
+	apt-get -y install libxslt1-dev
+	apt-get -y install libcurl3-gnutls
+	apt-get -y install libgeoip-dev
+	apt-get -y install python
+	apt-get -y install e2fsprogs
+	apt-get -y install wget
+	apt-get -y install mcrypt
+	apt-get -y install nscd
+	apt-get -y install htop
+	apt-get -y install zip
+	apt-get -y install unzip
+	apt-get -y install mc
+	apt-get -y install python3-paramiko
+	apt-get -y install python-paramiko
 elif [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 	$PACKAGE_INSTALLER wget
 	if [[ "$VER" = "7" ]]; then
