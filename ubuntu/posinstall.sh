@@ -36,15 +36,18 @@ echo "Detected : $OS  $VER  $ARCH"
 #"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
-if [[ "$OS" = "Ubuntu" && "$VER" = "20.04" && "$ARCH" == "x86_64" ]] ; then
+if [[ "$OS" = "Ubuntu" && "("$VER" = "18.04" || "$VER" = "20.04" ) && "$ARCH" == "x86_64" ]] ; then
 echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
 if [[ "$OS" = "Ubuntu" ]] ; then
-apt-get -y install libcurl4 curl
+if [[ "$VER" = "18.04" ]] ; then
+apt-get -y install libcurl3
+fi
 if [[ "$VER" = "20.04" ]] ; then
+apt-get -y install libcurl4 curl
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_20.04.deb -O xcphp_7.3.33-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp-mcrypt_1.0.5-1_amd64_20.04.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_20.04.deb -O xcphpgeoip_1.1.1-1_amd64.deb
