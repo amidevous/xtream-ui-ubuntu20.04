@@ -482,7 +482,7 @@ sed -i "s|/usr/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-con
 sed -i "s|/usr/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-if [[ "$VER" = "22.04" ]]; then
+if [[ "$VER" = "22.04" || "$VER" = "10" ]]; then
 cd ..
 wget https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
 tar -xf freetype-2.12.0.tar.xz
@@ -490,7 +490,13 @@ cd freetype-2.12.0
 ./autogen.sh
 ./configure --enable-freetype-config --prefix=/opt/freetype2
 make
+if [[ "$VER" = "10" ]]; then
+wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
+dpkg -i checkinstall_1.6.2-4_amd64.deb
+rm -f checkinstall_1.6.2-4_amd64.deb
+else
 $PACKAGE_INSTALLER checkinstall
+fi
 $PACKAGE_REMOVER xcfreetype2
 checkinstall \
     --pkgsource="" \
