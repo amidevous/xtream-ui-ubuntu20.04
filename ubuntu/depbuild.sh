@@ -306,6 +306,10 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install mc
 	apt-get -y install python3-paramiko
 	apt-get -y install python-paramiko
+	wget -q -O /tmp/libpng12.deb "https://www.dropbox.com/s/qqz00uqtnx869yp/libpng12-0_1.2.54-1ubuntu1.1%2B1_ppa0_eoan_amd64.deb?dl=1"
+	dpkg -i /tmp/libpng12.deb
+	apt-get -yf install
+	rm -f /tmp/libpng12.deb
 elif [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
 	$PACKAGE_INSTALLER wget
 	if [[ "$VER" = "7" ]]; then
