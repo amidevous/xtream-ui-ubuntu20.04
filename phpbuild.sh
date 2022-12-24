@@ -432,7 +432,7 @@ checkinstall \
     --pkgname=xtreamui-php \
     --requires="xtreamui-freetype2" -y
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-echo "pause 60 seconde checkinstall xcphp"
+echo "pause 60 seconde checkinstall xtreamui-php"
 sleep 60
 cd ..
 rm -rf debian
@@ -460,7 +460,7 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xtreamui-php-mcrypt \
     --requires="xtreamui-php" -y
-echo "pause 60 seconde checkinstall xcphpmcrypt"
+echo "pause 60 seconde checkinstall xtreamui-php-mcrypt"
 sleep 60
 cd ..
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
@@ -486,7 +486,7 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xtreamui-php-geoip \
     --requires="xtreamui-php" -y
-echo "pause 60 seconde checkinstall xcphpgeoip"
+echo "pause 60 seconde checkinstall xtreamui-php-geoip"
 sleep 60
 cd ..
 find ./ -name '*.deb'
