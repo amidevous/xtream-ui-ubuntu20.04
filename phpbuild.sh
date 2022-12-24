@@ -335,154 +335,7 @@ wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.
 tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.3.33
-#patch -p1 < ../debian/patches/0001-libtool_fixes.patch
-#patch -p1 < ../debian/patches/0002-static_openssl.patch
-#patch -p1 < ../debian/patches/0003-debian_quirks.patch
-#patch -p1 < ../debian/patches/0004-libtool2.2.patch
-#patch -p1 < ../debian/patches/0005-we_WANT_libtool.patch
-#patch -p1 < ../debian/patches/0006-php-5.4.9-phpinfo.patch
-#patch -p1 < ../debian/patches/0007-extension_api.patch
-#patch -p1 < ../debian/patches/0008-no_apache_installed.patch
-#patch -p1 < ../debian/patches/0009-recode_is_shared.patch
-#patch -p1 < ../debian/patches/0010-proc_open.patch
-#patch -p1 < ../debian/patches/0011-php.ini_securitynotes.patch
-#patch -p1 < ../debian/patches/0012-php-5.4.7-libdb.patch
-#patch -p1 < ../debian/patches/0013-Add-support-for-use-of-the-system-timezone-database.patch
-#patch -p1 < ../debian/patches/0014-strcmp_null-OnUpdateErrorLog.patch
-#patch -p1 < ../debian/patches/0015-dont-gitclean-in-build.patch
-#patch -p1 < ../debian/patches/0016-qdbm-is-usr_include_qdbm.patch
-#patch -p1 < ../debian/patches/0017-session_save_path.patch
-#patch -p1 < ../debian/patches/0018-php-fpm-man-section-and-cleanup.patch
-#patch -p1 < ../debian/patches/0019-fpm-config.patch
-#patch -p1 < ../debian/patches/0020-php-fpm-sysconfdir.patch
-#patch -p1 < ../debian/patches/0021-lp564920-fix-big-files.patch
-#patch -p1 < ../debian/patches/0022-temporary-path-fixes-for-multiarch.patch
-#patch -p1 < ../debian/patches/0023-hurd-noptrace.patch
-#patch -p1 < ../debian/patches/0024-php-5.3.9-mysqlnd.patch
-#patch -p1 < ../debian/patches/0025-php-5.3.9-gnusrc.patch
-#patch -p1 < ../debian/patches/0026-php-5.3.3-macropen.patch
-#patch -p1 < ../debian/patches/0027-php-5.2.4-norpath.patch
-#patch -p1 < ../debian/patches/0028-php-5.2.4-embed.patch
-#patch -p1 < ../debian/patches/0029-php-fpm-m68k.patch
-#patch -p1 < ../debian/patches/0030-expose_all_built_and_installed_apis.patch
-#patch -p1 < ../debian/patches/0031-Use-system-timezone.patch
-#patch -p1 < ../debian/patches/0032-zlib-largefile-function-renaming.patch
-#patch -p1 < ../debian/patches/0033-php-fpm-do-reload-on-SIGHUP.patch
-#patch -p1 < ../debian/patches/0034-php-5.4.8-ldap_r.patch
-#patch -p1 < ../debian/patches/0035-php-5.4.9-fixheader.patch
-#patch -p1 < ../debian/patches/0036-php-5.6.0-noNO.patch
-#patch -p1 < ../debian/patches/0037-php-5.6.0-oldpcre.patch
-#patch -p1 < ../debian/patches/0038-hack-phpdbg-to-explicitly-link-with-libedit.patch
-#patch -p1 < ../debian/patches/0039-Fix-ZEND_MM_ALIGNMENT-on-m64k.patch
-#patch -p1 < ../debian/patches/0040-Add-patch-to-install-php7-module-directly-to-APXS_LI.patch
-#patch -p1 < ../debian/patches/0041-Remove-W3C-validation-icon-to-not-expose-the-reader-.patch
-#patch -p1 < ../debian/patches/0042-Don-t-put-INSTALL_ROOT-into-phar.phar-exec-stanza.patch
-#patch -p1 < ../debian/patches/0043-XMLRPC-EPI-library-has-to-be-linked-as-lxmlrpc-epi.patch
-#patch -p1 < ../debian/patches/0044-Really-expand-libdir-datadir-into-EXPANDED_LIBDIR-DA.patch
-#patch -p1 < ../debian/patches/0045-Fix-ext-date-lib-parse_tz-PATH_MAX-HURD-FTBFS.patch
-#patch -p1 < ../debian/patches/0046-Use-pkg-config-for-FreeType2-detection.patch
-#patch -p1 < ../debian/patches/0047-Amend-C-11-for-intl-compilation-on-older-distributio.patch
-#patch -p1 < ../debian/patches/0048-Use-pkg-config-for-PHP_SETUP_LIBXML.patch
-#patch -p1 < ../debian/patches/0049-Allow-numeric-UG-ID-in-FPM-listen.-owner-group.patch
-#patch -p1 < ../debian/patches/0050-Allow-fpm-tests-to-be-run-with-long-socket-path.patch
-#patch -p1 < ../debian/patches/0051-Skip-fpm-tests-not-designed-to-be-run-as-root.patch
-#patch -p1 < ../debian/patches/0052-Add-pkg-config-m4-files-to-phpize-script.patch
-#patch -p1 < ../debian/patches/0053-In-phpize-also-copy-config.guess-config.sub-ltmain.s.patch
-#patch -p1 < ../debian/patches/0054-Use-libenchant-2-when-available.patch
-#patch -p1 < ../debian/patches/0055-remove-deprecated-call-and-deprecate-function-to-be-.patch
-#patch -p1 < ../debian/patches/0056-Don-t-use-hrtimers-on-GNU-Hurd.patch
-#patch -p1 < ../debian/patches/0057-Show-packaging-credits.patch
-#patch -p1 < ../debian/patches/0058-Allow-printing-credits-buffer-larger-than-4k.patch
-#patch -p1 < ../debian/patches/0059-Don-t-close-the-credits-buffer-file-descriptor-too-e.patch
 patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
-#patch -p1 < ../debian/patches/0061-Use-true-false-instead-of-TRUE-FALSE-in-intl.patch
-#patch -p1 < ../debian/patches/0062-Change-UBool-to-bool-for-equality-operators-in-ICU-7.patch
-#patch -p1 < ../debian/patches/0063-Fix-81720-Uninitialized-array-in-pg_query_params-lea.patch
-#patch -p1 < ../debian/patches/0064-Fix-bug-81719-mysqlnd-pdo-password-buffer-overflow.patch
-#patch -p1 < ../debian/patches/0065-NEWS.patch
-elif [[ "$VER" = "20.04" ]]; then
-wget https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-8+ubuntu20.04.1+deb.sury.org+1/php7.3_7.3.33-8+ubuntu20.04.1+deb.sury.org+1.debian.tar.xz -O debian.tar.xz
-tar -xf debian.tar.xz
-rm -f debian.tar.xz
-cd php-7.3.33
-#patch -p1 < ../debian/patches/0001-libtool_fixes.patch
-elif [[ "$VER" = "18.04" ]]; then
-wget https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-8+ubuntu18.04.1+deb.sury.org+1/php7.3_7.3.33-8+ubuntu18.04.1+deb.sury.org+1.debian.tar.xz -O debian.tar.xz
-tar -xf debian.tar.xz
-rm -f debian.tar.xz
-cd php-7.3.33
-patch -p1 < ../debian/patches/0001-libtool_fixes.patch
-patch -p1 < ../debian/patches/0002-static_openssl.patch
-patch -p1 < ../debian/patches/0003-debian_quirks.patch
-patch -p1 < ../debian/patches/0004-libtool2.2.patch
-patch -p1 < ../debian/patches/0005-we_WANT_libtool.patch
-patch -p1 < ../debian/patches/0006-php-5.4.9-phpinfo.patch
-patch -p1 < ../debian/patches/0007-extension_api.patch
-patch -p1 < ../debian/patches/0008-no_apache_installed.patch
-patch -p1 < ../debian/patches/0009-recode_is_shared.patch
-patch -p1 < ../debian/patches/0010-proc_open.patch
-patch -p1 < ../debian/patches/0011-php.ini_securitynotes.patch
-patch -p1 < ../debian/patches/0012-php-5.4.7-libdb.patch
-patch -p1 < ../debian/patches/0013-Add-support-for-use-of-the-system-timezone-database.patch
-patch -p1 < ../debian/patches/0014-strcmp_null-OnUpdateErrorLog.patch
-patch -p1 < ../debian/patches/0015-dont-gitclean-in-build.patch
-patch -p1 < ../debian/patches/0016-qdbm-is-usr_include_qdbm.patch
-patch -p1 < ../debian/patches/0017-session_save_path.patch
-patch -p1 < ../debian/patches/0018-php-fpm-man-section-and-cleanup.patch
-patch -p1 < ../debian/patches/0019-fpm-config.patch
-patch -p1 < ../debian/patches/0020-php-fpm-sysconfdir.patch
-patch -p1 < ../debian/patches/0021-lp564920-fix-big-files.patch
-patch -p1 < ../debian/patches/0022-temporary-path-fixes-for-multiarch.patch
-patch -p1 < ../debian/patches/0023-hurd-noptrace.patch
-patch -p1 < ../debian/patches/0024-php-5.3.9-mysqlnd.patch
-patch -p1 < ../debian/patches/0025-php-5.3.9-gnusrc.patch
-patch -p1 < ../debian/patches/0026-php-5.3.3-macropen.patch
-patch -p1 < ../debian/patches/0027-php-5.2.4-norpath.patch
-patch -p1 < ../debian/patches/0028-php-5.2.4-embed.patch
-patch -p1 < ../debian/patches/0029-php-fpm-m68k.patch
-patch -p1 < ../debian/patches/0030-expose_all_built_and_installed_apis.patch
-patch -p1 < ../debian/patches/0031-Use-system-timezone.patch
-patch -p1 < ../debian/patches/0032-zlib-largefile-function-renaming.patch
-patch -p1 < ../debian/patches/0033-php-fpm-do-reload-on-SIGHUP.patch
-patch -p1 < ../debian/patches/0034-php-5.4.8-ldap_r.patch
-patch -p1 < ../debian/patches/0035-php-5.4.9-fixheader.patch
-patch -p1 < ../debian/patches/0036-php-5.6.0-noNO.patch
-patch -p1 < ../debian/patches/0037-php-5.6.0-oldpcre.patch
-patch -p1 < ../debian/patches/0038-hack-phpdbg-to-explicitly-link-with-libedit.patch
-patch -p1 < ../debian/patches/0039-Fix-ZEND_MM_ALIGNMENT-on-m64k.patch
-patch -p1 < ../debian/patches/0040-Add-patch-to-install-php7-module-directly-to-APXS_LI.patch
-patch -p1 < ../debian/patches/0041-Remove-W3C-validation-icon-to-not-expose-the-reader-.patch
-patch -p1 < ../debian/patches/0042-Don-t-put-INSTALL_ROOT-into-phar.phar-exec-stanza.patch
-patch -p1 < ../debian/patches/0043-XMLRPC-EPI-library-has-to-be-linked-as-lxmlrpc-epi.patch
-patch -p1 < ../debian/patches/0044-Really-expand-libdir-datadir-into-EXPANDED_LIBDIR-DA.patch
-patch -p1 < ../debian/patches/0045-Fix-ext-date-lib-parse_tz-PATH_MAX-HURD-FTBFS.patch
-patch -p1 < ../debian/patches/0046-Use-pkg-config-for-FreeType2-detection.patch
-patch -p1 < ../debian/patches/0047-Amend-C-11-for-intl-compilation-on-older-distributio.patch
-patch -p1 < ../debian/patches/0048-Use-pkg-config-for-PHP_SETUP_LIBXML.patch
-patch -p1 < ../debian/patches/0049-Allow-numeric-UG-ID-in-FPM-listen.-owner-group.patch
-patch -p1 < ../debian/patches/0050-Allow-fpm-tests-to-be-run-with-long-socket-path.patch
-patch -p1 < ../debian/patches/0051-Skip-fpm-tests-not-designed-to-be-run-as-root.patch
-patch -p1 < ../debian/patches/0052-Add-pkg-config-m4-files-to-phpize-script.patch
-patch -p1 < ../debian/patches/0053-In-phpize-also-copy-config.guess-config.sub-ltmain.s.patch
-patch -p1 < ../debian/patches/0054-Use-libenchant-2-when-available.patch
-patch -p1 < ../debian/patches/0055-remove-deprecated-call-and-deprecate-function-to-be-.patch
-patch -p1 < ../debian/patches/0056-Don-t-use-hrtimers-on-GNU-Hurd.patch
-patch -p1 < ../debian/patches/0057-Show-packaging-credits.patch
-patch -p1 < ../debian/patches/0058-Allow-printing-credits-buffer-larger-than-4k.patch
-patch -p1 < ../debian/patches/0059-Don-t-close-the-credits-buffer-file-descriptor-too-e.patch
-patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
-patch -p1 < ../debian/patches/0061-Use-true-false-instead-of-TRUE-FALSE-in-intl.patch
-patch -p1 < ../debian/patches/0062-Change-UBool-to-bool-for-equality-operators-in-ICU-7.patch
-patch -p1 < ../debian/patches/0063-Fix-81720-Uninitialized-array-in-pg_query_params-lea.patch
-patch -p1 < ../debian/patches/0064-Fix-bug-81719-mysqlnd-pdo-password-buffer-overflow.patch
-patch -p1 < ../debian/patches/0065-NEWS.patch
-patch -p1 < ../debian/patches/0066-ax_gcc_func_attribute-Revise-the-detection-of-unknow.patch
-patch -p1 < ../debian/patches/0067-Fix-bug-79589-ssl3_read_n-unexpected-eof-while-readi.patch
-patch -p1 < ../debian/patches/0068-Fix-81727-Don-t-mangle-HTTP-variable-names-that-clas.patch
-patch -p1 < ../debian/patches/0069-Fix-81726-phar-wrapper-DOS-when-using-quine-gzip-fil.patch
-patch -p1 < ../debian/patches/0070-Fix-regression-introduced-by-fixing-bug-81726.patch
-patch -p1 < ../debian/patches/0071-fix-NEWS.patch
-patch -p1 < ../debian/patches/0072-Fix-bug-81738-buffer-overflow-in-hash_update-on-long.patch
 else
 cd php-7.3.33
 fi
@@ -490,21 +343,21 @@ sed -i "s|/usr/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-con
 sed -i "s|/usr/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-if [[ "$VER" = "22.04" || "$VER" = "10" ]]; then
+#if [[ "$VER" = "22.04" || "$VER" = "10" ]]; then
 cd ..
 wget https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
 tar -xf freetype-2.12.0.tar.xz
 cd freetype-2.12.0
 ./autogen.sh
-./configure --enable-freetype-config --prefix=/opt/freetype2
+./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
 make
 $PACKAGE_INSTALLER checkinstall
-$PACKAGE_REMOVER xcfreetype2
-mkdir -p /opt/freetype2/include
-mkdir -p /opt/freetype2/share
-mkdir -p /opt/freetype2/include/freetype2/freetype
-mkdir -p /opt/freetype2/share/man
-mkdir -p /opt/freetype2/lib/
+$PACKAGE_REMOVER xtreamui-freetype2
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/include
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/share
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/include/freetype2/freetype
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/share/man
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/lib/
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -514,16 +367,16 @@ checkinstall \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="2.12" \
     --pkgrelease="1" \
-    --pkgname=xcfreetype2 \
+    --pkgname=xtreamui-freetype2 \
     --requires="" -y
-echo "pause 60 seconde checkinstall xcfreetype2"
+echo "pause 60 seconde checkinstall xtreamui-freetype2"
 sleep 60
 cd ..
 cd php-7.3.33
-'./configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/opt/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
-else
-./configure $(/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config --configure-options)
-fi
+'./configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
+#else
+#./configure $(/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config --configure-options)
+#fi
 make -j8
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/GeoIP.dat
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/bin
@@ -549,7 +402,7 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/peclcmd.php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 $PACKAGE_INSTALLER checkinstall
-$PACKAGE_REMOVER xcphp
+$PACKAGE_REMOVER xtreamui-php
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/bin
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/include
@@ -576,8 +429,8 @@ checkinstall \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="7.3.33" \
     --pkgrelease="1" \
-    --pkgname=xcphp \
-    --requires="" -y
+    --pkgname=xtreamui-php \
+    --requires="xtreamui-freetype2" -y
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 echo "pause 60 seconde checkinstall xcphp"
 sleep 60
@@ -595,7 +448,7 @@ cd mcrypt-1.0.5
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
 $PACKAGE_INSTALLER checkinstall
-$PACKAGE_REMOVER xcphpmcrypt
+$PACKAGE_REMOVER xtreamui-php-mcrypt
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -605,8 +458,8 @@ checkinstall \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="1.0.5" \
     --pkgrelease="1" \
-    --pkgname=xcphpmcrypt \
-    --requires="" -y
+    --pkgname=xtreamui-php-mcrypt \
+    --requires="xtreamui-php" -y
 echo "pause 60 seconde checkinstall xcphpmcrypt"
 sleep 60
 cd ..
@@ -621,7 +474,7 @@ cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
-$PACKAGE_REMOVER xcphpgeoip
+$PACKAGE_REMOVER xtreamui-php-geoip
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -631,8 +484,8 @@ checkinstall \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="1.1.1" \
     --pkgrelease="1" \
-    --pkgname=xcphpgeoip \
-    --requires="" -y
+    --pkgname=xtreamui-php-geoip \
+    --requires="xtreamui-php" -y
 echo "pause 60 seconde checkinstall xcphpgeoip"
 sleep 60
 cd ..
