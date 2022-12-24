@@ -500,6 +500,11 @@ cd freetype-2.12.0
 make
 $PACKAGE_INSTALLER checkinstall
 $PACKAGE_REMOVER xcfreetype2
+mkdir -p /opt/freetype2/include
+mkdir -p /opt/freetype2/share
+mkdir -p /opt/freetype2/include/freetype2/freetype
+mkdir -p /opt/freetype2/share/man
+mkdir -p /opt/freetype2/lib/
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -545,6 +550,23 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 $PACKAGE_INSTALLER checkinstall
 $PACKAGE_REMOVER xcphp
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/bin
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/include
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/sbin
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/var
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Archive
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Console
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/OS
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/PEAR
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Structures
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/XML
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/build
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/data
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/doc
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -556,11 +578,16 @@ checkinstall \
     --pkgrelease="1" \
     --pkgname=xcphp \
     --requires="" -y
+rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 echo "pause 60 seconde checkinstall xcphp"
 sleep 60
 cd ..
 rm -rf debian
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+$PACKAGE_INSTALLER libmcrypt-dev mcrypt
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" ]]; then
 $PACKAGE_INSTALLER libmcrypt-devel mcrypt
+fi
 wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
