@@ -46,12 +46,12 @@ fi
 if [[ "$OS" = "debian" ]] ; then
 if [[ "$VER" = "10" ]] ; then
 apt-get -y install libcurl4 curl
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_debian_10.deb -O xcphp_7.3.33-1_amd64.deb
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_debian_10.deb -O xcfreetype2_2.12-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_debian_10.deb -O xcphp_7.3.33-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpmcrypt_1.0.5-1_amd64_debian_10.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_debian_10.deb -O xcphpgeoip_1.1.1-1_amd64.deb
-dpkg -i xcphp_7.3.33-1_amd64.deb
-rm -f xcphp_7.3.33-1_amd64.deb
+dpkg -i xcfreetype2_2.12-1_amd64.deb
+rm -f xcfreetype2_2.12-1_amd64.deb
 dpkg -i xcphp_7.3.33-1_amd64.deb
 rm -f xcphp_7.3.33-1_amd64.deb
 dpkg -i xcphp-mcrypt_1.0.5-1_amd64.deb
@@ -92,12 +92,12 @@ wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ub
 rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
 elif [[ "$VER" = "22.04" ]] ; then
 apt-get -y install libcurl4 curl
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_22.04.deb -O xcphp_7.3.33-1_amd64.deb
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_22.04.deb -O xcfreetype2_2.12-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_22.04.deb -O xcphp_7.3.33-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpmcrypt_1.0.5-1_amd64_22.04.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_22.04.deb -O xcphpgeoip_1.1.1-1_amd64.deb
-dpkg -i xcphp_7.3.33-1_amd64.deb
-rm -f xcphp_7.3.33-1_amd64.deb
+dpkg -i xcfreetype2_2.12-1_amd64.deb
+rm -f xcfreetype2_2.12-1_amd64.deb
 dpkg -i xcphp_7.3.33-1_amd64.deb
 rm -f xcphp_7.3.33-1_amd64.deb
 dpkg -i xcphp-mcrypt_1.0.5-1_amd64.deb
