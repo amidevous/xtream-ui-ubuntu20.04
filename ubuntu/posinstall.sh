@@ -43,7 +43,7 @@ else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
-if [[ "$OS" = "Ubuntu" ]] ; then
+if [[ "$OS" = "debian" ]] ; then
 if [[ "$VER" = "10" ]] ; then
 apt-get -y install libcurl4 curl
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_debian_10.deb -O xcphp_7.3.33-1_amd64.deb
