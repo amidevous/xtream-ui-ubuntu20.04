@@ -268,6 +268,8 @@ deb http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-fr
 deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib non-free
 deb http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
 deb-src http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
+deb http://deb.debian.org/debian $(lsb_release -sc)-backports main
+deb-src http://deb.debian.org/debian $(lsb_release -sc)-backports main
 EOF
 	cat > /etc/apt/sources.list.d/php.list <<EOF
 deb https://packages.sury.org/php/ $(lsb_release -sc) main
@@ -279,6 +281,10 @@ deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
 	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
+	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+		cat > /etc/apt/sources.list.d/mariadb.list <<EOF
+deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main
+EOF
 	apt-get update
 fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
@@ -492,22 +498,8 @@ cd freetype-2.12.0
 ./autogen.sh
 ./configure --enable-freetype-config --prefix=/opt/freetype2
 make
-if [[ "$VER" = "10" ]]; then
-wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
-dpkg -i checkinstall_1.6.2-4_amd64.deb
-rm -f checkinstall_1.6.2-4_amd64.deb
-else
 $PACKAGE_INSTALLER checkinstall
-fi
 $PACKAGE_REMOVER xcfreetype2
-mkdir -p /opt/freetype2
-mkdir -p /opt/freetype2/include
-mkdir -p /opt/freetype2/lib
-mkdir -p /opt/freetype2/include
-mkdir -p /opt/freetype2/include/freetype2
-mkdir -p /opt/freetype2/include/freetype2/freetype
-mkdir -p /opt/freetype2/share
-mkdir -p /opt/freetype2/share/man
 checkinstall \
     --pkgsource="" \
     --pkglicense="GPL3" \
@@ -550,16 +542,8 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/doc
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/pearcmd.php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/peclcmd.php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/mcrypt.so
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.a
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/opcache.so
-if [[ "$VER" = "10" ]]; then
-wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
-dpkg -i checkinstall_1.6.2-4_amd64.deb
-rm -f checkinstall_1.6.2-4_amd64.deb
-else
+rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 $PACKAGE_INSTALLER checkinstall
-fi
 $PACKAGE_REMOVER xcphp
 checkinstall \
     --pkgsource="" \
@@ -583,13 +567,7 @@ cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j8
-if [[ "$VER" = "10" ]]; then
-wget http://ftp.fr.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2-4_amd64.deb
-dpkg -i checkinstall_1.6.2-4_amd64.deb
-rm -f checkinstall_1.6.2-4_amd64.deb
-else
 $PACKAGE_INSTALLER checkinstall
-fi
 $PACKAGE_REMOVER xcphpmcrypt
 checkinstall \
     --pkgsource="" \
