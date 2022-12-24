@@ -306,6 +306,9 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install mc
 	apt-get -y install python3-paramiko
 	apt-get -y install python-paramiko
+	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
+	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
+	apt-get -y install postfix
 	if [[ "$VER" = "20.04" ]]; then
 	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1.1+1_ppa0_eoan_amd64.deb"
 	dpkg -i /tmp/libpng12.deb
@@ -317,8 +320,16 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -yf install
 	rm -f /tmp/libpng12.deb
 	fi
-elif [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
-	$PACKAGE_INSTALLER wget
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
+    $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion wget
+    if  [[ "$VER" = "7" ]]; then
+    	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
+    else
+    	$PACKAGE_INSTALLER glibc32 bzip2-libs 
+    fi
+    $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
+    $PACKAGE_INSTALLER ca-certificates nano psmisc
+    $PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
 	if [[ "$VER" = "7" ]]; then
 $PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
 https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
@@ -342,4 +353,63 @@ $PACKAGE_INSTALLER libzip-devel
 	$BUILDDEP /root/rpmbuild/SPECS/php.spec
 	$BUILDDEP php73
 	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
+	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates jq sshpass net-tools curl
+	$PACKAGE_INSTALLER e2fslibs
+	$PACKAGE_INSTALLER e2fsprogs
+	$PACKAGE_INSTALLER e2fsprogs-libs
+	$PACKAGE_INSTALLER libcurl-devel
+	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel wget nscd htop unzip httpd httpd-devel zip mc libpng-devel python3 python3-pip
+	$PACKAGE_INSTALLER mcrypt
+	$PACKAGE_INSTALLER mcrypt-devel
+	$PACKAGE_INSTALLER libmcrypt
+	$PACKAGE_INSTALLER libmcrypt-devel
+	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
+	if [[ "$VER" = "7" ]]; then
+	$PACKAGE_INSTALLER python python-paramiko python-pip
+	else
+	$PACKAGE_INSTALLER python2
+	#install pip2
+	wget -qO- https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2 - 'pip==20.3.4'
+	#upgrade pip3
+	pyfv=$(python3 --version | sed  "s|Python ||g")
+	pyv=${pyfv:0:3}
+	wget -qO- https://bootstrap.pypa.io/pip/$pyv/get-pip.py | python3
+	rm -rf /usr/local/bin/pip /usr/local/bin/pip2 /usr/local/bin/pip3  /usr/bin/pip /usr/bin/pip2 /usr/bin/pip3
+cat > /usr/bin/pip2 <<EOF
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+chmod +x /usr/bin/pip2
+cat > /usr/bin/pip3 <<EOF
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+EOF
+	chmod +x /usr/bin/pip3
+	ln -s /usr/bin/pip2 /usr/local/bin/pip2
+	ln -s /usr/bin/pip3 /usr/local/bin/pip3
+	pip2 install paramiko
+	
+	update-alternatives --remove-all pip
+	update-alternatives --install /usr/bin/pip pip /usr/bin/pip2 2
+	ln -s /usr/bin/pip /usr/local/bin/pip
+	update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+	rm -f /usr/bin/python
+	update-alternatives --remove-all python
+	update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+	update-alternatives --install /usr/bin/python python /usr/local/bin/python2 1
+	fi
+	systemctl start mariadb
+	systemctl enable mariadb
 fi
