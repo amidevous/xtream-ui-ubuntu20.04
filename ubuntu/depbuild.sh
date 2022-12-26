@@ -6,7 +6,7 @@ if [ -f /etc/centos-release ]; then
        rpm -q "$1" &> /dev/null
     } 
     if (inst "centos-stream-repos"); then
-    OS="Centos Stream"
+    OS="CentOS-Stream"
     else
     OS="CentOs"
     fi    
@@ -31,7 +31,7 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
-	echo "Centos 8 obsolete udate to Centos Stream 8"
+	echo "Centos 8 obsolete udate to CentOS-Stream 8"
 	echo "this operation may take some time"
 	sleep 60
 	# change repository to use vault.centos.org CentOS 8 found online to vault.centos.org
@@ -41,25 +41,25 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	dnf update -y
 	#upgrade all packages to latest CentOS 8
 	dnf upgrade -y
-	#install Centos Stream 8 repository
+	#install CentOS-Stream 8 repository
 	dnf -y install centos-release-stream --allowerasing
 	#install rpmconf
 	dnf -y install rpmconf
 	#set config file with rpmconf
 	rpmconf -a
-	# remove Centos 8 repository and set CentOS Stream 8 repository by default
+	# remove Centos 8 repository and set CentOS-Stream 8 repository by default
 	dnf -y swap centos-linux-repos centos-stream-repos
 	# system upgrade
 	dnf -y distro-sync
 	# ceanup old rpmconf file create
 	find / -name '*.rpmnew' -exec rm -f {} \;
 	find / -name '*.rpmsave' -exec rm -f {} \;
-	OS="Centos Stream"
+	OS="CentOS-Stream"
 	fi
 
 echo "Detected : $OS  $VER  $ARCH"
 if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
-"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
 "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
@@ -77,7 +77,7 @@ if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
     BUILDDEP="yum-builddep -y"
-elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
+elif [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream"  ]]; then
     PACKAGE_INSTALLER="dnf -y -q install"
     PACKAGE_REMOVER="dnf -y -q remove"
     PACKAGE_UPDATER="dnf -y -q update"
@@ -92,8 +92,8 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
 fi
-if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
-	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
+if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 		#To fix some problems of compatibility use of mirror centos.org to all users
 		#Replace all mirrors by base repos to avoid any problems.
 		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
@@ -126,7 +126,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" || "$OS" = "Fedora" ]]; then
 	}
 	if [ "$OS" = "CentOs" ]; then
 		enablerepo epel
-	elif [ "$OS" = "Centos Stream" ]; then
+	elif [ "$OS" = "CentOS-Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
 		enablerepo baseos
 		# enable official repository CentOs Stream AppStream
@@ -172,7 +172,7 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 EOF
-	if [[ "$OS" = "CentOs" || "$OS" = "Centos Stream" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -320,7 +320,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -yf install
 	rm -f /tmp/libpng12.deb
 	fi
-elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
+elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "CentOS-Stream" ]]; then
     $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion wget
     if  [[ "$VER" = "7" ]]; then
     	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
