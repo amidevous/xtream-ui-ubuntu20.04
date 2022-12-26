@@ -6,7 +6,7 @@ if [ -f /etc/centos-release ]; then
        rpm -q "$1" &> /dev/null
     } 
     if (inst "centos-stream-repos"); then
-    OS="Centos Stream"
+    OS="CentOS-Stream"
     else
     OS="CentOs"
     fi    
@@ -32,7 +32,7 @@ fi
 ARCH=$(uname -m)
 echo "Detected : $OS  $VER  $ARCH"
 #if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
-#"$OS" = "Centos Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
+#"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 #"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
