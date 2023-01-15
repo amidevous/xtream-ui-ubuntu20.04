@@ -290,7 +290,7 @@ fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
-	apt-get -y build-dep php7.3
+	apt-get -y build-dep php7.4
 	apt-get -y install libmariadb-dev libmariadb-dev-compat libmariadbclient-dev libmariadbd-dev dbconfig-mysql mariadb-server
 elif [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 	$PACKAGE_INSTALLER wget
@@ -327,17 +327,17 @@ cd /root/phpbuild
 #rm -f main_xui_Ubuntu_18.04.tar.gz
 #mkdir -p /home/xtreamcodes/iptv_xtream_codes
 #cp -R iptv_xtream_codes/* /home/xtreamcodes/iptv_xtream_codes/
-wget https://www.php.net/distributions/php-7.3.33.tar.gz
-rm -rf php-7.3.33
-tar -xf php-7.3.33.tar.gz
+wget https://www.php.net/distributions/php-7.4.33.tar.gz
+rm -rf php-7.4.33
+tar -xf php-7.4.33.tar.gz
 if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
 wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xf debian.tar.xz
 rm -f debian.tar.xz
-cd php-7.3.33
+cd php-7.4.33
 patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
 else
-cd php-7.3.33
+cd php-7.4.33
 fi
 sed -i "s|/usr/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 sed -i "s|/usr/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
@@ -372,7 +372,7 @@ checkinstall \
 echo "pause 60 seconde checkinstall xtreamui-freetype2"
 sleep 60
 cd ..
-cd php-7.3.33
+cd php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 #else
 #./configure $(/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config --configure-options)
@@ -427,7 +427,7 @@ checkinstall \
     --nodoc \
     --maintainer="amidevous@gmail.com" \
     --pkgarch=$(dpkg --print-architecture) \
-    --pkgversion="7.3.33" \
+    --pkgversion="7.4.33" \
     --pkgrelease="1" \
     --pkgname=xtreamui-php \
     --requires="xtreamui-freetype2" -y
