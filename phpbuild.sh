@@ -135,11 +135,6 @@ dist=Ubuntu-$(lsb_release -sc)
 elif [[ "$OS" = "debian" ]]; then
 dist=debian-$(lsb_release -sc)
 fi
-#wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
-#tar -xvf main_xui_Ubuntu_18.04.tar.gz
-#rm -f main_xui_Ubuntu_18.04.tar.gz
-#mkdir -p /home/xtreamcodes/iptv_xtream_codes
-#cp -R iptv_xtream_codes/* /home/xtreamcodes/iptv_xtream_codes/
 wget https://www.php.net/distributions/php-7.4.33.tar.gz
 rm -rf php-7.4.33
 tar -xf php-7.4.33.tar.gz
@@ -152,19 +147,38 @@ patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
 else
 cd php-7.4.33
 fi
-sed -i "s|/usr/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-sed -i "s|/usr/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-sed -i "s|/bin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-sed -i "s|/sbin/sed|sed|" /home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-#if [[ "$VER" = "22.04" || "$VER" = "10" ]]; then
 cd ..
+if [[ "$OS" = "debian"  ]] ; then
+rm -f "/etc/apt/sources.list.d/alvistack.list"
+echo "deb http://download.opensuse.org/repositories/home:/alvistack/Debian_${VER}/ /" | tee "/etc/apt/sources.list.d/alvistack.list"
+wget --no-check-certificate -qO- "http://download.opensuse.org/repositories/home:/alvistack/Debian_${VER}/Release.key" | gpg --dearmor | tee /etc/apt/trusted.gpg.d/alvistack.gpg > /dev/null
+fi
+$PACKAGE_UPDATER
+$PACKAGE_INSTALLER podman
 wget https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
 tar -xf freetype-2.12.0.tar.xz
 cd freetype-2.12.0
 ./autogen.sh
 ./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
-make
+make -j$(nproc --all)
+if [[ "$OS" = "debian" ]]; then
+apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput docbook-to-man
+wget --no-check-certificate -O checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
+wget -O checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
+tar -xvf checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
+cd checkinstall
+tar -xvf ../checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
+debuild
+cd ..
+dpkg -i checkinstall*.deb
+apt-get update
+apt-get -yf install
+inst() {
+       dpkg-query --showformat='${Version}' --show "$1"
+    }
+else
 $PACKAGE_INSTALLER checkinstall
+fi
 $PACKAGE_REMOVER xtreamui-freetype2
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/include
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/share
@@ -182,15 +196,10 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-freetype2 \
     --requires="" -y
-echo "pause 60 seconde checkinstall xtreamui-freetype2"
-sleep 60
 cd ..
 cd php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
-#else
-#./configure $(/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config --configure-options)
-#fi
-make -j8
+make -j$(nproc --all)
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/GeoIP.dat
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/bin
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
@@ -214,7 +223,6 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/pearcmd.php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/peclcmd.php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-$PACKAGE_INSTALLER checkinstall
 $PACKAGE_REMOVER xtreamui-php
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/bin
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
@@ -245,18 +253,14 @@ checkinstall \
     --pkgname=xtreamui-php \
     --requires="xtreamui-freetype2" -y
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-echo "pause 60 seconde checkinstall xtreamui-php"
-sleep 60
 cd ..
-rm -rf debian
 $PACKAGE_INSTALLER libmcrypt-dev mcrypt
 wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-make -j8
-$PACKAGE_INSTALLER checkinstall
+make -j$(nproc --all)
 $PACKAGE_REMOVER xtreamui-php-mcrypt
 checkinstall \
     --pkgsource="" \
@@ -269,8 +273,6 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-mcrypt \
     --requires="xtreamui-php" -y
-echo "pause 60 seconde checkinstall xtreamui-php-mcrypt"
-sleep 60
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
@@ -278,7 +280,7 @@ tar -xf geoip-1.1.1.tgz
 cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
-make -j8
+make -j$(nproc --all)
 $PACKAGE_REMOVER xtreamui-php-geoip
 checkinstall \
     --pkgsource="" \
@@ -291,16 +293,14 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-geoip \
     --requires="xtreamui-php" -y
-echo "pause 60 seconde checkinstall xtreamui-php-geoip"
-sleep 60
 cd ..
 if [[ "$OS" = "Ubuntu" ]]; then
 dist=Ubuntu-$(lsb_release -sc)
 elif [[ "$OS" = "debian" ]]; then
 dist=debian-$(lsb_release -sc)
 fi
-mkdir -p xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
-cd xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
+mkdir -p "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
+cd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
 mkdir -p home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 mkdir -p DEBIAN
 echo "2.0" > debian-binary
@@ -323,12 +323,12 @@ rm -f ioncube_loaders_lin_x86-64.tar.gz
 cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 rm -rf ioncube
 cd ..
-dpkg --build xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
-mkdir -p xtreamui-php_7.4.33-2.$dist_amd64
-cp php-7.4.33/xtreamui-php_7.4.33-1.$dist_amd64.deb xtreamui-php_7.4.33-2.$dist_amd64/
-cd xtreamui-php_7.4.33-2.$dist_amd64
-ar xv xtreamui-php_7.4.33-1.$dist_amd64.deb
-rm -f xtreamui-php_7.4.33-1.$dist_amd64.deb
+dpkg --build "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
+mkdir -p "xtreamui-php_7.4.33-2."$dist"_amd64"
+cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."$dist"_amd64/"
+cd "xtreamui-php_7.4.33-2."$dist"_amd64"
+ar xv "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
+rm -f "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
 tar-xvf data.tar.xz
 rm -f data.tar.xz
 mkdir DEBIAN
@@ -340,7 +340,81 @@ wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ub
 sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
 sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
 cd ..
-dpkg --build xtreamui-php_7.4.33-2.$dist_amd64
+dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
+wget -O xavs-code-r55-trunk.zip --no-check-certificate https://sourceforge.net/code-snapshots/svn/x/xa/xavs/code/xavs-code-r55-trunk.zip
+unzip xavs-code-r55-trunk.zip
+rm -f xavs-code-r55-trunk.zip
+cd /root/ffmpeg_sources/xavs-code-r55-trunk
+./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
+make -j$(nproc --all)
+checkinstall \
+	--type=debian \
+    --pkgsource=xavs \
+    --pkglicense=GPL3 \
+    --deldesc=no \
+    --nodoc \
+    --maintainer=amidevous@gmail.com \
+    --pkgarch=amd64 \
+    --pkgversion=$(date +%Y.%m) \
+    --pkgrelease=1.$dist \
+    --pkgname=xtreamui-xavs -y
+cd ..
+wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
+tar -xvf ffmpeg-5.1.2.tar.bz2
+cd /root/ffmpeg_sources/ffmpeg-5.1.2
+./configure \
+  --prefix="/root/ffmpeg_build" \
+  --bindir="/home/xtreamcodes/iptv_xtream_codes/bin/" \
+  --pkg-config-flags="--static" \
+  --extra-cflags="-I/root/ffmpeg_build/include" \
+  --extra-ldflags="-L/root/ffmpeg_build/lib64" \
+  --extra-version=Xtream-Codes \
+  --disable-debug \
+  --disable-shared \
+  --extra-libs=-lpthread \
+  --extra-libs=-lm \
+  --enable-gpl \
+  --enable-libfdk_aac \
+  --enable-libfreetype \
+  --enable-libmp3lame \
+  --enable-libopus \
+  --enable-libvpx \
+  --enable-libx264 \
+  --enable-libx265 \
+  --enable-nonfree \
+  --disable-ffplay \
+  --disable-doc \
+  --enable-pthreads \
+  --enable-postproc \
+  --enable-libass \
+  --enable-gray \
+  --enable-runtime-cpudetect \
+  --enable-gnutls \
+  --enable-librtmp \
+  --enable-libtheora \
+  --enable-version3 \
+  --enable-libvorbis \
+  --enable-libxvid \
+  --enable-static \
+  --enable-bzlib \
+  --enable-fontconfig \
+  --enable-zlib \
+  --enable-libxavs \
+  --extra-libs='-lstdc++ -lrtmp -lgmp -lssl -lcrypto -lz -ldl -lm -lpthread -lunistring'
+  make -j$(nproc --all)
+checkinstall \
+    --type=debian \
+    --pkgsource=ffmpeg \
+    --pkglicense=GPL3 \
+    --deldesc=no \
+    --nodoc \
+    --maintainer=amidevous@gmail.com \
+    --pkgarch=amd64 \
+    --pkgversion=5.1.2 \
+    --pkgrelease=1.Ubuntu-bionic \
+    --exclude=/root/ffmpeg_build \
+    --pkgname=xtreamui-ffmpeg -y
+cd ..
 find ./ -name '*.deb'
 echo "finish"
 
