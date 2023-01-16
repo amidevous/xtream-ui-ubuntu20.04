@@ -1,4 +1,5 @@
 #!/bin/bash
+# wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/phpbuild.sh | bash -s
 echo -e "\nChecking that minimal requirements are ok"
 
 # Ensure the OS is compatible with the launcher
@@ -498,5 +499,47 @@ checkinstall \
 echo "pause 60 seconde checkinstall xtreamui-php-geoip"
 sleep 60
 cd ..
+mkdir -p xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
+cd xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
+mkdir -p home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
+mkdir -p DEBIAN
+echo "2.0" > debian-binary
+touch DEBIAN/conffiles
+cat > DEBIAN/control <<EOF
+Package: xtreamui-php-ioncube-loader
+Priority: extra
+Section: checkinstall
+Installed-Size: 70176
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 12.0.5-1.$dist
+Depends: xtreamui-php
+Provides: xtreamui-php-ioncube-loader
+Description: Package created with checkinstall 1.6.2
+EOF
+wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
+tar -xvf ioncube_loaders_lin_x86-64.tar.gz
+rm -f ioncube_loaders_lin_x86-64.tar.gz
+cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
+rm -rf ioncube
+cd ..
+dpkg --build xtreamui-php-ioncube-loader_12.0.5-1.$dist_amd64
+mkdir -p xtreamui-php_7.4.33-2.$dist_amd64
+cp php-7.4.33/xtreamui-php_7.4.33-1.$dist_amd64.deb xtreamui-php_7.4.33-2.$dist_amd64/
+cd xtreamui-php_7.4.33-2.$dist_amd64
+ar xv xtreamui-php_7.4.33-1.$dist_amd64.deb
+rm -f xtreamui-php_7.4.33-1.$dist_amd64.deb
+tar-xvf data.tar.xz
+rm -f data.tar.xz
+mkdir DEBIAN
+cd DEBIAN
+tar -xvf ../control.tar.xz
+cd ../
+rm -rf control.tar.xz
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
+sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
+sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
+cd ..
+dpkg --build xtreamui-php_7.4.33-2.$dist_amd64
 find ./ -name '*.deb'
 echo "finish"
