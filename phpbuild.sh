@@ -126,6 +126,7 @@ libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev unzip librtmp-dev 
 libbz2-dev libgmp-dev libssl-dev unzip zip wget
 apt-get -y install libdav1d-dev
 apt-get -y install libaom-dev
+apt-get -y install reprepro
 cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
