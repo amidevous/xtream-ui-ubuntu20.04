@@ -322,6 +322,15 @@ cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
 cd /root/phpbuild
+if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
+dist=el$VER
+elif [[ "$OS" = "Fedora" ]]; then
+dist=fc$VER
+elif [[ "$OS" = "Ubuntu" ]]; then
+dist=Ubuntu-$(lsb_release -sc)
+elif [[ "$OS" = "debian" ]]; then
+dist=debian-$(lsb_release -sc)
+fi
 #wget https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/main_xui_Ubuntu_18.04.tar.gz
 #tar -xvf main_xui_Ubuntu_18.04.tar.gz
 #rm -f main_xui_Ubuntu_18.04.tar.gz
@@ -366,7 +375,7 @@ checkinstall \
     --maintainer="amidevous@gmail.com" \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="2.12" \
-    --pkgrelease="1" \
+    --pkgrelease=1.$dist \
     --pkgname=xtreamui-freetype2 \
     --requires="" -y
 echo "pause 60 seconde checkinstall xtreamui-freetype2"
@@ -428,7 +437,7 @@ checkinstall \
     --maintainer="amidevous@gmail.com" \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="7.4.33" \
-    --pkgrelease="1" \
+    --pkgrelease=1.$dist \
     --pkgname=xtreamui-php \
     --requires="xtreamui-freetype2" -y
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
@@ -457,7 +466,7 @@ checkinstall \
     --maintainer="amidevous@gmail.com" \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="1.0.5" \
-    --pkgrelease="1" \
+    --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-mcrypt \
     --requires="xtreamui-php" -y
 echo "pause 60 seconde checkinstall xtreamui-php-mcrypt"
@@ -483,7 +492,7 @@ checkinstall \
     --maintainer="amidevous@gmail.com" \
     --pkgarch=$(dpkg --print-architecture) \
     --pkgversion="1.1.1" \
-    --pkgrelease="1" \
+    --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-geoip \
     --requires="xtreamui-php" -y
 echo "pause 60 seconde checkinstall xtreamui-php-geoip"
