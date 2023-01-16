@@ -356,7 +356,7 @@ cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/
 rm -rf ioncube
 cd ..
 dpkg --build "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
-/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
+/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64.deb"
 mkdir -p "xtreamui-php_7.4.33-2."$dist"_amd64"
 cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."$dist"_amd64/"
 cd "xtreamui-php_7.4.33-2."$dist"_amd64"
@@ -374,7 +374,7 @@ sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
 sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
 cd ..
 dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
-/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php_7.4.33-2."$dist"_amd64"
+/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php_7.4.33-2."$dist"_amd64.deb"
 wget -O xavs-code-r55-trunk.zip --no-check-certificate https://sourceforge.net/code-snapshots/svn/x/xa/xavs/code/xavs-code-r55-trunk.zip
 unzip xavs-code-r55-trunk.zip
 rm -f xavs-code-r55-trunk.zip
