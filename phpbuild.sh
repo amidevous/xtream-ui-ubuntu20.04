@@ -446,7 +446,7 @@ checkinstall \
     --maintainer=amidevous@gmail.com \
     --pkgarch=amd64 \
     --pkgversion=5.1.2 \
-    --pkgrelease=1.Ubuntu-bionic \
+    --pkgrelease=1.$dist \
     --exclude=/root/ffmpeg_build \
     --pkgname=xtreamui-ffmpeg -y
 find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
