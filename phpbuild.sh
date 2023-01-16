@@ -223,7 +223,6 @@ chmod +x /root/package/$OS/$VER/$ARCH/repoadd
 cat > /etc/apt/sources.list.d/local.list <<EOF
 deb [trusted=yes] file:/root/package/$OS $(lsb_release -sc) main
 EOF
-fi
 find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 cd php-7.4.33
