@@ -196,6 +196,35 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-freetype2 \
     --requires="" -y
+mkdir -p /root/package/$OS/
+mkdir -p /root/package/$OS/conf
+mkdir -p /root/package/$OS/incoming
+cat > /root/package/$OS/conf/distributions <<EOF
+Origin: local
+Label: local
+Suite: $(lsb_release -sc)
+Codename: $(lsb_release -sc)
+Version: $VER
+Architectures: amd64
+Components: main
+Description: local repo for php build
+EOF
+mkdir -p /root/package/$OS/$VER/$ARCH/
+cat > /root/package/$OS/$VER/$ARCH/repoadd <<EOF
+#!/bin/bash
+reprepro -Vb /root/package/$OS/ includedeb $(lsb_release -sc) \$1
+cp /root/package/$OS/dists/$(lsb_release -sc)/Release /root/package/$OS/dists/$(lsb_release -sc)/InRelease
+chown -R _apt:root /root/package/$OS/
+chown -R _apt:root /root/package/$OS/*
+chmod -R 700 /root/package/$OS/
+chmod -R 700 /root/package/$OS/*
+EOF
+chmod +x /root/package/$OS/$VER/$ARCH/repoadd
+cat > /etc/apt/sources.list.d/local.list <<EOF
+deb [trusted=yes] file:/root/package/$OS $(lsb_release -sc) main
+EOF
+fi
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 cd php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
@@ -252,6 +281,7 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-php \
     --requires="xtreamui-freetype2" -y
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 cd ..
 $PACKAGE_INSTALLER libmcrypt-dev mcrypt
@@ -273,6 +303,7 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-mcrypt \
     --requires="xtreamui-php" -y
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
 wget https://pecl.php.net/get/geoip-1.1.1.tgz
@@ -293,6 +324,7 @@ checkinstall \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-php-geoip \
     --requires="xtreamui-php" -y
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 if [[ "$OS" = "Ubuntu" ]]; then
 dist=Ubuntu-$(lsb_release -sc)
@@ -324,6 +356,7 @@ cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/
 rm -rf ioncube
 cd ..
 dpkg --build "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
+/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
 mkdir -p "xtreamui-php_7.4.33-2."$dist"_amd64"
 cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."$dist"_amd64/"
 cd "xtreamui-php_7.4.33-2."$dist"_amd64"
@@ -341,6 +374,7 @@ sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
 sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
 cd ..
 dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
+/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php_7.4.33-2."$dist"_amd64"
 wget -O xavs-code-r55-trunk.zip --no-check-certificate https://sourceforge.net/code-snapshots/svn/x/xa/xavs/code/xavs-code-r55-trunk.zip
 unzip xavs-code-r55-trunk.zip
 rm -f xavs-code-r55-trunk.zip
@@ -358,6 +392,7 @@ checkinstall \
     --pkgversion=$(date +%Y.%m) \
     --pkgrelease=1.$dist \
     --pkgname=xtreamui-xavs -y
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
@@ -414,7 +449,8 @@ checkinstall \
     --pkgrelease=1.Ubuntu-bionic \
     --exclude=/root/ffmpeg_build \
     --pkgname=xtreamui-ffmpeg -y
+find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
-find ./ -name '*.deb'
+find /root/package -name '*.deb'
 echo "finish"
 
