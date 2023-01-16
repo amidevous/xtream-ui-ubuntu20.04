@@ -344,7 +344,7 @@ dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
 wget -O xavs-code-r55-trunk.zip --no-check-certificate https://sourceforge.net/code-snapshots/svn/x/xa/xavs/code/xavs-code-r55-trunk.zip
 unzip xavs-code-r55-trunk.zip
 rm -f xavs-code-r55-trunk.zip
-cd /root/ffmpeg_sources/xavs-code-r55-trunk
+cd xavs-code-r55-trunk
 ./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
 make -j$(nproc --all)
 checkinstall \
@@ -361,7 +361,7 @@ checkinstall \
 cd ..
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
-cd /root/ffmpeg_sources/ffmpeg-5.1.2
+cd ffmpeg-5.1.2
 ./configure \
   --prefix="/root/ffmpeg_build" \
   --bindir="/home/xtreamcodes/iptv_xtream_codes/bin/" \
