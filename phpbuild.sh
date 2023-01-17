@@ -365,7 +365,7 @@ cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."
 cd "xtreamui-php_7.4.33-2."$dist"_amd64"
 ar xv "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
 rm -f "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
-tar-xvf data.tar.xz
+tar -xvf data.tar.xz
 rm -f data.tar.xz
 mkdir DEBIAN
 cd DEBIAN
