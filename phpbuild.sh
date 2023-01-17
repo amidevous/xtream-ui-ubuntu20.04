@@ -98,6 +98,8 @@ deb-src http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main c
 deb http://deb.debian.org/debian $(lsb_release -sc)-backports main
 deb-src http://deb.debian.org/debian $(lsb_release -sc)-backports main
 EOF
+apt-get update
+apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make ca-certificates gpg reprepro
 cat > /etc/apt/sources.list.d/php.list <<EOF
 deb https://packages.sury.org/php/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
