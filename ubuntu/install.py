@@ -166,7 +166,7 @@ def configure():
     os.system("wget -q https://bitbucket.org/le_lio/assets/raw/master/pid_monitor.php -O /home/xtreamcodes/iptv_xtream_codes/crons/pid_monitor.php")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb > /dev/null")
     os.system("sed -i 's|echo \"Xtream Codes Reborn\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
-    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/posinstall.sh | bash -s > /dev/null")
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/postinstall.sh | bash -s > /dev/null")
 #    os.system("sudo wget -q https://www.dropbox.com/s/3h3cc5rnipdni39/youtube-dl?dl=1 -O /usr/local/bin/youtube-dl")
     os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/youtube-dl")
     os.system("sudo wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/youtube")    
