@@ -76,6 +76,7 @@ if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_UTILS="yum-utils"
     PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
+    PACKAGE_COPRENABLE="yum -y copr enable" 
     BUILDDEP="yum-builddep -y"
 elif [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream"  ]]; then
     PACKAGE_INSTALLER="dnf -y -q install"
@@ -84,6 +85,7 @@ elif [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream"  ]]; then
     PACKAGE_UTILS="dnf-utils" 
     PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
     PACKAGE_SOURCEDOWNLOAD="dnf download --source"
+    PACKAGE_COPRENABLE="dnf -y copr enable"
     BUILDDEP="dnf build-dep -y"
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
     PACKAGE_INSTALLER="apt-get -yqq install"
@@ -105,9 +107,6 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		fi
 		#EPEL Repo Install
 		$PACKAGE_INSTALLER epel-release
-		$PACKAGE_INSTALLER https://rpms.remirepo.net/enterprise/remi-release-"$VER".rpm
-	elif [[ "$OS" = "Fedora" ]]; then
-		$PACKAGE_INSTALLER https://rpms.remirepo.net/fedora/remi-release-"$VER".rpm
 	fi
 	$PACKAGE_INSTALLER $PACKAGE_UTILS
 	#disable deposits that could result in installation errors
@@ -137,21 +136,16 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		enablerepo extras-common
 		# enable official repository CentOs Stream PowerTools
 		enablerepo powertools
+		# enable official repository CentOs Stream Devel
+		enablerepo devel
 		# enable official repository Fedora Epel
 		enablerepo epel
 		# enable official repository Fedora Epel
 		enablerepo epel-modular
-		# install wget and add copr repo for devel package not build on official depots
-		# temporary solve bug
-		# https://bugzilla.redhat.com/show_bug.cgi?id=2099386
 		dnf -y install wget
-		wget https://copr.fedorainfracloud.org/coprs/andykimpe/Centos-Stream-Devel-php-build/repo/centos-stream-8/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo -O /etc/yum.repos.d/andykimpe-Centos-Stream-Devel-php-build-centos-stream-8.repo
 	elif [ "$OS" = "Fedora" ]; then
-		echo "fedora repo"
+		dnf -y install wget
 	fi
-	# enable repository Remi's RPM repository
-	enablerepo remi
-	enablerepo remi-safe
 	yumpurge() {
 	for package in $@
 	do
@@ -164,15 +158,8 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		rpm -e $package
 	done
 	}
-cat > /etc/yum.repos.d/remi-source.repo <<EOF
-[remi-source]
-name=Remi's RPM source repository
-baseurl=https://rpms.remirepo.net/SRPMS/
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
-EOF
-	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
+
+if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -180,7 +167,7 @@ baseurl=http://mirror.mariadb.org/yum/10.9/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
-	elif [[ "$OS" = "Fedora" ]]; then
+elif [[ "$OS" = "Fedora" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -188,7 +175,7 @@ baseurl=http://mirror.mariadb.org/yum/10.9/fedora/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
-	fi
+fi
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -220,6 +207,13 @@ EOF
 	# Removal of conflicting packages prior to installation.
 	yumpurge bind-chroot
 	yumpurge qpid-cpp-client
+	$PACKAGE_INSTALLER yum-plugin-copr
+	$PACKAGE_INSTALLER yum-plugins-copr
+	$PACKAGE_INSTALLER dnf-plugin-core
+	$PACKAGE_INSTALLER dnf-plugins-core
+	$PACKAGE_INSTALLER dnf-plugin-copr
+	$PACKAGE_INSTALLER dnf-plugins-copr
+	$PACKAGE_COPRENABLE "amidevous/xtream-ui-"$OS"-"$VER"" custom-1-x86_64
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
@@ -242,10 +236,10 @@ deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 EOF
 	apt-get update
 	apt-get install software-properties-common dirmngr --install-recommends -y
-	add-apt-repository -y ppa:ondrej/apache2
-	add-apt-repository -y -s ppa:ondrej/php
-	add-apt-repository ppa:andykimpe/curl -y
-	apt-get update
+cat > /etc/apt/sources.list.d/local.list <<EOF
+deb [trusted=yes] https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/package/$OS $(lsb_release -sc) main
+EOF
+        apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
@@ -268,16 +262,9 @@ deb-src http://deb.debian.org/debian/ $(lsb_release -sc)-updates main contrib no
 deb http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
 deb-src http://deb.debian.org/debian-security/ $(lsb_release -sc)/updates main contrib non-free
 EOF
-	cat > /etc/apt/sources.list.d/php.list <<EOF
-deb https://packages.sury.org/php/ $(lsb_release -sc) main
-deb-src https://packages.sury.org/php/ $(lsb_release -sc) main
+cat > /etc/apt/sources.list.d/local.list <<EOF
+deb [trusted=yes] https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/package/$OS $(lsb_release -sc) main
 EOF
-	cat > /etc/apt/sources.list.d/apache2.list <<EOF
-deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
-deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
-EOF
-	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
-	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-get update
 fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
@@ -289,7 +276,6 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install fakeroot
 	apt-get -y install devscripts
 	apt-get -y install dh-make
-	apt-get -y build-dep php7.3
 	apt-get -y install mariadb-server
 	apt-get -y install curl
 	apt-get -y install libxslt1-dev
@@ -309,17 +295,6 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 	apt-get -y install postfix
-	if [[ "$VER" = "20.04" ]]; then
-	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1.1+1_ppa0_eoan_amd64.deb"
-	dpkg -i /tmp/libpng12.deb
-	apt-get -yf install
-	rm -f /tmp/libpng12.deb
-	elif [[ "$VER" = "18.04" ]]; then
-	wget -q -O /tmp/libpng12.deb "https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/libpng12-0_1.2.54-1ubuntu1_amd64.deb"
-	dpkg -i /tmp/libpng12.deb
-	apt-get -yf install
-	rm -f /tmp/libpng12.deb
-	fi
 elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "CentOS-Stream" ]]; then
     $PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion wget
     if  [[ "$VER" = "7" ]]; then
@@ -330,29 +305,7 @@ elif [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "CentOS-Stream" ]]; then
     $PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
     $PACKAGE_INSTALLER ca-certificates nano psmisc
     $PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
-	if [[ "$VER" = "7" ]]; then
-$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.x86_64.rpm
-$PACKAGE_INSTALLER http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm
-	else
-$PACKAGE_INSTALLER https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-basic-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-sqlplus-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-tools-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-devel-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-jdbc-21.6.0.0.0-1.el8.x86_64.rpm \
-https://download.oracle.com/otn_software/linux/instantclient/216000/oracle-instantclient-odbc-21.6.0.0.0-1.el8.x86_64.rpm
-$PACKAGE_INSTALLER libzip-devel
-	fi
 	$PACKAGE_GROUPINSTALL "Fedora Packager" "Development Tools"
-	$PACKAGE_SOURCEDOWNLOAD php73-php-7.3.33-3.remi.src
-	rpm -i php73-php-7.3.33-3.remi.src.rpm
-	$BUILDDEP /root/rpmbuild/SPECS/php.spec
-	$BUILDDEP php73
-	rm -rf php73-php-7.3.33-3.remi.src.rpm /root/rpmbuild/SPECS/php.spec /root/rpmbuild/SOURCES/php* /root/rpmbuild/SOURCES/10-opcache.ini ls /root/rpmbuild/SOURCES/20-oci8.ini /root/rpmbuild/SOURCES/macros.php /root/rpmbuild/SOURCES/opcache-default.blacklist
 	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates jq sshpass net-tools curl
 	$PACKAGE_INSTALLER e2fslibs
 	$PACKAGE_INSTALLER e2fsprogs
