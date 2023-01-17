@@ -127,6 +127,7 @@ libbz2-dev libgmp-dev libssl-dev unzip zip wget
 apt-get -y install libdav1d-dev
 apt-get -y install libaom-dev
 apt-get -y install reprepro
+apt-get -y install subversion
 cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
@@ -375,10 +376,8 @@ sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-ph
 cd ..
 dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
 /root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php_7.4.33-2."$dist"_amd64.deb"
-wget -O xavs-code-r55-trunk.zip --no-check-certificate https://sourceforge.net/code-snapshots/svn/x/xa/xavs/code/xavs-code-r55-trunk.zip
-unzip xavs-code-r55-trunk.zip
-rm -f xavs-code-r55-trunk.zip
-cd xavs-code-r55-trunk
+svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk xavs-code
+cd xavs-code
 ./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
 make -j$(nproc --all)
 checkinstall \
