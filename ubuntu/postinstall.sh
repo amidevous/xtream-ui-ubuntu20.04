@@ -70,7 +70,8 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
 fi
-$PACKAGE_INSTALLER daemonize xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt xtreamui-ffmpeg
+$PACKAGE_INSTALLER daemonize xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt
+$PACKAGE_INSTALLER xtreamui-ffmpeg
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 fi
