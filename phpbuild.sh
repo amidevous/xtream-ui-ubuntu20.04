@@ -130,6 +130,7 @@ apt-get -y install libdav1d-dev
 apt-get -y install libaom-dev
 apt-get -y install reprepro
 apt-get -y install subversion
+apt-get -y install zstd
 cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
@@ -365,13 +366,26 @@ cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."
 cd "xtreamui-php_7.4.33-2."$dist"_amd64"
 ar xv "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
 rm -f "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
+if [ -f "data.tar.xz" ]; then
 tar -xvf data.tar.xz
 rm -f data.tar.xz
+fi
+if [ -f "data.tar.zst" ]; then
+tar --use-compress-program=unzstd -xvf data.tar.zst
+rm -f data.tar.zst
+fi
 mkdir DEBIAN
 cd DEBIAN
+if [ -f "control.tar.xz" ]; then
 tar -xvf ../control.tar.xz
 cd ../
 rm -rf control.tar.xz
+fi
+if [ -f "control.tar.zst" ]; then
+tar --use-compress-program=unzstd -xvf ../control.tar.zst
+cd ../
+rm -rf control.tar.zst
+fi
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
 sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
