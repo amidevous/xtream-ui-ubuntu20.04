@@ -466,7 +466,7 @@ checkinstall \
     --pkgname=xtreamui-ffmpeg -y
 find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
-rm -f/etc/apt/sources.list.d/local.list
+rm -f /etc/apt/sources.list.d/local.list
 apt-get update
 find /root/package -name '*.deb'
 echo "finish"
