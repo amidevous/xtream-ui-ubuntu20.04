@@ -106,8 +106,8 @@ cat > /etc/apt/sources.list.d/apache2.list <<EOF
 deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
-	wget -q -O- https://packages.sury.org/php/apt.gpg | apt-key add -
-	wget -q -O- https://packages.sury.org/apache2/apt.gpg | apt-key add -
+	wget --no-check-certificate -qO- https://packages.sury.org/php/apt.gpg | apt-key add -
+	wget --no-check-certificate -qO- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 cat > /etc/apt/sources.list.d/mariadb.list <<EOF
 deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main
@@ -121,9 +121,9 @@ apt-get -y install libmariadb-dev libmariadb-dev-compat libmariadbd-dev dbconfig
 apt-get -y install autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev \
 libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev \
 libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo \
-wget yasm zlib1g-dev libxvidcore-dev libunistring-dev nasm libx264-dev \
+yasm zlib1g-dev libxvidcore-dev libunistring-dev nasm libx264-dev \
 libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev unzip librtmp-dev libtheora-dev \
-libbz2-dev libgmp-dev libssl-dev unzip zip wget
+libbz2-dev libgmp-dev libssl-dev unzip zip
 apt-get -y install libdav1d-dev
 apt-get -y install libaom-dev
 apt-get -y install reprepro
@@ -137,11 +137,11 @@ dist=Ubuntu-$(lsb_release -sc)
 elif [[ "$OS" = "debian" ]]; then
 dist=debian-$(lsb_release -sc)
 fi
-wget https://www.php.net/distributions/php-7.4.33.tar.gz
+wget --no-check-certificate https://www.php.net/distributions/php-7.4.33.tar.gz
 rm -rf php-7.4.33
 tar -xf php-7.4.33.tar.gz
 if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
-wget "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
+wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xf debian.tar.xz
 rm -f debian.tar.xz
 cd php-7.4.33
@@ -157,7 +157,7 @@ wget --no-check-certificate -qO- "http://download.opensuse.org/repositories/home
 fi
 $PACKAGE_UPDATER
 $PACKAGE_INSTALLER podman
-wget https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
+wget --no-check-certificate https://download.savannah.gnu.org/releases/freetype/freetype-2.12.0.tar.xz
 tar -xf freetype-2.12.0.tar.xz
 cd freetype-2.12.0
 ./autogen.sh
@@ -166,7 +166,7 @@ make -j$(nproc --all)
 if [[ "$OS" = "debian" ]]; then
 apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput docbook-to-man
 wget --no-check-certificate -O checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
-wget -O checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
+wget --no-check-certificate -O checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
 tar -xvf checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
 cd checkinstall
 tar -xvf ../checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
@@ -286,7 +286,7 @@ find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
 cd ..
 $PACKAGE_INSTALLER libmcrypt-dev mcrypt
-wget https://pecl.php.net/get/mcrypt-1.0.5.tgz
+wget --no-check-certificate -O mcrypt-1.0.5.tgz https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
@@ -307,7 +307,7 @@ checkinstall \
 find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
-wget https://pecl.php.net/get/geoip-1.1.1.tgz
+wget --no-check-certificate -O geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
 tar -xf geoip-1.1.1.tgz
 cd geoip-1.1.1
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
@@ -350,7 +350,7 @@ Depends: xtreamui-php
 Provides: xtreamui-php-ioncube-loader
 Description: Package created with checkinstall 1.6.2
 EOF
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
+wget --no-check-certificate -O ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 tar -xvf ioncube_loaders_lin_x86-64.tar.gz
 rm -f ioncube_loaders_lin_x86-64.tar.gz
 cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
@@ -370,7 +370,7 @@ cd DEBIAN
 tar -xvf ../control.tar.xz
 cd ../
 rm -rf control.tar.xz
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
+wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
 sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
 cd ..
