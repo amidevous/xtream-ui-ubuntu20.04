@@ -212,6 +212,7 @@ Codename: $(lsb_release -sc)
 Version: $VER
 Architectures: amd64
 Components: main
+KeepOld: true
 Description: local repo for php build
 EOF
 mkdir -p /root/package/$OS/$VER/$ARCH/
