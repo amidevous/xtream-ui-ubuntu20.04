@@ -217,7 +217,7 @@ EOF
 mkdir -p /root/package/$OS/$VER/$ARCH/
 cat > /root/package/$OS/$VER/$ARCH/repoadd <<EOF
 #!/bin/bash
-reprepro --noskipold -Vb /root/package/$OS/ includedeb $(lsb_release -sc) \$1
+reprepro --keepunreferencedfiles -Vb /root/package/$OS/ includedeb $(lsb_release -sc) \$1
 cp /root/package/$OS/dists/$(lsb_release -sc)/Release /root/package/$OS/dists/$(lsb_release -sc)/InRelease
 chown -R _apt:root /root/package/$OS/
 chown -R _apt:root /root/package/$OS/*
