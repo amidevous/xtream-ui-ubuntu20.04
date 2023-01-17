@@ -33,7 +33,7 @@ ARCH=$(uname -m)
 echo "Detected : $OS  $VER  $ARCH"
 #if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
 #"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
-#"$OS" = "Fedora" && ("$VER" = "34" || "$VER" = "35" || "$VER" = "36" ) && "$ARCH" == "x86_64" ||
+#"$OS" = "Fedora" && ("$VER" = "35" || "$VER" = "36" || "$VER" = "37" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 #"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
 if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
@@ -43,76 +43,34 @@ else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
-if [[ "$OS" = "debian" ]] ; then
-if [[ "$VER" = "10" ]] ; then
-apt-get -y install libcurl4 curl
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_debian_10.deb -O xcfreetype2_2.12-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_debian_10.deb -O xcphp_7.3.33-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpmcrypt_1.0.5-1_amd64_debian_10.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_debian_10.deb -O xcphpgeoip_1.1.1-1_amd64.deb
-dpkg -i xcfreetype2_2.12-1_amd64.deb
-rm -rf xcfreetype2_2.12-1_amd64.deb
-dpkg -i xcphp_7.3.33-1_amd64.deb
-rm -rf xcphp_7.3.33-1_amd64.deb
-dpkg -i xcphp-mcrypt_1.0.5-1_amd64.deb
-rm -rf xcphp-mcrypt_1.0.5-1_amd64.deb
-dpkg -i xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20170718/
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -O ioncube_loaders_lin_x86-64.tar.gz
-tar -zxvf ioncube_loaders_lin_x86*
-cp ioncube/ioncube_loader_lin_7.3.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-rm -rf ioncube*
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
-elif [[ "$VER" = "11" ]] ; then
-echo "rien"
+
+
+if [[ "$OS" = "CentOs" ]] ; then
+    PACKAGE_INSTALLER="yum -y -q install"
+    PACKAGE_REMOVER="yum -y -q remove"
+    PACKAGE_UPDATER="yum -y -q update"
+    PACKAGE_UTILS="yum-utils"
+    PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
+    PACKAGE_COPRENABLE="yum -y copr enable" 
+    BUILDDEP="yum-builddep -y"
+elif [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream"  ]]; then
+    PACKAGE_INSTALLER="dnf -y -q install"
+    PACKAGE_REMOVER="dnf -y -q remove"
+    PACKAGE_UPDATER="dnf -y -q update"
+    PACKAGE_UTILS="dnf-utils" 
+    PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
+    PACKAGE_SOURCEDOWNLOAD="dnf download --source"
+    PACKAGE_COPRENABLE="dnf -y copr enable"
+    BUILDDEP="dnf build-dep -y"
+elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
+    PACKAGE_INSTALLER="apt-get -yqq install"
+    PACKAGE_REMOVER="apt-get -yqq purge"
+    inst() {
+       dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
+    }
 fi
-fi
-if [[ "$OS" = "Ubuntu" ]] ; then
-if [[ "$VER" = "18.04" ]] ; then
-apt-get -y install libcurl3
-elif [[ "$VER" = "20.04" ]] ; then
-apt-get -y install libcurl4 curl
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_20.04.deb -O xcphp_7.3.33-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp-mcrypt_1.0.5-1_amd64_20.04.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_20.04.deb -O xcphpgeoip_1.1.1-1_amd64.deb
-dpkg -i xcphp_7.3.33-1_amd64.deb
-rm -rf xcphp_7.3.33-1_amd64.deb
-dpkg -i xcphp-mcrypt_1.0.5-1_amd64.deb
-rm -rf xcphp-mcrypt_1.0.5-1_amd64.deb
-dpkg -i xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20170718/
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -O ioncube_loaders_lin_x86-64.tar.gz
-tar -zxvf ioncube_loaders_lin_x86*
-cp ioncube/ioncube_loader_lin_7.3.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-rm -rf ioncube*
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
-elif [[ "$VER" = "22.04" ]] ; then
-apt-get -y install libcurl4 curl
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcfreetype2_2.12-1_amd64_22.04.deb -O xcfreetype2_2.12-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphp_7.3.33-1_amd64_22.04.deb -O xcphp_7.3.33-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpmcrypt_1.0.5-1_amd64_22.04.deb -O xcphp-mcrypt_1.0.5-1_amd64.deb
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/xcphpgeoip_1.1.1-1_amd64_22.04.deb -O xcphpgeoip_1.1.1-1_amd64.deb
-dpkg -i xcfreetype2_2.12-1_amd64.deb
-rm -rf xcfreetype2_2.12-1_amd64.deb
-dpkg -i xcphp_7.3.33-1_amd64.deb
-rm -rf xcphp_7.3.33-1_amd64.deb
-dpkg -i xcphp-mcrypt_1.0.5-1_amd64.deb
-rm -rf xcphp-mcrypt_1.0.5-1_amd64.deb
-dpkg -i xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf xcphpgeoip_1.1.1-1_amd64.deb
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20170718/
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -O ioncube_loaders_lin_x86-64.tar.gz
-tar -zxvf ioncube_loaders_lin_x86*
-cp ioncube/ioncube_loader_lin_7.3.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-rm -rf ioncube*
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid.bk /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
-fi
-apt-get -y install daemonize
+$PACKAGE_INSTALLER daemonize xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt xtreamui-ffmpeg
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 fi
