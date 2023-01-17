@@ -376,15 +376,15 @@ rm -f data.tar.zst
 fi
 mkdir DEBIAN
 cd DEBIAN
-if [ -f "control.tar.xz" ]; then
+if [ -f "../control.tar.xz" ]; then
 tar -xvf ../control.tar.xz
 cd ../
 rm -rf control.tar.xz
 fi
-if [ -f "control.tar.zst" ]; then
+if [ -f "../control.tar.zst" ]; then
 tar --use-compress-program=unzstd -xvf ../control.tar.zst
 cd ../
-rm -rf control.tar.zst
+rm -rf ../control.tar.zst
 fi
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
