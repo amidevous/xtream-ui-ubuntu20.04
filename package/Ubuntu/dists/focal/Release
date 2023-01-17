@@ -1,0 +1,21 @@
+Origin: local
+Label: local
+Suite: focal
+Codename: focal
+Version: 20.04
+Date: Tue, 17 Jan 2023 20:00:43 UTC
+Architectures: amd64
+Components: main
+Description: local repo for php build
+MD5Sum:
+ abd21bc7c49b3e760e3f3d016306034c 3774 main/binary-amd64/Packages
+ abf29fe9a89b1070d347aa9a69d28e19 1166 main/binary-amd64/Packages.gz
+ f360481cc431f7ac47807a7e355abcf1 131 main/binary-amd64/Release
+SHA1:
+ d14abcd164789404fbcd07ecc01f4f417dd5a826 3774 main/binary-amd64/Packages
+ 236f2f4ed5689343e10281aaf730ddf17e6ecf82 1166 main/binary-amd64/Packages.gz
+ 8a4119065b369cc4bd2fe5851121d1ae223a0f55 131 main/binary-amd64/Release
+SHA256:
+ bf85967862833c4c322366d30da89ddc2f82bdcec5e2411e00382d4a7017237a 3774 main/binary-amd64/Packages
+ a006af30ade76b7119292baaa62f1c9ba29a62e62faf2c6608e28fe3ec1e1350 1166 main/binary-amd64/Packages.gz
+ 0ea75797b6e5692a7fda923ce6cf85303c0711b646a89018de9c7698e05f2e2f 131 main/binary-amd64/Release
