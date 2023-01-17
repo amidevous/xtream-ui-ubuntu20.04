@@ -1,0 +1,134 @@
+Package: checkinstall
+Version: 1.6.2+git20170426.d24a630-2ubuntu2
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 444
+Depends: dpkg-dev, file, sensible-utils, libc6 (>= 2.14)
+Recommends: make
+Suggests: gettext
+Homepage: http://checkinstall.izto.org
+Priority: optional
+Section: admin
+Filename: pool/main/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2ubuntu2_amd64.deb
+Size: 114176
+SHA256: 4ecd5d8aed2291fdcc0f565163e79410bab1813500db319ce14afdb8cd0ab897
+SHA1: 62029fee0e587cd84031d7bf14c39f65f55948d2
+MD5sum: faa2e7d4473cdb6ea587e3ba02364972
+Description: installation tracker
+ CheckInstall keeps track of all the files created or
+ modified by your installation script ("make install"
+ "make install_modules", "setup", etc), builds a
+ standard binary package and installs it in your
+ system giving you the ability to uninstall it with your
+ distribution's standard package management utilities.
+Original-Maintainer: Stephen Gelman <ssgelm@debian.org>
+
+Package: xtreamui-ffmpeg
+Installed-Size: 44460
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 5.1.2-1.debian-bullseye
+Provides: xtreamui-ffmpeg
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-ffmpeg/xtreamui-ffmpeg_5.1.2-1.debian-bullseye_amd64.deb
+Size: 15439128
+SHA256: 1551ecec7b04dc0431be75071a0ae535e889dffb900e104bacc49e7d2fa02c66
+SHA1: c3820d67db8433c37813c2d9765697512dc18be8
+MD5sum: c2419001e5aba6cd29d5e8eeb3d354af
+Description: Package created with checkinstall 1.6.3
+
+Package: xtreamui-freetype2
+Installed-Size: 9892
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 2.12-1.debian-bullseye
+Provides: xtreamui-freetype2
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-freetype2/xtreamui-freetype2_2.12-1.debian-bullseye_amd64.deb
+Size: 1770964
+SHA256: 7115069a747a68ff1012fe3805da1ed254112ba4d0be43a35d71caf447fda787
+SHA1: b69e0fb76c65ba6c5b6e8e72fb8f9fa6065c8cf8
+MD5sum: a50763c671335a92ea726c0875012ea1
+Description: Package created with checkinstall 1.6.3
+
+Package: xtreamui-php
+Installed-Size: 74816
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 7.4.33-2.debian-bullseye
+Depends: xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt
+Provides: xtreamui-php
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-php/xtreamui-php_7.4.33-2.debian-bullseye_amd64.deb
+Size: 12596048
+SHA256: 1773517a19846b84910fd75b4f162cfef7651a27045911546b6cbb10382ff97b
+SHA1: fea62790b75b73107b55ccba0c49ca560452a480
+MD5sum: 5976f216fe5757343954f3b8251e79a4
+Description: Package created with checkinstall 1.6.3
+
+Package: xtreamui-php-geoip
+Installed-Size: 28
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 1.1.1-1.debian-bullseye
+Depends: xtreamui-php
+Provides: xtreamui-php-geoip
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-php-geoip/xtreamui-php-geoip_1.1.1-1.debian-bullseye_amd64.deb
+Size: 6960
+SHA256: b5e7c26107edf8ec58ec161c931b8a5e71d1cd1df1c8a90b1fc33a702c724cfc
+SHA1: 5ae03bbe84538357d74f01bd4372970f9c364bbf
+MD5sum: f526e9b38944dde71cdd279bd14b9062
+Description: Package created with checkinstall 1.6.3
+
+Package: xtreamui-php-ioncube-loader
+Installed-Size: 70176
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 12.0.5-1.debian-bullseye
+Depends: xtreamui-php
+Provides: xtreamui-php-ioncube-loader
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-php-ioncube-loader/xtreamui-php-ioncube-loader_12.0.5-1.debian-bullseye_amd64.deb
+Size: 429804
+SHA256: 7335c090e52289c3f650c1a484aa2ee5c00e383daf7a50b12d66d7e0ba992680
+SHA1: 47b51e5a09a15c3bda8da5ce0ae7937360b42bad
+MD5sum: f7274d7218d0fd88d6deeb6070c0a9d3
+Description: Package created with checkinstall 1.6.2
+
+Package: xtreamui-php-mcrypt
+Installed-Size: 48
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 1.0.5-1.debian-bullseye
+Depends: xtreamui-php
+Provides: xtreamui-php-mcrypt
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-php-mcrypt/xtreamui-php-mcrypt_1.0.5-1.debian-bullseye_amd64.deb
+Size: 12612
+SHA256: bebd451aaccfcf8ba405e887b715e0d254ff79965518af5ee150366c7307a0a8
+SHA1: 328c9bbc10188b0f22ec089252b4a32ed65c8161
+MD5sum: 22bca67d1fc8696b9e56709b2af71b95
+Description: Package created with checkinstall 1.6.3
+
+Package: xtreamui-xavs
+Installed-Size: 1148
+Maintainer: amidevous@gmail.com
+Architecture: amd64
+Version: 2023.01-1.debian-bullseye
+Provides: xtreamui-xavs
+Priority: extra
+Section: checkinstall
+Filename: pool/main/x/xtreamui-xavs/xtreamui-xavs_2023.01-1.debian-bullseye_amd64.deb
+Size: 213520
+SHA256: c83e3bd5f8af8e66fdde1f5b49f80fd3b5426efe2d01af206def54a22ca90c00
+SHA1: 183de0f6dc802c3fd4171d45f6afa477d85897bc
+MD5sum: df4eb90650188aa7af7e01e8ebc0042f
+Description: Package created with checkinstall 1.6.3
+
