@@ -1,0 +1,21 @@
+Origin: local
+Label: local
+Suite: bullseye
+Codename: bullseye
+Version: 11
+Date: Tue, 17 Jan 2023 21:28:41 UTC
+Architectures: amd64
+Components: main
+Description: local repo for php build
+MD5Sum:
+ 1d384532a671384365a9509ac0c8a481 4833 main/binary-amd64/Packages
+ 97f42da02d517fe6a9e4069bfb3529a4 1699 main/binary-amd64/Packages.gz
+ 30747cec48511004f5bbf6b05afc37bd 131 main/binary-amd64/Release
+SHA1:
+ 7d7dd4738b1dbd242eecad17711b86c2d60d966f 4833 main/binary-amd64/Packages
+ 8fbf237ec57537001afb183b190b053ea0cb31e8 1699 main/binary-amd64/Packages.gz
+ 5740b9eddb3b6f53677c780a253e0cefaa75cbc6 131 main/binary-amd64/Release
+SHA256:
+ 19d0c270f11adcfe1aefc356f85c092dabdce972ccd3eb61b0c22c1dac62eb2f 4833 main/binary-amd64/Packages
+ a0d18a74734b912d7d83d6b3447361ad83f60996bacbcefca7aadf872fcfc238 1699 main/binary-amd64/Packages.gz
+ 57c4e569f322afa89655657f1d6f52eebdd09c2bddbc52decb71146fa3eb2ca9 131 main/binary-amd64/Release
