@@ -31,13 +31,12 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 echo "Detected : $OS  $VER  $ARCH"
-#if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
-#"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
-#"$OS" = "Fedora" && ("$VER" = "35" || "$VER" = "36" || "$VER" = "37" ) && "$ARCH" == "x86_64" ||
-#"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
-#"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
-if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
-"$OS" = "debian" && "$VER" = "10" && "$ARCH" == "x86_64" ]] ; then
+if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
+"$OS" = "Fedora" && ("$VER" = "35" || "$VER" = "36" || "$VER" = "37" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
 echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
@@ -70,6 +69,8 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
 fi
+$PACKAGE_REMOVER xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt
+rm -rf /home/xtreamcodes/iptv_xtream_codes/php
 $PACKAGE_INSTALLER daemonize xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt
 $PACKAGE_INSTALLER xtreamui-ffmpeg
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
