@@ -125,6 +125,11 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
         fi
 	}
 	if [ "$OS" = "CentOs" ]; then
+		# enable official repository CentOs 7 Base
+		enablerepo base
+		# enable official repository CentOs 7 Updates
+		enablerepo updates
+		# enable official repository Fedora Epel
 		enablerepo epel
 	elif [ "$OS" = "CentOS-Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
@@ -139,6 +144,10 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		enablerepo powertools
 		# enable official repository CentOs Stream Devel
 		enablerepo devel
+		# enable official repository CentOs Stream CRB
+		enablerepo crb
+		# enable official repository CentOs Stream CRB
+		enablerepo CRB
 		# enable official repository Fedora Epel
 		enablerepo epel
 		# enable official repository Fedora Epel
