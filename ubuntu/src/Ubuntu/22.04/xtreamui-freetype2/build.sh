@@ -26,9 +26,6 @@ cd /root
 dpkg -i /root/xtreamui-freetype2_2.12.0-2_amd64.deb
 rm -rf /root/freetype-2.12.0
 rm -rf /root/xtreamui-freetype2-dbgsym_2.12.0-2_amd64.ddeb
-rm -rf /root/xtreamui-freetype2_2.12.0-2.debian.tar.xz
-rm -rf /root/xtreamui-freetype2_2.12.0-2.dsc
 rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.build
 rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.buildinfo
 rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.changes
-rm -rf /root/xtreamui-freetype2_2.12.0.orig.tar.xz
