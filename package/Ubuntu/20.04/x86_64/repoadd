@@ -1,0 +1,9 @@
+#!/bin/bash
+rm -rf /root/xtream-ui-ubuntu20.04
+git clone git@github.com:amidevous/xtream-ui-ubuntu20.04.git /root/xtream-ui-ubuntu20.04
+reprepro --keepunreferencedfiles -Vb /root/xtream-ui-ubuntu20.04/package/Ubuntu/ includedeb focal \$1
+cp /root/xtream-ui-ubuntu20.04/package/Ubuntu/dists/focal/Release /root/xtream-ui-ubuntu20.04/package/Ubuntu/dists/focal/InRelease
+cd /root/xtream-ui-ubuntu20.04/
+git add *
+git commit -m "add Ubuntu 20.04 packages"
+git push -u origin master
