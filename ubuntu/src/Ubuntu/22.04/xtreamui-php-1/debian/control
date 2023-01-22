@@ -2,7 +2,7 @@
 #               autotools-dev,
 #               libc6-dev | libc-dev,
 #               zlib1g-dev | libz-dev,
-Source: php7.4
+Source: xtreamui-php
 Section: php
 Priority: optional
 Maintainer: Debian PHP Maintainers <team+pkg-php@tracker.debian.org>
