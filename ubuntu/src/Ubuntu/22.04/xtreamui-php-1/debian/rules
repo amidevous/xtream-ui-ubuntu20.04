@@ -11,6 +11,10 @@
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 %:
 	dh $@ --with systemd --with apache2 --without=build-stamp --without autoreconf
+	
+prepared: prepared-stamp
+prepared-stamp:
+	./buildconf --force
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--prefix=/home/xtreamcodes/iptv_xtream_codes/php \
