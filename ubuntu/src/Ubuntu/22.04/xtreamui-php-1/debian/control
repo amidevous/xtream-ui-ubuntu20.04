@@ -83,17 +83,8 @@ Vcs-Browser: https://salsa.debian.org/php-team/php/-/tree/debian/main/7.4
 Homepage: http://www.php.net/
 
 Package: xtreamui-php
-Section: httpd
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Provides: xtreamui-php
-Description: server-side, HTML-embedded scripting language (Apache 2 module)
- This package provides the PHP module for the Apache 2 webserver (as
- found in the apache2-mpm-prefork package).  Please note that this package
- ONLY works with Apache's prefork MPM, as it is not compiled thread-safe.
- .
- ${php:Extensions}
- .
- PHP (recursive acronym for PHP: Hypertext Preprocessor) is a widely-used
- open source general-purpose scripting language that is especially suited
- for web development and can be embedded into HTML.
+Description: xtreamui-php
+xtreamui-php
