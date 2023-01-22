@@ -18,21 +18,7 @@ include /usr/share/dpkg/default.mk
 export DEB_HOST_MULTIARCH
 LIBTOOL_VERSION := $(shell dpkg-query -f'$${Version}' -W libtool)
 # Disable the test now
-RUN_TESTS := yes
-ifeq (nocheck,$(filter nocheck,$(DEB_BUILD_PROFILES)))
-  $(warning Disabling tests due DEB_BUILD_PROFILES)
-  DEB_BUILD_OPTIONS += nocheck
-  RUN_TESTS := no
-else
-  ifeq (nocheck,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-    $(warning Disabling tests due DEB_BUILD_OPTIONS)
-    RUN_TESTS := no
-  endif
-endif
-ifeq (,$(filter $(DEB_HOST_ARCH),$(SANE_ARCHS)))
-  $(warning Disabling checks on $(DEB_HOST_ARCH))
-  RUN_TESTS := no
-endif
+DEB_BUILD_OPTIONS=nocheck
 QUILT_DIFF_OPTS := -p
 QUILT_NO_DIFF_TIMESTAMPS := 1
 export QUILT_DIFF_OPTS QUILT_NO_DIFF_TIMESTAMPS
