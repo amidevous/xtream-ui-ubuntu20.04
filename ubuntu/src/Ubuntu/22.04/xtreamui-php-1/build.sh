@@ -45,7 +45,6 @@ apt-get -y install libglib2.0-dev
 apt-get -y install libgmp3-dev
 apt-get -y install libicu-dev
 apt-get -y install libjpeg-dev
-apt-get -y install libjpeg62-dev
 apt-get -y install libkrb5-dev
 apt-get -y install libldap2-dev
 apt-get -y install liblmdb-dev
