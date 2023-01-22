@@ -8,7 +8,11 @@ Priority: optional
 Maintainer: Debian PHP Maintainers <team+pkg-php@tracker.debian.org>
 Uploaders: Ondřej Surý <ondrej@debian.org>,
            Lior Kaplan <kaplan@debian.org>
-Build-Depends: apache2-dev (>= 2.4),
+Build-Depends: debhelper,
+               autotools-dev,
+               libc6-dev | libc-dev,
+               zlib1g-dev | libz-dev,
+               apache2-dev (>= 2.4),
                autoconf (>= 2.63),
                automake,
                bison,
