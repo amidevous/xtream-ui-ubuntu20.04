@@ -1,4 +1,5 @@
 #!/bin/bash
+WD=$PWD
 rm -rf /root/xtream-ui-ubuntu20.04
 git clone git@github.com:amidevous/xtream-ui-ubuntu20.04.git /root/xtream-ui-ubuntu20.04
 reprepro --keepunreferencedfiles -Vb /root/xtream-ui-ubuntu20.04/package/debian/ includedeb bullseye $1
@@ -7,3 +8,5 @@ cd /root/xtream-ui-ubuntu20.04/
 git add *
 git commit -m "add Debian 11 packages"
 git push -u origin master
+cd $WD
+rm -f $1
