@@ -22,3 +22,13 @@ wget -O /root/freetype-2.12.0/debian/copyright https://github.com/amidevous/xtre
 wget -O /root/freetype-2.12.0/debian/freetype-docs.docs https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/freetype-docs.docs
 wget -O /root/freetype-2.12.0/debian/rules https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/rules
 debuild
+cd /root
+dpkg -i /root/xtreamui-freetype2_2.12.0-2_amd64.deb
+rm -rf /root/freetype-2.12.0
+rm -rf /root/xtreamui-freetype2-dbgsym_2.12.0-2_amd64.ddeb
+rm -rf /root/xtreamui-freetype2_2.12.0-2.debian.tar.xz
+rm -rf /root/xtreamui-freetype2_2.12.0-2.dsc
+rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.build
+rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.buildinfo
+rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.changes
+rm -rf /root/xtreamui-freetype2_2.12.0.orig.tar.xz
