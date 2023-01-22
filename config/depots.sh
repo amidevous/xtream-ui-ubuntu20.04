@@ -1,46 +1,39 @@
-#!/bin/bash
-if test -f "/etc/ensureos.sh"; then
-  source /etc/ensureos.sh
-else
-  wget -qO /etc/ensureos.sh https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/config/ensureos.sh
-  chmod +x /etc/ensureos.sh
-  source /etc/ensureos.sh
-fi
-echo "Detected : $OS  $VER  $ARCH"
-if [[ "$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
-"$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
-    echo "Ok."
-else
-    echo "Sorry, this OS is not supported by Xtream UI."
-    exit 1
-fi
+chmod +x /root/xtream-ui-ubuntu20.04/package/CentOs/7/x86_64/repoadd
+chmod +x /root/xtream-ui-ubuntu20.04/package/CentOS-Stream/8/x86_64/repoadd
+chmod +x /root/xtream-ui-ubuntu20.04/package/CentOS-Stream/9/x86_64/repoadd
+chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64/repoadd
+chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/36/x86_64/repoadd
+chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/37/x86_64/repoadd
+/root/xtream-ui-ubuntu20.04/package/Ubuntu/22.04/x86_64/repoadd /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_amd64.deb
+wget -O /etc/pbuilder/ubuntu-jammy-amd64 https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/pbuilder/ubuntu-jammy-amd64-repo
+pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-jammy-amd64
+wget -O /etc/pbuilder/ubuntu-bionic-amd64 https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/pbuilder/ubuntu-bionic-amd64
+rm -rf /var/cache/pbuilder/ubuntu-bionic-amd64-base.tgz
+pbuilder create --configfile /etc/pbuilder/ubuntu-bionic-amd64
 cd /root
 wget -O /root/xtreamui-freetype2_2.12.1-2.Ubuntu.orig.tar.xz https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.12.1.tar.xz
 tar -xf /root/xtreamui-freetype2_2.12.1-2.Ubuntu.orig.tar.xz
 cd /root/freetype-2.12.1/
 mkdir -p /root/freetype-2.12.1/debian/source
-wget -O /root/freetype-2.12.1/debian/source/format https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/source/format
-wget -O /root/freetype-2.12.1/debian/README.Debian https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/README.Debian
-wget -O /root/freetype-2.12.1/debian/README.source https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/README.source
-wget -O /root/freetype-2.12.1/debian/changelog https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/changelog
-wget -O /root/freetype-2.12.1/debian/compat https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/compat
-wget -O /root/freetype-2.12.1/debian/control https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/control
-wget -O /root/freetype-2.12.1/debian/copyright https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/copyright
-wget -O /root/freetype-2.12.1/debian/freetype-docs.docs https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/freetype-docs.docs
-wget -O /root/freetype-2.12.1/debian/rules https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/debian/rules
+wget -O /root/freetype-2.12.1/debian/source/format https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/source/format
+wget -O /root/freetype-2.12.1/debian/README.Debian https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/README.Debian
+wget -O /root/freetype-2.12.1/debian/README.source https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/README.source
+wget -O /root/freetype-2.12.1/debian/changelog https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/changelog
+wget -O /root/freetype-2.12.1/debian/compat https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/compat
+wget -O /root/freetype-2.12.1/debian/control https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/control
+wget -O /root/freetype-2.12.1/debian/copyright https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/copyright
+wget -O /root/freetype-2.12.1/debian/freetype-docs.docs https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/freetype-docs.docs
+wget -O /root/freetype-2.12.1/debian/rules https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/debian/rules
 debuild -S -sa -d
 cd /root
-wget -O /etc/pbuilder/ubuntu-jammy-amd64 https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/pbuilder/ubuntu-jammy-amd64
-rm -rf /var/cache/pbuilder/ubuntu-jammy-amd64-base.tgz
-pbuilder create --configfile /etc/pbuilder/ubuntu-jammy-amd64
 rm -rf /var/cache/pbuilder/result/*
-pbuilder build --configfile /etc/pbuilder/ubuntu-jammy-amd64 /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy.dsc
-cp /var/cache/pbuilder/result/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_amd64.deb /root/
-rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy.debian.tar.xz
-rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy.dsc
-rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_source.build
-rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_source.buildinfo
-rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_source.changes
+pbuilder build --configfile /etc/pbuilder/ubuntu-bionic-amd64 /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic.dsc
+cp /var/cache/pbuilder/result/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_amd64.deb /root/
+rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic.debian.tar.xz
+rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic.dsc
+rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_source.build
+rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_source.buildinfo
+rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_source.changes
 rm -rf /root/xtreamui-freetype2_2.12.1-2.Ubuntu.orig.tar.xz
 rm -rf /root/xtream-ui-ubuntu20.04
 git clone git@github.com:amidevous/xtream-ui-ubuntu20.04.git /root/xtream-ui-ubuntu20.04
@@ -55,7 +48,10 @@ chmod +x /root/xtream-ui-ubuntu20.04/package/CentOS-Stream/9/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/36/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/37/x86_64/repoadd
-/root/xtream-ui-ubuntu20.04/package/Ubuntu/22.04/x86_64/repoadd /root/xtreamui-freetype2_2.12.1-2.Ubuntu-jammy_amd64.deb
+/root/xtream-ui-ubuntu20.04/package/Ubuntu/18.04/x86_64/repoadd /root/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_amd64.deb
+wget -O /etc/pbuilder/ubuntu-bionic-amd64 https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/pbuilder/ubuntu-bionic-amd64-repo
+pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-bionic-amd64
+
 
 
 
