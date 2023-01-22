@@ -17,9 +17,13 @@ prepared-stamp:
 	./buildconf --force
 override_dh_auto_configure:
 	dh_auto_configure -- \
+		--build=$(DEB_BUILD_GNU_TYPE) \
+		--host=$(DEB_HOST_GNU_TYPE) \
 		--prefix=/home/xtreamcodes/iptv_xtream_codes/php \
 		--with-libdir=/lib/x86_64-linux-gnu \
-#		--with-zlib-dir \
+		--with-zlib-dir \
+		--enable-static \
+		--disable-shared \
 #		--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2 \
 #		--enable-mbstring \
 #		--enable-calendar \
@@ -50,8 +54,6 @@ override_dh_auto_configure:
 #		--enable-opcache \
 #		--enable-fpm \
 #		--enable-libxml \
-#		--enable-static \
-#		--disable-shared \
 #		--with-jpeg-dir \
 #		--enable-gd-jis-conv \
 #		--with-webp-dir \
