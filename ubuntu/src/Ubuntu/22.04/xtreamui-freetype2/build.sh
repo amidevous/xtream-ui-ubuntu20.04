@@ -18,3 +18,4 @@ cd /root
 pbuilder build --configfile /etc/pbuilder/ubuntu-jammy-amd64 /root/xtreamui-freetype2_2.12.0-2.dsc
 cp /var/cache/pbuilder/result/xtreamui-freetype2_2.12.0-2_amd64.deb /root/
 rm -rf /root/xtreamui-freetype2_2.12.0-2.debian.tar.xz /root/xtreamui-freetype2_2.12.0-2.dsc /root/xtreamui-freetype2_2.12.0.orig.tar.xz
+rm -rf /root/xtreamui-freetype2_2.12.0-2_source.build xtreamui-freetype2_2.12.0-2_source.buildinfo xtreamui-freetype2_2.12.0-2_source.changes
