@@ -1,0 +1,17 @@
+Package: xtreamui-freetype2
+Version: 2.12.1-2.Ubuntu-bionic
+Architecture: amd64
+Maintainer: root <amidevous@gmail.com>
+Installed-Size: 2616
+Depends: libc6 (>= 2.14), libpng16-16 (>= 1.6.2-1), zlib1g (>= 1:1.1.4)
+Homepage: <insert the upstream URL, if relevant>
+Priority: optional
+Section: php
+Filename: pool/main/x/xtreamui-freetype2/xtreamui-freetype2_2.12.1-2.Ubuntu-bionic_amd64.deb
+Size: 984862
+SHA256: 400fac72499306429723de3bb1b551959698541c7703bead1028bbddda40b70f
+SHA1: e6585f03cc14a2d90b3413bcc131d92103cba0c7
+MD5sum: 12dc3442d5026a6310c80a8a0d8f5343
+Description: xtreamui-freetype2
+ xtreamui-freetype2
+
