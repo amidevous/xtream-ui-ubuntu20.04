@@ -1,0 +1,12 @@
+#!/bin/bash
+rm -rf /root/xtream-ui-ubuntu20.04
+git clone git@github.com:amidevous/xtream-ui-ubuntu20.04.git /root/xtream-ui-ubuntu20.04
+NAMERPM=$(rpm -pq --queryformat "%{NAME}" $1)
+MINRPM=${NAMERPM::1}
+mkdir -p /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64/Packages/$MINRPM
+mv $1 /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64/Packages/$MINRPM
+createrepo --update /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64
+cd /root/xtream-ui-ubuntu20.04/
+git add *
+git commit -m "add Fedora 35 packages"
+git push -u origin master
