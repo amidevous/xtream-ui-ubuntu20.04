@@ -1,5 +1,5 @@
 Source: xtreamui-php
-Section: unknown
+Section: php
 Priority: optional
 Maintainer: Devous Amy <amidevous@gmail.com>
 Build-Depends: debhelper,
@@ -75,12 +75,14 @@ Build-Depends: debhelper,
                zlib1g-dev
 Build-Conflicts: bind-dev,
                  libxmlrpc-core-c3-dev
-Standards-Version: 4.6.0
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Browser: https://salsa.debian.org/debian/xtreamui-php
-#Vcs-Git: https://salsa.debian.org/debian/xtreamui-php.git
+Standards-Version: 4.5.0.0
+Vcs-Git: https://salsa.debian.org/php-team/php.git -b debian/main/7.4
+Vcs-Browser: https://salsa.debian.org/php-team/php/-/tree/debian/main/7.4
+Homepage: http://www.php.net/
 Package: xtreamui-php
+Section: php
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Provides: xtreamui-php
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
