@@ -80,7 +80,6 @@ Vcs-Git: https://salsa.debian.org/php-team/php.git -b debian/main/7.4
 Vcs-Browser: https://salsa.debian.org/php-team/php/-/tree/debian/main/7.4
 Homepage: http://www.php.net/
 Package: xtreamui-php
-Section: php
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Provides: xtreamui-php
