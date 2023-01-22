@@ -82,23 +82,11 @@ Vcs-Git: https://salsa.debian.org/php-team/php.git -b debian/main/7.4
 Vcs-Browser: https://salsa.debian.org/php-team/php/-/tree/debian/main/7.4
 Homepage: http://www.php.net/
 
-Package: libapache2-mod-php7.4
+Package: xtreamui-php
 Section: httpd
 Architecture: any
-Depends: libmagic1,
-         media-types | mime-support,
-         php7.4-cli,
-         php7.4-common (= ${binary:Version}),
-         php7.4-json,
-         php7.4-opcache,
-         tzdata,
-         ucf,
-         ${misc:Depends},
-         ${shlibs:Depends}
-Provides: libapache2-mod-php,
-          ${php:Provides}
-Recommends: apache2
-Suggests: php-pear
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Provides: xtreamui-php
 Description: server-side, HTML-embedded scripting language (Apache 2 module)
  This package provides the PHP module for the Apache 2 webserver (as
  found in the apache2-mpm-prefork package).  Please note that this package
