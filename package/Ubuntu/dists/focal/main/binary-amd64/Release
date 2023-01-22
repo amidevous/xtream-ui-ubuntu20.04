@@ -1,7 +1,0 @@
-Archive: focal
-Version: 20.04
-Component: main
-Origin: local
-Label: local
-Architecture: amd64
-Description: local repo for php build
