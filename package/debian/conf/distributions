@@ -6,8 +6,6 @@ Version: 10
 Architectures: amd64
 Components: main
 Description: local repo for php build
-Origin: local
-Label: local
 Suite: bullseye
 Codename: bullseye
 Version: 11
