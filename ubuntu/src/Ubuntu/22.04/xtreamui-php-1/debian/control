@@ -87,4 +87,4 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Provides: xtreamui-php
 Description: xtreamui-php
-xtreamui-php
+ xtreamui-php
