@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Sat, 24 Dec 2022 14:10:59 +0000
+Source: xtreamui-freetype2
+Architecture: source
+Version: 2.12.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: root <amidevous@gmail.com>
+Changed-By: root <amidevous@gmail.com>
+Changes:
+ xtreamui-freetype2 (2.12.0-1) unstable; urgency=medium
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ 8f6e0d5acb2faf6350712fc6878ec0d28f67c5bd 1002 xtreamui-freetype2_2.12.0-1.dsc
+ fd1eb1a27f178808e1d8ccd82c71abfa5d0ebe13 2340352 xtreamui-freetype2_2.12.0.orig.tar.xz
+ 638814b5f40e075c55743da02a1444ea5337f3e9 7964 xtreamui-freetype2_2.12.0-1.debian.tar.xz
+ 944fd3a043a605fe0174b44a1a611c8258259ea8 5461 xtreamui-freetype2_2.12.0-1_source.buildinfo
+Checksums-Sha256:
+ 728129b2e4b6d5493c11e3e94a8d93683ab5d4b0032a8f1dd4b71688652ae58c 1002 xtreamui-freetype2_2.12.0-1.dsc
+ ef5c336aacc1a079ff9262d6308d6c2a066dd4d2a905301c4adda9b354399033 2340352 xtreamui-freetype2_2.12.0.orig.tar.xz
+ 7b1ce4f753794e3ad9fbce429f25d54813a95341840a966f224fcada236498e3 7964 xtreamui-freetype2_2.12.0-1.debian.tar.xz
+ 786319a0547e89f8ba837ef81d3501c4e7dfd60ad163d2d06f8c1351499d88df 5461 xtreamui-freetype2_2.12.0-1_source.buildinfo
+Files:
+ 81cbf9d969816bc41dea8d12071268f0 1002 unknown optional xtreamui-freetype2_2.12.0-1.dsc
+ 9a07649ce73ba0d80d211092b3d1c2fa 2340352 unknown optional xtreamui-freetype2_2.12.0.orig.tar.xz
+ e05fd1f8f3c0bc1a48db91a989a857c3 7964 unknown optional xtreamui-freetype2_2.12.0-1.debian.tar.xz
+ 70a2295a5d5ca3fbb32d027397f33e6f 5461 unknown optional xtreamui-freetype2_2.12.0-1_source.buildinfo
