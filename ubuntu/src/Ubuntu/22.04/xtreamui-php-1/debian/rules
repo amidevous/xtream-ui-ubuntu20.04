@@ -10,7 +10,7 @@
 # package maintainers to append LDFLAGS
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 %:
-	dh $@
+	dh $@ --with systemd --with apache2 --without=build-stamp --without autoreconf
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--prefix=/home/xtreamcodes/iptv_xtream_codes/php \
