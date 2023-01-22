@@ -1,0 +1,16 @@
+Source: xtreamui-php
+Section: unknown
+Priority: optional
+Maintainer: Devous Amy <amidevous@gmail.com>
+Build-Depends: debhelper, autotools-dev, libc6-dev | libc-dev, zlib1g-dev | libz-dev
+Standards-Version: 4.6.0
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/xtreamui-php
+#Vcs-Git: https://salsa.debian.org/debian/xtreamui-php.git
+Rules-Requires-Root: no
+
+Package: xtreamui-php
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
