@@ -167,7 +167,7 @@ chmod +x /root/xtream-ui-ubuntu20.04/package/CentOS-Stream/9/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/35/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/36/x86_64/repoadd
 chmod +x /root/xtream-ui-ubuntu20.04/package/Fedora/37/x86_64/repoadd
-/root/xtream-ui-ubuntu20.04/package/Ubuntu/18.04/x86_64/repoadd /root/xtreamui-freetype2_2.12.1-2.debian-buster_amd64.deb
+/root/xtream-ui-ubuntu20.04/package/debian/10/x86_64/repoadd /root/xtreamui-freetype2_2.12.1-2.debian-buster_amd64.deb
 wget -O /etc/pbuilder/debian-buster-amd64 https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/pbuilder/debian-buster-amd64-repo
 pbuilder update --override-config --configfile /etc/pbuilder/debian-buster-amd64
 
