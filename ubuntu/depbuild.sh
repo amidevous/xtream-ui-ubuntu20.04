@@ -154,6 +154,18 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		enablerepo epel-modular
 		dnf -y install wget
 	elif [ "$OS" = "Fedora" ]; then
+		enablerepo fedora-cisco-openh264
+		enablerepo fedora-modular
+		enablerepo fedora
+		enablerepo updates-modular
+		enablerepo updates
+		enablerepo mariadb
+		enablerepo playonlinux
+		enablerepo rpmfusion-free
+		enablerepo rpmfusion-free-updates
+		enablerepo rpmfusion-nonfree
+		enablerepo rpmfusion-nonfree-updates
+		enablerepo virtualbox
 		dnf -y install wget
 	fi
 	yumpurge() {
