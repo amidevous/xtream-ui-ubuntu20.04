@@ -58,7 +58,15 @@ inst() {
     }
 fi
 if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
-exit 0
+$PACKAGE_INSTALLER libX11-devel
+$PACKAGE_INSTALLER libpng-devel
+$PACKAGE_INSTALLER zlib-devel
+$PACKAGE_INSTALLER bzip2-devel
+$PACKAGE_INSTALLER gcc
+$PACKAGE_INSTALLER libX11-devel
+$PACKAGE_INSTALLER libpng-devel
+$PACKAGE_INSTALLER zlib-devel
+$PACKAGE_INSTALLER bzip2-devel
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -128,6 +136,7 @@ deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/deb
 EOF
 	apt-get update
 fi
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]] ; then
 apt-get -y dist-upgrade
 apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 apt-get -y build-dep php7.4
@@ -143,16 +152,12 @@ apt-get -y install libaom-dev
 apt-get -y install reprepro
 apt-get -y install subversion
 apt-get -y install zstd
+fi
 cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
 cd /root/phpbuild
-if [[ "$OS" = "Ubuntu" ]]; then
-dist=Ubuntu-$(lsb_release -sc)
-elif [[ "$OS" = "debian" ]]; then
-dist=debian-$(lsb_release -sc)
-fi
-wget --no-check-certificate https://www.php.net/distributions/php-7.4.33.tar.gz
+wget --no-check-certificate https://www.php.net/distributions/php-8.1.19.tar.gz
 rm -rf php-7.4.33
 tar -xf php-7.4.33.tar.gz
 if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
@@ -178,70 +183,10 @@ cd freetype-2.12.0
 ./autogen.sh
 ./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
 make -j$(nproc --all)
-if [[ "$OS" = "debian" ]]; then
-apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput docbook-to-man
-wget --no-check-certificate -O checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
-wget --no-check-certificate -O checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz http://archive.ubuntu.com/ubuntu/pool/universe/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
-tar -xvf checkinstall_1.6.2+git20170426.d24a630.orig.tar.xz
-cd checkinstall
-tar -xvf ../checkinstall_1.6.2+git20170426.d24a630-2ubuntu2.debian.tar.xz
-debuild
-cd ..
-dpkg -i checkinstall*.deb
-apt-get update
-apt-get -yf install
-inst() {
-       dpkg-query --showformat='${Version}' --show "$1"
-    }
-else
-$PACKAGE_INSTALLER checkinstall
+make install
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+exit 0
 fi
-$PACKAGE_REMOVER xtreamui-freetype2
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/include
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/share
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/include/freetype2/freetype
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/share/man
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/freetype2/lib/
-checkinstall \
-    --pkgsource="" \
-    --pkglicense="GPL3" \
-    --deldesc=no \
-    --nodoc \
-    --maintainer="amidevous@gmail.com" \
-    --pkgarch=$(dpkg --print-architecture) \
-    --pkgversion="2.12" \
-    --pkgrelease=1.$dist \
-    --pkgname=xtreamui-freetype2 \
-    --requires="" -y
-mkdir -p /root/package/$OS/
-mkdir -p /root/package/$OS/conf
-mkdir -p /root/package/$OS/incoming
-cat > /root/package/$OS/conf/distributions <<EOF
-Origin: local
-Label: local
-Suite: $(lsb_release -sc)
-Codename: $(lsb_release -sc)
-Version: $VER
-Architectures: amd64
-Components: main
-Description: local repo for php build
-EOF
-mkdir -p /root/package/$OS/$VER/$ARCH/
-cat > /root/package/$OS/$VER/$ARCH/repoadd <<EOF
-#!/bin/bash
-reprepro --keepunreferencedfiles -Vb /root/package/$OS/ includedeb $(lsb_release -sc) \$1
-cp /root/package/$OS/dists/$(lsb_release -sc)/Release /root/package/$OS/dists/$(lsb_release -sc)/InRelease
-chown -R _apt:root /root/package/$OS/
-chown -R _apt:root /root/package/$OS/*
-chmod -R 700 /root/package/$OS/
-chmod -R 700 /root/package/$OS/*
-EOF
-chmod +x /root/package/$OS/$VER/$ARCH/repoadd
-cat > /etc/apt/sources.list.d/local.list <<EOF
-deb [trusted=yes] file:/root/package/$OS $(lsb_release -sc) main
-EOF
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
-cd ..
 cd php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
