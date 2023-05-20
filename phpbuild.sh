@@ -438,8 +438,8 @@ else
 --with-mail_ssl_module \
 --with-file-aio \
 --with-cpu-opt=generic \
---add-module=/root/ngx_http_geoip2_module \
---with-openssl=/root/openssl-OpenSSL_1_1_1h \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' \
 --with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'
 fi
@@ -545,8 +545,8 @@ else
 --with-file-aio \
 --with-cpu-opt=generic \
 --add-module=/root/phpbuild/nginx-rtmp-module-1.2.2 \
---add-module=/root/ngx_http_geoip2_module \
---with-openssl=/root/openssl-OpenSSL_1_1_1h \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' \
 --with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'
 fi
