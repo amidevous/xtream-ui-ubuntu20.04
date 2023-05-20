@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /root
-wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz
-#wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz
+#wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz
+wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz
 tar -xvf /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz
 #mkdir -p /root/xtreamui-php_7.4.33-1.Ubuntu/
 cd /root/php-7.4.33/
