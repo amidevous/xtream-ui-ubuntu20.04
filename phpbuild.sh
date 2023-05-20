@@ -220,15 +220,15 @@ cd /root/phpbuild
 wget --no-check-certificate https://www.php.net/distributions/php-8.1.19.tar.gz
 rm -rf php-8.1.19
 tar -xf php-8.1.19.tar.gz
-if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
-wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
-tar -xf debian.tar.xz
-rm -f debian.tar.xz
+#if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
+#wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
+#tar -xf debian.tar.xz
+#rm -f debian.tar.xz
+#cd php-8.1.19
+#patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
+#else
 cd php-8.1.19
-patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
-else
-cd php-8.1.19
-fi
+#fi
 cd ..
 if [[ "$OS" = "debian"  ]] ; then
 rm -f "/etc/apt/sources.list.d/alvistack.list"
