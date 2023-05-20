@@ -67,6 +67,7 @@ elif [[ "$OS" = "CentOS" ]]; then
 dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
 dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 fi
+dnf group install --with-optional -y "C Development Tools and Libraries" "Development Tools"
 $PACKAGE_INSTALLER libX11-devel
 $PACKAGE_INSTALLER X11-devel
 $PACKAGE_INSTALLER libpng-devel
@@ -76,7 +77,6 @@ $PACKAGE_INSTALLER gcc
 $PACKAGE_INSTALLER libxml2-devel
 $PACKAGE_INSTALLER libpng-devel
 $PACKAGE_INSTALLER bzip2-devel
-dnf groupinstall "Development Tools" "Development Libraries"
 $PACKAGE_INSTALLER gnupg2
 $PACKAGE_INSTALLER gnupg
 $PACKAGE_INSTALLER bzip2-devel
@@ -265,6 +265,14 @@ $PACKAGE_INSTALLER libunistring-devel
 $PACKAGE_INSTALLER unistring-devel
 $PACKAGE_INSTALLER libunistring
 $PACKAGE_INSTALLER unistring
+$PACKAGE_INSTALLER libxslt-devel
+$PACKAGE_INSTALLER GeoIP-deve
+$PACKAGE_INSTALLER tar
+$PACKAGE_INSTALLER unzip
+$PACKAGE_INSTALLER curl
+$PACKAGE_INSTALLER wget
+$PACKAGE_INSTALLER git
+$PACKAGE_INSTALLER libmaxminddb-devel
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -293,6 +301,7 @@ EOF
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository ppa:maxmind/ppa -y
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -349,11 +358,208 @@ apt-get -y install libaom-dev
 apt-get -y install reprepro
 apt-get -y install subversion
 apt-get -y install zstd
+apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libbz2-dev libssl-dev libgd-dev libxslt-dev libgeoip-dev tar unzip curl wget git
+apt-get -y install libmaxminddb-dev
 fi
 cd
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
 cd /root/phpbuild
+rm -rf /root/phpbuild/ngx_http_geoip2_module
+rm -rf /root/phpbuild/nginx-1.24.0
+rm -rf /root/phpbuild/openssl-OpenSSL_1_1_1h
+wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /root/phpbuild/OpenSSL_1_1_1h.tar.gz
+tar -xzvf OpenSSL_1_1_1h.tar.gz
+wget http://nginx.org/download/nginx-1.24.0.tar.gz -O /root/phpbuild/nginx-1.24.0.tar.gz
+tar -xzvf nginx-1.24.0.tar.gz
+git clone https://github.com/leev/ngx_http_geoip2_module.git
+cd /root/phpbuild/nginx-1.24.0
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx/nginx.pid \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
+--with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
+--with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
+else
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx/nginx.pid \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--add-module=/tmp/ngx_http_geoip2_module \
+--with-openssl=/tmp/openssl-OpenSSL_1_1_1h \
+--with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' \
+--with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'
+fi
+make -j$(nproc --all)
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx/"
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx/sbin/"
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx/modules"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/nginx/conf"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/logs/"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp"
+killall nginx
+rm -f /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
+cp /root/phpbuild/nginx-1.24.0/objs/nginx /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/
+cd /root/phpbuild/
+rm -rf /root/phpbuild/ngx_http_geoip2_module
+rm -rf /root/phpbuild/nginx-1.24.0
+rm -rf /root/phpbuild/openssl-OpenSSL_1_1_1h
+wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /root/phpbuild/OpenSSL_1_1_1h.tar.gz
+tar -xzvf OpenSSL_1_1_1h.tar.gz
+wget http://nginx.org/download/nginx-1.24.0.tar.gz -O /root/phpbuild/nginx-1.24.0.tar.gz
+tar -xzvf nginx-1.24.0.tar.gz
+git clone https://github.com/leev/ngx_http_geoip2_module.git
+rm -rf /root/phpbuild/v1.2.2.zip
+rm -rf /root/phpbuild/nginx-rtmp-module-1.2.2
+wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.2.zip
+unzip /root/phpbuild/v1.2.2.zip
+cd /root/phpbuild/nginx-1.24.0
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx.pid \
+--add-module=/root/phpbuild/nginx-rtmp-module-1.2.2 \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--with-pcre \
+--without-http_rewrite_module \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
+--with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
+--with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
+else
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx_rtmp.lock \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx.pid \
+--add-module=/root/phpbuild/nginx-rtmp-module-1.2.2 \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--add-module=/tmp/ngx_http_geoip2_module \
+--with-openssl=/tmp/openssl-OpenSSL_1_1_1h \
+--with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' \
+--with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'
+fi
+make -j$(nproc --all)
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/"
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/"
+mkdir -p "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/modules"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/logs/"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp"
+mkdir -p  "/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp"
+killall nginx_rtmp
+rm -f /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
+mv /root/phpbuild/nginx-1.24.0/objs/nginx /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp
+cp /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
 wget --no-check-certificate https://www.php.net/distributions/php-8.1.19.tar.gz
 rm -rf php-8.1.19
 tar -xf php-8.1.19.tar.gz
@@ -491,5 +697,6 @@ cd /root
 rm -rf /root/ffmpeg_build
 rm -rf /root/xavs-code
 rm -rf rm -rf /root/phpbuild
+/home/xtreamcodes/iptv_xtream_codes/start_services.sh
 echo "finish"
 
