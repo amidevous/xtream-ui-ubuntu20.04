@@ -620,12 +620,12 @@ cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
 rm -rf /tmp/update/XtreamUI-master
 rm /tmp/update.zip
 rm -rf /tmp/update
-xcversion=$(wget -qO- http://xcodes.mine.nu/XCodes/current.json | jq -r ".version")
+xcversion=amidevousv1
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb http://xcodes.mine.nu/XCodes/GeoLite2.mmdb
+wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb https://archive.org/download/geolite2_20200218/GeoLite2.mmdb
 chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-geoliteversion=$(wget -qO- http://xcodes.mine.nu/XCodes/status.json | jq -r ".version")
+geoliteversion=20200218
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$geoliteversion' WHERE admin_settings.type = 'geolite2_version'; "
 chown xtreamcodes:xtreamcodes -R /home/xtreamcodes
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
