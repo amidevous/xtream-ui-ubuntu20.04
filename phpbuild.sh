@@ -651,67 +651,12 @@ wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-u
 cd /root
 rm -rf /root/ffmpeg_build
 rm -rf /root/xavs-code
-svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk /root/xavs-code
-cd /root/xavs-code
-./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
-make -j$(nproc --all)
-make install
-cd /root
-rm -rf /root/x265_git
-git clone --branch stable --depth 2 https://bitbucket.org/multicoreware/x265_git
-cd /root/x265_git/build/linux
-cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/root/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
-make -j$(nproc --all)
-make install
-mkdir -p /root/ffmpeg_build/lib64/pkgconfig
-cp x265.pc /root/ffmpeg_build/lib64/pkgconfig
-cd /root
-rm -rf /root/ffmpeg-5.1.2
-wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
-tar -xvf ffmpeg-5.1.2.tar.bz2
-cd ffmpeg-5.1.2
-#
-PATH="/root/bin:/root/ffmpeg_build/usr/bin:$PATH" PKG_CONFIG_PATH="/root/ffmpeg_build/lib64/pkgconfig" ./configure \
-  --prefix="/root/ffmpeg_build" \
-  --bindir="/home/xtreamcodes/iptv_xtream_codes/bin/" \
-  --extra-cflags="-I/root/ffmpeg_build/include" \
-  --extra-ldflags="-L/root/ffmpeg_build/lib64" \
-  --pkg-config-flags="--static" \
-  --extra-version=Xtream-Codes \
-  --disable-debug \
-  --disable-shared \
-  --extra-libs=-lpthread \
-  --extra-libs=-lm \
-  --enable-gpl \
-  --enable-libfdk_aac \
-  --enable-libfreetype \
-  --enable-libmp3lame \
-  --enable-libopus \
-  --enable-libvpx \
-  --enable-libx264 \
-  --enable-libx265 \
-  --enable-nonfree \
-  --disable-ffplay \
-  --disable-doc \
-  --enable-pthreads \
-  --enable-postproc \
-  --enable-libass \
-  --enable-gray \
-  --enable-runtime-cpudetect \
-  --enable-gnutls \
-  --enable-librtmp \
-  --enable-libtheora \
-  --enable-version3 \
-  --enable-libvorbis \
-  --enable-libxvid \
-  --enable-static \
-  --enable-bzlib \
-  --enable-fontconfig \
-  --enable-zlib \
-  --enable-libxavs \
-  --extra-libs='-lstdc++ -lrtmp -lgmp -lssl -lcrypto -lz -ldl -lm -lpthread -lunistring'
-make -j$(nproc --all)
-make install
+cd /home/xtreamcodes/iptv_xtream_codes/bin/
+wget https://bitbucket.org/emre1393/xtreamui_mirror/downloads/ffmpeg_v5.0.1_amd64.zip -O ffmpeg_v5.0.1_amd64.zip
+rm -f /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg
+rm -f /home/xtreamcodes/iptv_xtream_codes/bin/ffprobe
+unzip ffmpeg_v5.0.1_amd64.zip
+rm -f ffmpeg_v5.0.1_amd64.zip
 cd /root
 rm -rf /root/ffmpeg_build
 rm -rf /root/xavs-code
