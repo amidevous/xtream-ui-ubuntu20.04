@@ -134,6 +134,23 @@ $PACKAGE_INSTALLER gnutls-devel
 $PACKAGE_INSTALLER libass-devel
 $PACKAGE_INSTALLER ass-devel
 $PACKAGE_INSTALLER fdk-aac-free-devel
+$PACKAGE_INSTALLER lame-devel
+$PACKAGE_INSTALLER opus-devel
+$PACKAGE_INSTALLER libopus-devel
+if [[ "$OS" = "Fedora" ]]; then
+dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+elif [[ "$OS" = "CentOS-Stream" ]]; then
+dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
+dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+elif [[ "$OS" = "CentOS" ]]; then
+dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
+dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+fi
+$PACKAGE_INSTALLER librtmp-devel
+$PACKAGE_INSTALLER librtmp
+$PACKAGE_INSTALLER rtmp-devel
+$PACKAGE_INSTALLER rtmp
+$PACKAGE_INSTALLER rtmpdump
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
