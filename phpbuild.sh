@@ -59,16 +59,17 @@ inst() {
 fi
 if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
 $PACKAGE_INSTALLER libX11-devel
+$PACKAGE_INSTALLER X11-devel
 $PACKAGE_INSTALLER libpng-devel
 $PACKAGE_INSTALLER zlib-devel
 $PACKAGE_INSTALLER bzip2-devel
 $PACKAGE_INSTALLER gcc
 $PACKAGE_INSTALLER libxml2-devel
 $PACKAGE_INSTALLER libpng-devel
-$PACKAGE_INSTALLER zlib-devel
 $PACKAGE_INSTALLER bzip2-devel
 dnf groupinstall "Development Tools" "Development Libraries"
 $PACKAGE_INSTALLER gnupg2
+$PACKAGE_INSTALLER gnupg
 $PACKAGE_INSTALLER bzip2-devel
 $PACKAGE_INSTALLER curl-devel
 $PACKAGE_INSTALLER libcurl-devel
