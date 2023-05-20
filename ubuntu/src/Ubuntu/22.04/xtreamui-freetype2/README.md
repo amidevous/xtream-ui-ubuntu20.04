@@ -12,6 +12,8 @@
 
 `sudo pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-jammy-amd64`
 
+`sudo pbuilder login --configfile /etc/pbuilder/ubuntu-jammy-amd64`
+
 `wget -O $HOME/build-freetype.sh https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/build.sh`
 
 `sudo bash $HOME/build-freetype.sh`
