@@ -42,12 +42,23 @@ else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
+if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]] ; then
 echo -e "\n-- Updating repositories and packages sources"
-PACKAGE_INSTALLER="apt-get -yqq install"
-PACKAGE_REMOVER="apt-get -yqq purge"
+PACKAGE_INSTALLER="apt-get -y install"
+PACKAGE_REMOVER="apt-get -y purge"
 inst() {
    dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
 }
+elif [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+PACKAGE_INSTALLER="dnf -y install"
+PACKAGE_REMOVER="dnf -y remove"
+inst() {
+       rpm -q "$1" &> /dev/null
+    }
+fi
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+exit 0
+fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
