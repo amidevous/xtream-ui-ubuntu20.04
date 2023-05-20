@@ -58,6 +58,15 @@ inst() {
     }
 fi
 if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+if [[ "$OS" = "Fedora" ]]; then
+dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+elif [[ "$OS" = "CentOS-Stream" ]]; then
+dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
+dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+elif [[ "$OS" = "CentOS" ]]; then
+dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
+dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+fi
 $PACKAGE_INSTALLER libX11-devel
 $PACKAGE_INSTALLER X11-devel
 $PACKAGE_INSTALLER libpng-devel
@@ -142,15 +151,6 @@ $PACKAGE_INSTALLER fdk-aac-devel
 $PACKAGE_INSTALLER lame-devel
 $PACKAGE_INSTALLER opus-devel
 $PACKAGE_INSTALLER libopus-devel
-if [[ "$OS" = "Fedora" ]]; then
-dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-elif [[ "$OS" = "CentOS-Stream" ]]; then
-dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
-dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
-elif [[ "$OS" = "CentOS" ]]; then
-dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
-dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
-fi
 $PACKAGE_INSTALLER librtmp-devel
 $PACKAGE_INSTALLER librtmp
 $PACKAGE_INSTALLER rtmp-devel
@@ -432,16 +432,26 @@ cd /root/xavs-code
 make -j$(nproc --all)
 make install
 cd /root
+rm -rf /root/x265_git
+git clone --branch stable --depth 2 https://bitbucket.org/multicoreware/x265_git
+cd /root/x265_git/build/linux
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/root/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
+make -j$(nproc --all)
+make install
+mkdir -p /root/ffmpeg_build/lib64/pkgconfig
+cp x265.pc /root/ffmpeg_build/lib64/pkgconfig
+cd /root
 rm -rf /root/ffmpeg-5.1.2
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
 cd ffmpeg-5.1.2
-#  --pkg-config-flags="--static" \
-./configure \
+#
+PATH="/root/bin:/root/ffmpeg_build/usr/bin:$PATH" PKG_CONFIG_PATH="/root/ffmpeg_build/lib64/pkgconfig" ./configure \
   --prefix="/root/ffmpeg_build" \
   --bindir="/home/xtreamcodes/iptv_xtream_codes/bin/" \
   --extra-cflags="-I/root/ffmpeg_build/include" \
   --extra-ldflags="-L/root/ffmpeg_build/lib64" \
+  --pkg-config-flags="--static" \
   --extra-version=Xtream-Codes \
   --disable-debug \
   --disable-shared \
@@ -475,8 +485,11 @@ cd ffmpeg-5.1.2
   --enable-zlib \
   --enable-libxavs \
   --extra-libs='-lstdc++ -lrtmp -lgmp -lssl -lcrypto -lz -ldl -lm -lpthread -lunistring'
-  make -j$(nproc --all)
+make -j$(nproc --all)
 make install
-cd ..
+cd /root
+rm -rf /root/ffmpeg_build
+rm -rf /root/xavs-code
+rm -rf rm -rf /root/phpbuild
 echo "finish"
 
