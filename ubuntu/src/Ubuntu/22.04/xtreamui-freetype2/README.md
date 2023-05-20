@@ -16,3 +16,5 @@
 
 `sudo bash $HOME/build-freetype.sh`
 
+`rm -f $HOME/build-freetype.sh`
+
