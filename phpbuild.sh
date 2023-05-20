@@ -573,15 +573,15 @@ cp /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp /home/xtreamcodes/iptv_xtream_cod
 wget --no-check-certificate https://www.php.net/distributions/php-7.4.33.tar.gz
 rm -rf php-7.4.33
 tar -xf php-7.4.33.tar.gz
-#if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
-#wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
-#tar -xf debian.tar.xz
-#rm -f debian.tar.xz
-#cd php-7.4.33
-#patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
-#else
+if [[ "$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" || "$VER" = "11" || "$VER" = "37" || "$VER" = "38" ]]; then
+wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
+tar -xf debian.tar.xz
+rm -f debian.tar.xz
 cd php-7.4.33
-#fi
+patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
+else
+cd php-7.4.33
+fi
 cd ..
 if [[ "$OS" = "debian"  ]] ; then
 rm -f "/etc/apt/sources.list.d/alvistack.list"
@@ -629,12 +629,8 @@ $PACKAGE_INSTALLER libgeoip-dev
 $PACKAGE_INSTALLER libgeoip-devel
 $PACKAGE_INSTALLER geoip-devel
 wget --no-check-certificate -O geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php81.patch -O geoip-php81.patch
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php8.patch -O geoip-php8.patch
 tar -xf geoip-1.1.1.tgz
 cd geoip-1.1.1
-patch -p1 < ../geoip-php8.patch
-patch -p1 < ../geoip-php81.patch
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
