@@ -21,13 +21,4 @@ wget -O /root/php-7.4.33/debian/freetype-docs.docs https://github.com/amidevous/
 wget -O /root/php-7.4.33/debian/rules https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/debian/rules
 debuild -S -sa -d
 cd /root
-#dpkg -i /root/xtreamui-freetype2_2.12.0-2_amd64.deb
-rm -rf /root/xtreamui-php_7.4.33-1.Ubuntu
-rm -rf /root/xtreamui-freetype2-dbgsym_2.12.0-2_amd64.ddeb
-rm -rf /root/xtreamui-freetype2_2.12.0-2.debian.tar.xz
-rm -rf /root/xtreamui-freetype2_2.12.0-2.dsc
-rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.build
-rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.buildinfo
-rm -rf /root/xtreamui-freetype2_2.12.0-2_amd64.changes
-rm -rf /root/xtreamui-freetype2_2.12.0.orig.tar.xz
 
