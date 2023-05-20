@@ -12,7 +12,7 @@ sudo pbuilder create --configfile /etc/pbuilder/ubuntu-jammy-amd64
 
 sudo pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-jammy-amd64
 
-wget -O $HOME/build-freetype.sh https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-freetype2/build.sh
+wget -O $HOME/build-freetype.sh https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/build.sh
 
 sudo bash $HOME/build-freetype.sh
 
