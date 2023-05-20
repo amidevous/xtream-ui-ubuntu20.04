@@ -6,6 +6,18 @@
 
 `sudo chmod +x /usr/lib/pbuilder/hooks/D10addppa`
 
+`mkdir -p $HOME/.pbuilder-hooks/`
+
+`wget -O $HOME/.pbuilder-hooks/D10addppa https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/pbuilderhooks`
+
+`chmod +x $HOME/.pbuilder-hooks/D10addppa`
+
+`sudo mkdir -p /root/.pbuilder-hooks/`
+
+`sudo wget -O /root/.pbuilder-hooks/D10addppa https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/pbuilderhooks`
+
+`sudo chmod +x /root/.pbuilder-hooks/D10addppa`
+
 `sudo rm -rf /usr/lib/pbuilder/hooks/pbuilderhooks`
 
 `sudo yum -y remove rpmdevtools`
