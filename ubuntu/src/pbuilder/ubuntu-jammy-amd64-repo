@@ -54,8 +54,7 @@ ARCHITECTURE=amd64
 APTCACHE="/var/cache/pbuilder/aptcache/"
 APTCACHEHARDLINK="yes"
 REMOVEPACKAGES=""
-#HOOKDIR="/usr/lib/pbuilder/hooks"
-HOOKDIR=""
+HOOKDIR="/usr/lib/pbuilder/hooks"
 EATMYDATA=no
 
 # make debconf not interact with user
