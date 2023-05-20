@@ -1,5 +1,7 @@
 cd $HOME
 
+sudo mkdir -p /etc/pbuilder-hooks/
+
 sudo yum -y remove rpmdevtools
 
 sudo yum -y install devscripts pbuilder wget ca-certificates
