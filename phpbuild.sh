@@ -278,87 +278,19 @@ patch -p1 < ../geoip-php81.patch
 make -j$(nproc --all)
 make install
 cd ..
-if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
-exit 0
-fi
-if [[ "$OS" = "Ubuntu" ]]; then
-dist=Ubuntu-$(lsb_release -sc)
-elif [[ "$OS" = "debian" ]]; then
-dist=debian-$(lsb_release -sc)
-fi
-mkdir -p "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
-cd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
-mkdir -p home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
-mkdir -p DEBIAN
-echo "2.0" > debian-binary
-touch DEBIAN/conffiles
-cat > DEBIAN/control <<EOF
-Package: xtreamui-php-ioncube-loader
-Priority: extra
-Section: checkinstall
-Installed-Size: 70176
-Maintainer: amidevous@gmail.com
-Architecture: amd64
-Version: 12.0.5-1.$dist
-Depends: xtreamui-php
-Provides: xtreamui-php-ioncube-loader
-Description: Package created with checkinstall 1.6.2
-EOF
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/
 wget --no-check-certificate -O ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 tar -xvf ioncube_loaders_lin_x86-64.tar.gz
 rm -f ioncube_loaders_lin_x86-64.tar.gz
-cp ioncube/ioncube_loader_lin_7.4.so home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
+cp ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/
 rm -rf ioncube
 cd ..
-dpkg --build "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64"
-/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php-ioncube-loader_12.0.5-1."$dist"_amd64.deb"
-mkdir -p "xtreamui-php_7.4.33-2."$dist"_amd64"
-cp "php-7.4.33/xtreamui-php_7.4.33-1."$dist"_amd64.deb" "xtreamui-php_7.4.33-2."$dist"_amd64/"
-cd "xtreamui-php_7.4.33-2."$dist"_amd64"
-ar xv "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
-rm -f "xtreamui-php_7.4.33-1."$dist"_amd64.deb"
-if [ -f "data.tar.xz" ]; then
-tar -xvf data.tar.xz
-rm -f data.tar.xz
-fi
-if [ -f "data.tar.zst" ]; then
-tar --use-compress-program=unzstd -xvf data.tar.zst
-rm -f data.tar.zst
-fi
-mkdir DEBIAN
-cd DEBIAN
-if [ -f "../control.tar.xz" ]; then
-tar -xvf ../control.tar.xz
-cd ../
-rm -rf control.tar.xz
-fi
-if [ -f "../control.tar.zst" ]; then
-tar --use-compress-program=unzstd -xvf ../control.tar.zst
-cd ../
-rm -rf ../control.tar.zst
-fi
-wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-sed -i 's|7.4.33-1|7.4.33-2|' "DEBIAN/control"
-sed -i 's|xtreamui-freetype2|xtreamui-freetype2, xtreamui-php-geoip, xtreamui-php-ioncube-loader, xtreamui-php-mcrypt|' "DEBIAN/control"
-cd ..
-dpkg --build "xtreamui-php_7.4.33-2."$dist"_amd64"
-/root/package/$OS/$VER/$ARCH/repoadd "xtreamui-php_7.4.33-2."$dist"_amd64.deb"
+wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk xavs-code
 cd xavs-code
 ./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
 make -j$(nproc --all)
-checkinstall \
-	--type=debian \
-    --pkgsource=xavs \
-    --pkglicense=GPL3 \
-    --deldesc=no \
-    --nodoc \
-    --maintainer=amidevous@gmail.com \
-    --pkgarch=amd64 \
-    --pkgversion=$(date +%Y.%m) \
-    --pkgrelease=1.$dist \
-    --pkgname=xtreamui-xavs -y
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
+make install
 cd ..
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
@@ -403,22 +335,7 @@ cd ffmpeg-5.1.2
   --enable-libxavs \
   --extra-libs='-lstdc++ -lrtmp -lgmp -lssl -lcrypto -lz -ldl -lm -lpthread -lunistring'
   make -j$(nproc --all)
-checkinstall \
-    --type=debian \
-    --pkgsource=ffmpeg \
-    --pkglicense=GPL3 \
-    --deldesc=no \
-    --nodoc \
-    --maintainer=amidevous@gmail.com \
-    --pkgarch=amd64 \
-    --pkgversion=5.1.2 \
-    --pkgrelease=1.$dist \
-    --exclude=/root/ffmpeg_build \
-    --pkgname=xtreamui-ffmpeg -y
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
+make install
 cd ..
-rm -f /etc/apt/sources.list.d/local.list
-apt-get update
-find /root/package -name '*.deb'
 echo "finish"
 
