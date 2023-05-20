@@ -13,7 +13,7 @@ LOGLEVEL=I
 # no   => never use colors
 USECOLORS=auto
 BASETGZ=/var/cache/pbuilder/ubuntu-jammy-amd64-base.tgz
-EXTRAPACKAGES="ubuntu-minimal nano wget dos2unix ca-certificates"
+EXTRAPACKAGES="ubuntu-minimal nano wget dos2unix ca-certificates debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput cmake"
 #export DEBIAN_BUILDARCH=athlon
 BUILDPLACE=/var/cache/pbuilder/build
 # directory inside the chroot where the build happens. See #789404
