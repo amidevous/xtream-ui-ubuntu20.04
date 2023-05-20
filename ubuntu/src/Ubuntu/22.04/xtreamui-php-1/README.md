@@ -1,25 +1,5 @@
 `cd $HOME`
 
-`sudo mkdir -p /usr/lib/pbuilder/hooks`
-
-`sudo wget -O /usr/lib/pbuilder/hooks/D10addppa https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/pbuilderhooks`
-
-`sudo chmod +x /usr/lib/pbuilder/hooks/D10addppa`
-
-`mkdir -p $HOME/.pbuilder-hooks/`
-
-`wget -O $HOME/.pbuilder-hooks/D10addppa https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/pbuilderhooks`
-
-`chmod +x $HOME/.pbuilder-hooks/D10addppa`
-
-`sudo mkdir -p /root/.pbuilder-hooks/`
-
-`sudo wget -O /root/.pbuilder-hooks/D10addppa https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/pbuilderhooks`
-
-`sudo chmod +x /root/.pbuilder-hooks/D10addppa`
-
-`sudo rm -rf /usr/lib/pbuilder/hooks/pbuilderhooks`
-
 `sudo yum -y remove rpmdevtools`
 
 `sudo yum -y install devscripts pbuilder wget ca-certificates`
@@ -28,9 +8,11 @@
 
 `sudo wget -O /etc/pbuilder/ubuntu-jammy-amd64 https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/pbuilder/ubuntu-jammy-amd64-xtreamui-php`
 
-`HOOKDIR="/usr/lib/pbuilder/hooks" sudo HOOKDIR="/usr/lib/pbuilder/hooks" pbuilder create --configfile /etc/pbuilder/ubuntu-jammy-amd64`
+`sudo pbuilder create --configfile /etc/pbuilder/ubuntu-jammy-amd64`
 
-`HOOKDIR="/usr/lib/pbuilder/hooks" sudo HOOKDIR="/usr/lib/pbuilder/hooks" pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-jammy-amd64`
+`sudo pbuilder update --override-config --configfile /etc/pbuilder/ubuntu-jammy-amd64`
+
+`sudo pbuilder login --configfile /etc/pbuilder/ubuntu-jammy-amd64`
 
 `wget -O $HOME/build-php.sh https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/build.sh`
 
