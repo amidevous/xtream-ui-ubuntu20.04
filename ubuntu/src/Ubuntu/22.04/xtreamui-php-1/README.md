@@ -1,6 +1,6 @@
 `cd $HOME`
 
-`sudo mkdir -p /etc/pbuilder-hooks/`
+`sudo mkdir -p /usr/lib/pbuilder/hooks`
 
 `sudo yum -y remove rpmdevtools`
 
