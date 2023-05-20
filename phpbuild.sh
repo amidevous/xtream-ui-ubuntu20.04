@@ -716,6 +716,7 @@ cd /root
 rm -rf /root/ffmpeg_build
 rm -rf /root/xavs-code
 rm -rf rm -rf /root/phpbuild
+/home/xtreamcodes/iptv_xtream_codes/permissions.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 echo "finish"
 
