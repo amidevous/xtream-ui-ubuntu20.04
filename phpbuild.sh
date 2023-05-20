@@ -261,22 +261,10 @@ $PACKAGE_INSTALLER zeromq-devel
 $PACKAGE_INSTALLER zvbi-devel
 $PACKAGE_INSTALLER vmaf-models
 $PACKAGE_INSTALLER pkgconfig
-#here
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
-$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER libunistring-devel
+$PACKAGE_INSTALLER unistring-devel
+$PACKAGE_INSTALLER libunistring
+$PACKAGE_INSTALLER unistring
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -448,10 +436,10 @@ rm -rf /root/ffmpeg-5.1.2
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
 cd ffmpeg-5.1.2
+#  --pkg-config-flags="--static" \
 ./configure \
   --prefix="/root/ffmpeg_build" \
   --bindir="/home/xtreamcodes/iptv_xtream_codes/bin/" \
-  --pkg-config-flags="--static" \
   --extra-cflags="-I/root/ffmpeg_build/include" \
   --extra-ldflags="-L/root/ffmpeg_build/lib64" \
   --extra-version=Xtream-Codes \
