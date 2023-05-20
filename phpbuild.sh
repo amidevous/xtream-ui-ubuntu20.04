@@ -137,7 +137,8 @@ $PACKAGE_INSTALLER nasm
 $PACKAGE_INSTALLER gnutls-devel
 $PACKAGE_INSTALLER libass-devel
 $PACKAGE_INSTALLER ass-devel
-$PACKAGE_INSTALLER fdk-aac-free-devel
+$PACKAGE_REMOVER fdk-aac-free-devel
+$PACKAGE_INSTALLER fdk-aac-devel
 $PACKAGE_INSTALLER lame-devel
 $PACKAGE_INSTALLER opus-devel
 $PACKAGE_INSTALLER libopus-devel
@@ -155,6 +156,127 @@ $PACKAGE_INSTALLER librtmp
 $PACKAGE_INSTALLER rtmp-devel
 $PACKAGE_INSTALLER rtmp
 $PACKAGE_INSTALLER rtmpdump
+$PACKAGE_INSTALLER alsa-lib-devel
+$PACKAGE_INSTALLER AMF-devel
+$PACKAGE_INSTALLER faac-devel
+$PACKAGE_INSTALLER flite-devel
+$PACKAGE_INSTALLER fontconfig-devel
+$PACKAGE_INSTALLER freetype-devel
+$PACKAGE_INSTALLER fribidi-devel
+$PACKAGE_INSTALLER frei0r-devel
+$PACKAGE_INSTALLER game-music-emu-devel
+$PACKAGE_INSTALLER gsm-devel
+$PACKAGE_INSTALLER ilbc-devel
+$PACKAGE_INSTALLER jack-audio-connection-kit-devel
+$PACKAGE_INSTALLER ladspa-devel
+$PACKAGE_INSTALLER libaom-devel
+$PACKAGE_INSTALLER libdav1d-devel
+$PACKAGE_INSTALLER libass-devel
+$PACKAGE_INSTALLER libbluray-devel
+$PACKAGE_INSTALLER libbs2b-devel
+$PACKAGE_INSTALLER libcaca-devel
+$PACKAGE_INSTALLER libcdio-paranoia-devel
+$PACKAGE_INSTALLER libchromaprint-devel
+$PACKAGE_INSTALLER libcrystalhd-devel
+$PACKAGE_INSTALLER lensfun-devel
+$PACKAGE_INSTALLER libavc1394-devel
+$PACKAGE_INSTALLER libdc1394-devel
+$PACKAGE_INSTALLER libiec61883-devel
+$PACKAGE_INSTALLER libdrm-devel
+$PACKAGE_INSTALLER libgcrypt-devel
+$PACKAGE_INSTALLER libGL-devel
+$PACKAGE_INSTALLER libmodplug-devel
+$PACKAGE_INSTALLER libmysofa-devel
+$PACKAGE_INSTALLER libopenmpt-devel
+$PACKAGE_INSTALLER librsvg2-devel
+$PACKAGE_INSTALLER libsmbclient-devel
+$PACKAGE_INSTALLER libssh-devel
+$PACKAGE_INSTALLER libtheora-devel
+$PACKAGE_INSTALLER libv4l-devel
+$PACKAGE_INSTALLER libva-devel
+$PACKAGE_INSTALLER libvdpau-devel
+$PACKAGE_INSTALLER libvorbis-devel
+$PACKAGE_INSTALLER vapoursynth-devel
+$PACKAGE_INSTALLER libvpx-devel
+$PACKAGE_INSTALLER libmfx
+$PACKAGE_INSTALLER mfx
+$PACKAGE_INSTALLER libmfx-devel
+$PACKAGE_INSTALLER mfx-devel
+$PACKAGE_INSTALLER nasm
+$PACKAGE_INSTALLER libwebp-devel
+$PACKAGE_INSTALLER netcdf-devel
+$PACKAGE_INSTALLER raspberrypi-vc-devel
+$PACKAGE_INSTALLER nv-codec-headers
+$PACKAGE_INSTALLER opencore-amr-devel vo-amrwbenc-devel
+$PACKAGE_INSTALLER libomxil-bellagio-devel
+$PACKAGE_INSTALLER libxcb-devel
+$PACKAGE_INSTALLER libxml2-devel
+$PACKAGE_INSTALLER lilv-devel lv2-devel
+$PACKAGE_INSTALLER openal-soft-devel
+$PACKAGE_INSTALLER opencl-headers ocl-icd-devel
+$PACKAGE_INSTALLER openjpeg2-devel
+$PACKAGE_INSTALLER pulseaudio-libs-devel
+$PACKAGE_INSTALLER podman
+$PACKAGE_INSTALLER rav1e-devel
+$PACKAGE_INSTALLER rubberband-devel
+$PACKAGE_INSTALLER SDL2-devel
+$PACKAGE_INSTALLER snappy-devel
+$PACKAGE_INSTALLER soxr-devel
+$PACKAGE_INSTALLER speex-devel
+$PACKAGE_INSTALLER srt-devel
+$PACKAGE_INSTALLER srt-libs
+$PACKAGE_INSTALLER srt-lib
+$PACKAGE_INSTALLER srt
+$PACKAGE_INSTALLER svt-av1-devel
+$PACKAGE_INSTALLER tesseract-devel
+$PACKAGE_INSTALLER texi2html
+$PACKAGE_INSTALLER texinfo
+$PACKAGE_INSTALLER twolame-devel
+$PACKAGE_INSTALLER libvmaf-devel
+$PACKAGE_INSTALLER wavpack-devel
+$PACKAGE_INSTALLER vid.stab-devel
+$PACKAGE_INSTALLER vulkan-loader-devel
+$PACKAGE_INSTALLER libshaderc-devel
+$PACKAGE_INSTALLER libshaderc
+$PACKAGE_INSTALLER spirv-tools-libs
+$PACKAGE_INSTALLER x264-devel
+$PACKAGE_INSTALLER x264-libs
+$PACKAGE_INSTALLER x264-lib
+$PACKAGE_INSTALLER libx264-devel
+$PACKAGE_INSTALLER x264
+$PACKAGE_INSTALLER x265-devel
+$PACKAGE_INSTALLER x265-libs
+$PACKAGE_INSTALLER x265-lib
+$PACKAGE_INSTALLER libx265-devel
+$PACKAGE_INSTALLER x265
+$PACKAGE_INSTALLER xvidcore-devel
+$PACKAGE_INSTALLER libxvidcore-devel
+$PACKAGE_INSTALLER xvid-devel
+$PACKAGE_INSTALLER libxvid-devel
+$PACKAGE_INSTALLER xvidcore
+$PACKAGE_INSTALLER xvid
+$PACKAGE_INSTALLER zimg-devel
+$PACKAGE_INSTALLER zlib-devel
+$PACKAGE_INSTALLER zeromq-devel
+$PACKAGE_INSTALLER zvbi-devel
+$PACKAGE_INSTALLER vmaf-models
+$PACKAGE_INSTALLER pkgconfig
+#here
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
+$PACKAGE_INSTALLER 
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -304,21 +426,25 @@ patch -p1 < ../geoip-php81.patch
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
 make install
-cd ..
+cd /root
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/
 wget --no-check-certificate -O ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 tar -xvf ioncube_loaders_lin_x86-64.tar.gz
 rm -f ioncube_loaders_lin_x86-64.tar.gz
 cp ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/
 rm -rf ioncube
-cd ..
+cd /root
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
+cd /root
+rm -rf /root/ffmpeg_build
+rm -rf /root/xavs-code
 svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk xavs-code
-cd xavs-code
+cd /root/xavs-code
 ./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
 make -j$(nproc --all)
 make install
-cd ..
+cd /root
+rm -rf /root/ffmpeg-5.1.2
 wget --no-check-certificate -O ffmpeg-5.1.2.tar.bz2 https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.bz2
 tar -xvf ffmpeg-5.1.2.tar.bz2
 cd ffmpeg-5.1.2
