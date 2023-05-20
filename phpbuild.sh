@@ -125,6 +125,8 @@ $PACKAGE_INSTALLER libsodium-devel
 $PACKAGE_INSTALLER sodium-devel
 $PACKAGE_INSTALLER libffi-devel
 $PACKAGE_INSTALLER ffi-devel
+$PACKAGE_INSTALLER libxslt-devel
+$PACKAGE_INSTALLER xslt-devel
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
