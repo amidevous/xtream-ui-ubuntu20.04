@@ -10,7 +10,7 @@
 
 `sudo apt-get -y install pbuilder debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput wget ca-certificates`
 
-`sudo wget -O /etc/pbuilder/ubuntu-jammy-amd64 https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/pbuilder/ubuntu-jammy-amd64-repo`
+`sudo wget -O /etc/pbuilder/ubuntu-jammy-amd64 https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/pbuilder/ubuntu-jammy-amd64-xtreamui-php`
 
 `sudo pbuilder create --configfile /etc/pbuilder/ubuntu-jammy-amd64`
 
