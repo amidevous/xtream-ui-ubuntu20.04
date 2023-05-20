@@ -20,5 +20,14 @@
 
 `rm -f $HOME/build-php.sh`
 
-`wget -O $HOME/build-php.sh https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/build.sh`
+`exit`
 
+`wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz`
+
+`wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz`
+
+`wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz`
+
+`wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz`
+
+`wget -O /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz https://www.php.net/distributions/php-7.4.33.tar.xz`
