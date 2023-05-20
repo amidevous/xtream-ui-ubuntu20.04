@@ -158,16 +158,16 @@ rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
 cd /root/phpbuild
 wget --no-check-certificate https://www.php.net/distributions/php-8.1.19.tar.gz
-rm -rf php-7.4.33
-tar -xf php-7.4.33.tar.gz
+rm -rf php-8.1.19
+tar -xf php-8.1.19.tar.gz
 if [[ "$VER" = "22.04" || "$VER" = "11" ]]; then
 wget --no-check-certificate "https://launchpad.net/~ondrej/+archive/ubuntu/php/+sourcefiles/php7.3/7.3.33-2+ubuntu22.04.1+deb.sury.org+1/php7.3_7.3.33-2+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz" -O debian.tar.xz
 tar -xf debian.tar.xz
 rm -f debian.tar.xz
-cd php-7.4.33
+cd php-8.1.19
 patch -p1 < ../debian/patches/0060-Add-minimal-OpenSSL-3.0-patch.patch
 else
-cd php-7.4.33
+cd php-8.1.19
 fi
 cd ..
 if [[ "$OS" = "debian"  ]] ; then
@@ -184,7 +184,7 @@ cd freetype-2.12.0
 ./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
 make -j$(nproc --all)
 make install
-cd php-7.4.33
+cd ../php-8.1.19
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
 make install
