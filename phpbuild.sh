@@ -131,6 +131,9 @@ $PACKAGE_INSTALLER xslt-devel
 $PACKAGE_INSTALLER yasm
 $PACKAGE_INSTALLER nasm
 $PACKAGE_INSTALLER gnutls-devel
+$PACKAGE_INSTALLER libass-devel
+$PACKAGE_INSTALLER ass-devel
+$PACKAGE_INSTALLER fdk-aac-free-devel
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
