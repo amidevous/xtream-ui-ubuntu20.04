@@ -640,10 +640,10 @@ mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non
 wget --no-check-certificate -O ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 tar -xvf ioncube_loaders_lin_x86-64.tar.gz
 rm -f ioncube_loaders_lin_x86-64.tar.gz
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/ioncube_loader_lin_*.so
-cp ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/
+rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_*.so
+cp ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 rm -rf ioncube
-chmod 777 /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20210902/ioncube_loader_lin_7.4.so
+chmod 777 /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so
 cd /root
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 cd /root
