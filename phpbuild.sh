@@ -426,7 +426,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-u
 cd /root
 rm -rf /root/ffmpeg_build
 rm -rf /root/xavs-code
-svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk xavs-code
+svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xavs/code/trunk /root/xavs-code
 cd /root/xavs-code
 ./configure --prefix="/root/ffmpeg_build" --libdir=/root/ffmpeg_build/lib64
 make -j$(nproc --all)
