@@ -570,6 +570,7 @@ kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services.sh' 
 rm -f /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
 mv /root/phpbuild/nginx-1.24.0/objs/nginx /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp
 cp /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
+cd /root/phpbuild/
 wget --no-check-certificate https://www.php.net/distributions/php-7.4.33.tar.gz
 rm -rf php-7.4.33
 tar -xf php-7.4.33.tar.gz
