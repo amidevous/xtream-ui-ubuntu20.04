@@ -128,6 +128,8 @@ $PACKAGE_INSTALLER libffi-devel
 $PACKAGE_INSTALLER ffi-devel
 $PACKAGE_INSTALLER libxslt-devel
 $PACKAGE_INSTALLER xslt-devel
+$PACKAGE_INSTALLER yasm
+$PACKAGE_INSTALLER nasm
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
