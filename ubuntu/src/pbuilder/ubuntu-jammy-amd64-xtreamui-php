@@ -14,6 +14,13 @@ LOGLEVEL=I
 USECOLORS=auto
 BASETGZ=/var/cache/pbuilder/ubuntu-jammy-amd64-base.tgz
 EXTRAPACKAGES="ubuntu-minimal nano wget dos2unix ca-certificates debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput cmake xtreamui-freetype2"
+EXTRAPACKAGES="$EXTRAPACKAGES zlib1g-dev apache2-dev bison chrpath default-libmysqlclient-dev dh-apache2 firebird-dev"
+EXTRAPACKAGES="$EXTRAPACKAGES flex freetds-dev libacl1-dev libapparmor-dev libargon2-dev libbz2-dev libc-client-dev libcurl4-openssl-dev"
+EXTRAPACKAGES="$EXTRAPACKAGES libdb-dev libedit-dev libenchant-2-dev libevent-dev libfreetype6-dev libgcrypt20-dev libgd-dev"
+EXTRAPACKAGES="$EXTRAPACKAGES libgmp3-dev libicu-dev libkrb5-dev liblmdb-dev libmagic-dev libmhash-dev libnss-myhostname"
+EXTRAPACKAGES="$EXTRAPACKAGES libonig-dev libpq-dev libpspell-dev libqdbm-dev libsasl2-dev libsnmp-dev libsodium-dev"
+EXTRAPACKAGES="$EXTRAPACKAGES libsqlite3-dev libsystemd-dev libtidy-dev libwebp-dev libxml2-dev libxmlrpc-epi-dev libxmltok1-dev"
+EXTRAPACKAGES="$EXTRAPACKAGES libxslt1-dev libzip-dev locales-all re2c systemtap-sdt-dev unixodbc-dev"
 #export DEBIAN_BUILDARCH=athlon
 BUILDPLACE=/var/cache/pbuilder/build
 # directory inside the chroot where the build happens. See #789404
