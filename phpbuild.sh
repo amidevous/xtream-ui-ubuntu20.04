@@ -153,7 +153,6 @@ EOF
 	apt-get install software-properties-common dirmngr --install-recommends -y
 	add-apt-repository -y ppa:ondrej/apache2
 	add-apt-repository -y -s ppa:ondrej/php
-	add-apt-repository ppa:andykimpe/curl -y
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/ubuntu/ $(lsb_release -cs) main"
@@ -276,8 +275,12 @@ find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
 wget --no-check-certificate -O geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php81.patch -O geoip-php81.patch
+wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php8.patch -O geoip-php8.patch
 tar -xf geoip-1.1.1.tgz
 cd geoip-1.1.1
+patch -p1 < ../geoip-php8.patch
+patch -p1 < ../geoip-php81.patch
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
