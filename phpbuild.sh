@@ -263,6 +263,8 @@ make -j$(nproc --all)
 make install
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
+$PACKAGE_INSTALLER libgeoip-devel
+$PACKAGE_INSTALLER geoip-devel
 wget --no-check-certificate -O geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php81.patch -O geoip-php81.patch
 wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/geoip-php8.patch -O geoip-php8.patch
