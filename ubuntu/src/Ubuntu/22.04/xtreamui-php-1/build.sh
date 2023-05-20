@@ -34,4 +34,3 @@ plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy.dsc
 plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.build
 plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.buildinfo
 plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.changes
-plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz
