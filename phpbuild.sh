@@ -248,30 +248,19 @@ cd ../php-8.1.19
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
 make install
-if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
-exit 0
-fi
 cd ..
-$PACKAGE_INSTALLER libmcrypt-dev mcrypt
+$PACKAGE_INSTALLER libmcrypt-dev
+$PACKAGE_INSTALLER mcrypt-dev
+$PACKAGE_INSTALLER libmcrypt-devel
+$PACKAGE_INSTALLER mcrypt-devel
+$PACKAGE_INSTALLER mcrypt
 wget --no-check-certificate -O mcrypt-1.0.5.tgz https://pecl.php.net/get/mcrypt-1.0.5.tgz
 tar -xvf mcrypt-1.0.5.tgz
 cd mcrypt-1.0.5
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
-$PACKAGE_REMOVER xtreamui-php-mcrypt
-checkinstall \
-    --pkgsource="" \
-    --pkglicense="GPL3" \
-    --deldesc=no \
-    --nodoc \
-    --maintainer="amidevous@gmail.com" \
-    --pkgarch=$(dpkg --print-architecture) \
-    --pkgversion="1.0.5" \
-    --pkgrelease=1.$dist \
-    --pkgname=xtreamui-php-mcrypt \
-    --requires="xtreamui-php" -y
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
+make install
 cd ..
 $PACKAGE_INSTALLER libgeoip-dev
 wget --no-check-certificate -O geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
@@ -284,20 +273,11 @@ patch -p1 < ../geoip-php81.patch
 /home/xtreamcodes/iptv_xtream_codes/php/bin/phpize
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
-$PACKAGE_REMOVER xtreamui-php-geoip
-checkinstall \
-    --pkgsource="" \
-    --pkglicense="GPL3" \
-    --deldesc=no \
-    --nodoc \
-    --maintainer="amidevous@gmail.com" \
-    --pkgarch=$(dpkg --print-architecture) \
-    --pkgversion="1.1.1" \
-    --pkgrelease=1.$dist \
-    --pkgname=xtreamui-php-geoip \
-    --requires="xtreamui-php" -y
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
+make install
 cd ..
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+exit 0
+fi
 if [[ "$OS" = "Ubuntu" ]]; then
 dist=Ubuntu-$(lsb_release -sc)
 elif [[ "$OS" = "debian" ]]; then
