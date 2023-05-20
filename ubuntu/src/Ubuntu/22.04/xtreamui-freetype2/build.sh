@@ -1,5 +1,6 @@
 #!/bin/bash
 cd /root
+mkdir -p /root/deb/
 wget -O /root/xtreamui-freetype2_2.12.0.orig.tar.xz https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.12.1.tar.xz
 tar -xf /root/xtreamui-freetype2_2.12.0.orig.tar.xz
 cd /root/freetype-2.12.0/
@@ -16,6 +17,6 @@ wget -O /root/freetype-2.12.0/debian/rules https://github.com/amidevous/xtream-u
 debuild -S -sa -d
 cd /root
 pbuilder build --configfile /etc/pbuilder/ubuntu-jammy-amd64 /root/xtreamui-freetype2_2.12.0-2.dsc
-cp /var/cache/pbuilder/result/xtreamui-freetype2_2.12.0-2_amd64.deb /root/
+cp /var/cache/pbuilder/result/xtreamui-freetype2_2.12.0-2_amd64.deb /root/deb/
 rm -rf /root/xtreamui-freetype2_2.12.0-2.debian.tar.xz /root/xtreamui-freetype2_2.12.0-2.dsc /root/xtreamui-freetype2_2.12.0.orig.tar.xz
 rm -rf /root/xtreamui-freetype2_2.12.0-2_source.build xtreamui-freetype2_2.12.0-2_source.buildinfo xtreamui-freetype2_2.12.0-2_source.changes
