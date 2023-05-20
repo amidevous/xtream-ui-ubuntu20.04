@@ -184,66 +184,13 @@ cd freetype-2.12.0
 ./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
 make -j$(nproc --all)
 make install
-if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
-exit 0
-fi
 cd php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/GeoIP.dat
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/bin
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.conf.default
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/etc/pear.conf
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/include
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/sbin
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/var
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Archive
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Console
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/OS
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/PEAR
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/PEAR.php
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Structures
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/System.php
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/XML
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/build
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/data
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/doc
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/pearcmd.php
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/peclcmd.php
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-$PACKAGE_REMOVER xtreamui-php
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/bin
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/etc/php-fpm.d
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/include
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/sbin
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/var
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Archive
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Console
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/OS
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/PEAR
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/Structures
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/XML
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/build
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/data
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/doc
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/test
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
-mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731
-checkinstall \
-    --pkgsource="" \
-    --pkglicense="GPL3" \
-    --deldesc=no \
-    --nodoc \
-    --maintainer="amidevous@gmail.com" \
-    --pkgarch=$(dpkg --print-architecture) \
-    --pkgversion="7.4.33" \
-    --pkgrelease=1.$dist \
-    --pkgname=xtreamui-php \
-    --requires="xtreamui-freetype2" -y
-find ./ -name '*.deb' -exec /root/package/$OS/$VER/$ARCH/repoadd {} \;
-rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20180731/
+make install
+if [[ "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]] ; then
+exit 0
+fi
 cd ..
 $PACKAGE_INSTALLER libmcrypt-dev mcrypt
 wget --no-check-certificate -O mcrypt-1.0.5.tgz https://pecl.php.net/get/mcrypt-1.0.5.tgz
