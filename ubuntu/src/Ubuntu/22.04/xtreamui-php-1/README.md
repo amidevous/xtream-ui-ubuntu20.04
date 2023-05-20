@@ -19,3 +19,6 @@
 `bash $HOME/build-php.sh`
 
 `rm -f $HOME/build-php.sh`
+
+`wget -O $HOME/build-php.sh https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/build.sh`
+
