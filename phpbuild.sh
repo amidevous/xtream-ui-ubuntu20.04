@@ -130,6 +130,7 @@ $PACKAGE_INSTALLER libxslt-devel
 $PACKAGE_INSTALLER xslt-devel
 $PACKAGE_INSTALLER yasm
 $PACKAGE_INSTALLER nasm
+$PACKAGE_INSTALLER gnutls-devel
 fi
 if [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
