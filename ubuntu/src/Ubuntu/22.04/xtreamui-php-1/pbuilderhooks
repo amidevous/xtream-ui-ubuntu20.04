@@ -8,3 +8,4 @@ echo "deb-src http://fr.archive.ubuntu.com/ubuntu jammy-updates main restricted 
 echo "deb [trusted=yes] https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/package/Ubuntu jammy main" >> /etc/apt/sources.list
 apt-get update
 apt-get -y dist-upgrade
+apt-get -y  install xtreamui-freetype2
