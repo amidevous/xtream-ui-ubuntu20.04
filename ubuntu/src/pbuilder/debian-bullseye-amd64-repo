@@ -17,6 +17,7 @@ EXTRAPACKAGES="adduser apt apt-utils bzip2 console-setup debconf debconf-i18n ej
 EXTRAPACKAGES="$EXTRAPACKAGES initramfs-tools iproute2 iputils-ping isc-dhcp-client kbd kmod less locales"
 EXTRAPACKAGES="$EXTRAPACKAGES lsb-release mawk mount netbase netcat-openbsd passwd procps python3 sensible-utils"
 EXTRAPACKAGES="$EXTRAPACKAGES sudo tzdata udev vim-tiny whiptail rsyslog"
+EXTRAPACKAGES="$EXTRAPACKAGES debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput cmake"
 #export DEBIAN_BUILDARCH=athlon
 BUILDPLACE=/var/cache/pbuilder/build
 # directory inside the chroot where the build happens. See #789404
