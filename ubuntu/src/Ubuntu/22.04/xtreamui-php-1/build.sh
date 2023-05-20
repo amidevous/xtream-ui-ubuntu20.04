@@ -21,4 +21,17 @@ wget -O /root/php-7.4.33/debian/freetype-docs.docs https://github.com/amidevous/
 wget -O /root/php-7.4.33/debian/rules https://github.com/amidevous/xtream-ui-ubuntu20.04/raw/master/ubuntu/src/Ubuntu/22.04/xtreamui-php-1/debian/rules
 debuild -S -sa -d
 cd /root
-
+apt-get -y install curl git make
+git clone https://github.com/mcrapet/plowshare.git
+cd plowshare
+make install PREFIX=/usr
+cd /root
+rm -rf /root/plowshare
+plowmod --install
+plowmod --update
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy.debian.tar.xz
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy.dsc
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.build
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.buildinfo
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu-jammy_source.changes
+plowup 1fichier /root/xtreamui-php_7.4.33-1.Ubuntu.orig.tar.xz
