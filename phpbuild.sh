@@ -194,7 +194,7 @@ EOF
 cat > /etc/apt/sources.list.d/mariadb.list <<EOF
 deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.9/debian/ $(lsb_release -cs) main
 EOF
-	apt-get update
+	apt-get update	
 fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]] ; then
 apt-get -y dist-upgrade
@@ -247,6 +247,7 @@ make install
 cd ../php-8.1.19
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
+rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/
 make install
 cd ..
 $PACKAGE_INSTALLER libmcrypt-dev
