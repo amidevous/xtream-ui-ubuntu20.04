@@ -272,7 +272,14 @@ EOF
 	$PACKAGE_INSTALLER mcrypt-devel
 	$PACKAGE_INSTALLER libmcrypt
 	$PACKAGE_INSTALLER libmcrypt-devel
-	$PACKAGE_INSTALLER MariaDB-client MariaDB-server MariaDB-devel
+	$PACKAGE_INSTALLER MariaDB-client
+	$PACKAGE_INSTALLER MariaDB
+	$PACKAGE_INSTALLER mariadb-client
+	$PACKAGE_INSTALLER mariadb
+	$PACKAGE_INSTALLER MariaDB-server
+	$PACKAGE_INSTALLER mariadb-server
+	$PACKAGE_INSTALLER MariaDB-devel
+	$PACKAGE_INSTALLER mariadb-devel
 	$PACKAGE_INSTALLER python
 	$PACKAGE_INSTALLER python-paramiko
 	$PACKAGE_INSTALLER python-pip
