@@ -63,7 +63,7 @@ if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "36" || "$VER" = "37" || "$VER" = "38" ) && "$ARCH" == "x86_64" ||
-"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Ubuntu" && ("$VER" = "12.04" || "$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
 echo "Ok."
 else
