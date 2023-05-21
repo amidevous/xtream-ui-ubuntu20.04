@@ -711,19 +711,70 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 	apt-get -y build-dep php7.4
-	apt-get -y install libmariadb-dev libmariadb-dev-compat libmariadbd-dev dbconfig-mysql
-	apt-get -y install autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev \
-	libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev \
-	libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo \
-	yasm zlib1g-dev libxvidcore-dev libunistring-dev nasm libx264-dev \
-	libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev unzip librtmp-dev libtheora-dev \
-	libbz2-dev libgmp-dev libssl-dev unzip zip
+	apt-get -y install libmariadb-dev
+	apt-get -y install libmariadb-dev-compat
+	apt-get -y install libmariadbd-dev
+	apt-get -y install dbconfig-mysql
+	apt-get -y install autoconf
+	apt-get -y install automake
+	apt-get -y install build-essential
+	apt-get -y install cmake
+	apt-get -y install git-core
+	apt-get -y install git
+	apt-get -y install libass-dev
+	apt-get -y install libfreetype6-dev
+	apt-get -y install libgnutls28-dev
+	apt-get -y install libmp3lame-dev
+	apt-get -y install libsdl2-dev
+	apt-get -y install libtool
+	apt-get -y install libva-dev
+	apt-get -y install libvdpau-dev
+	apt-get -y install libvorbis-dev
+	libxcb1-dev libxcb-shm0-dev
+	apt-get -y install libxcb-xfixes0-dev
+	apt-get -y install meson
+	apt-get -y install ninja-build
+	apt-get -y install pkg-config
+	apt-get -y install texinfo
+	apt-get -y install yasm
+	apt-get -y install zlib1g-dev
+	apt-get -y install libxvidcore-dev
+	apt-get -y install libunistring-dev
+	apt-get -y install nasm
+	apt-get -y install libx264-dev
+	apt-get -y install libx265-dev
+	apt-get -y install libnuma-dev
+	apt-get -y install libvpx-dev
+	apt-get -y install libfdk-aac-dev
+	apt-get -y install libopus-dev
+	apt-get -y install unzip
+	apt-get -y install librtmp-dev
+	apt-get -y install libtheora-dev
+	apt-get -y install libbz2-dev
+	apt-get -y install libgmp-dev
+	apt-get -y install libssl-dev
+	apt-get -y install zip
 	apt-get -y install libdav1d-dev
 	apt-get -y install libaom-dev
 	apt-get -y install reprepro
 	apt-get -y install subversion
 	apt-get -y install zstd
-	apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libbz2-dev libssl-dev libgd-dev libxslt-dev libgeoip-dev tar unzip curl wget git
+	apt-get -y install libpcre3
+	apt-get -y install libpcre3-dev
+	apt-get -y install pcre3
+	apt-get -y install libpcre
+	apt-get -y install libpcre-dev
+	apt-get -y install pcre
+	apt-get -y install libpcre2
+	apt-get -y install libpcre2-dev
+	apt-get -y install pcre2
+	apt-get -y install libgd-dev
+	apt-get -y install libxslt-dev
+	apt-get -y install libgeoip-dev
+	apt-get -y install tar
+	apt-get -y install curl
+	apt-get -y install wget
+	apt-get -y install git
 	apt-get -y install libmaxminddb-dev
 	apt-get -y install libmcrypt-dev
 	apt-get -y install mcrypt-dev
