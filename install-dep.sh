@@ -828,4 +828,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 fi
 	systemctl start mariadb
 	systemctl enable mariadb
+	service start mariadb
+	update-rc.d mariadb defaults
+	chkconfig mariadb on
 
