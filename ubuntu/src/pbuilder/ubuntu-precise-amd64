@@ -90,7 +90,7 @@ PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends"
 # this option to yes, but this may allow remote attackers to compromise the
 # system. Better set a valid key for the signed (local) repository with
 # $APTKEYRINGS (see below).
-ALLOWUNTRUSTED=no
+ALLOWUNTRUSTED=yes
 
 # Option to pass to apt-get always.
 export APTGETOPT=()
@@ -127,10 +127,7 @@ DEBOOTSTRAPOPTS=(
 # Keyrings to use for package verification with apt, not used for debootstrap
 # (use DEBOOTSTRAPOPTS). By default the debian-archive-keyring package inside
 # the chroot is used.
-#APTKEYRINGS=()
-#APTKEYRINGS=()
-APTKEYRINGS=/usr/share/keyrings/ubuntu-archive-removed-keys.gpg
-
+APTKEYRINGS=()
 
 # Set the PATH I am going to use inside pbuilder: default is "/usr/sbin:/usr/bin:/sbin:/bin"
 export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
