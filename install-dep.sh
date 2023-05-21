@@ -1059,6 +1059,8 @@ wget -O $(rpm --eval %{_topdir})/SPECS/sqlite.spec https://raw.githubusercontent
 rpmbuild -ba $(rpm --eval %{_topdir})/SPECS/sqlite.spec
 yum -y install $(rpm --eval %{_topdir})/RPMS/sqlite-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-devel-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-doc-3.7.17-8.el6.1.noarch.rpm $(rpm --eval %{_topdir})/RPMS/lemon-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-tcl-3.7.17-8.el6.1.x86_64.rpm
 yum -y install $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-devel-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/noarch/sqlite-doc-3.7.17-8.el6.1.noarch.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/lemon-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-tcl-3.7.17-8.el6.1.x86_64.rpm
+yum -y remove oniguruma-devel
+yum -y install oniguruma5php-devel
 fi
 	systemctl start mariadb
 	systemctl enable mariadb
