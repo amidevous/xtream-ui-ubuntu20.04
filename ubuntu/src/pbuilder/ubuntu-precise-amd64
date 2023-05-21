@@ -129,7 +129,7 @@ DEBOOTSTRAPOPTS=(
 # the chroot is used.
 #APTKEYRINGS=()
 #APTKEYRINGS=()
-APTKEYRINGS=(/usr/share/keyrings/ubuntu-archive-removed-keys.gpg)
+APTKEYRINGS=/usr/share/keyrings/ubuntu-archive-removed-keys.gpg
 
 
 # Set the PATH I am going to use inside pbuilder: default is "/usr/sbin:/usr/bin:/sbin:/bin"
