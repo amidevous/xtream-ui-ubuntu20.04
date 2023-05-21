@@ -573,25 +573,61 @@ EOF
 	$PACKAGE_INSTALLER libedit-devel
 	if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
 	$PACKAGE_INSTALLER devtoolset-9
+	$PACKAGE_INSTALLER devtoolset-9-runtime
+	$PACKAGE_INSTALLER devtoolset-9-annobin
+	$PACKAGE_INSTALLER devtoolset-9-annobin-annocheck
 	$PACKAGE_INSTALLER devtoolset-9-binutils
-	$PACKAGE_INSTALLER devtoolset-9-gcc-c++
-	$PACKAGE_INSTALLER devtoolset-9-gdb
-	$PACKAGE_INSTALLER devtoolset-9-gcc
 	$PACKAGE_INSTALLER devtoolset-9-binutils-devel
+	$PACKAGE_INSTALLER devtoolset-9-build
+	$PACKAGE_INSTALLER devtoolset-9-dwz
+	$PACKAGE_INSTALLER devtoolset-9-dyninst
 	$PACKAGE_INSTALLER devtoolset-9-dyninst-devel
+	$PACKAGE_INSTALLER devtoolset-9-dyninst-doc
+	$PACKAGE_INSTALLER devtoolset-9-dyninst-static
+	$PACKAGE_INSTALLER devtoolset-9-dyninst-testsuite
+	$PACKAGE_INSTALLER devtoolset-9-elfutils
 	$PACKAGE_INSTALLER devtoolset-9-elfutils-devel
+	$PACKAGE_INSTALLER devtoolset-9-elfutils-libelf
 	$PACKAGE_INSTALLER devtoolset-9-elfutils-libelf-devel
+	$PACKAGE_INSTALLER devtoolset-9-elfutils-libs
+	$PACKAGE_INSTALLER devtoolset-9-gcc
+	$PACKAGE_INSTALLER devtoolset-9-gcc-c++
+	$PACKAGE_INSTALLER devtoolset-9-gcc-gdb-plugin
+	$PACKAGE_INSTALLER devtoolset-9-gcc-gfortran
 	$PACKAGE_INSTALLER devtoolset-9-gcc-plugin-devel
+	$PACKAGE_INSTALLER devtoolset-9-gdb
+	$PACKAGE_INSTALLER devtoolset-9-gdb-doc
+	$PACKAGE_INSTALLER devtoolset-9-gdb-gdbserver
 	$PACKAGE_INSTALLER devtoolset-9-libasan-devel
 	$PACKAGE_INSTALLER devtoolset-9-libatomic-devel
+	$PACKAGE_INSTALLER devtoolset-9-libgccjit
+	$PACKAGE_INSTALLER devtoolset-9-libgccjit-devel
+	$PACKAGE_INSTALLER devtoolset-9-libgccjit-docs
 	$PACKAGE_INSTALLER devtoolset-9-libitm-devel
+	$PACKAGE_INSTALLER devtoolset-9-liblsan-devel
 	$PACKAGE_INSTALLER devtoolset-9-libquadmath-devel
 	$PACKAGE_INSTALLER devtoolset-9-libstdc++-devel
+	$PACKAGE_INSTALLER devtoolset-9-libstdc++-docs
 	$PACKAGE_INSTALLER devtoolset-9-libtsan-devel
 	$PACKAGE_INSTALLER devtoolset-9-libubsan-devel
+	$PACKAGE_INSTALLER devtoolset-9-ltrace
+	$PACKAGE_INSTALLER devtoolset-9-make
+	$PACKAGE_INSTALLER devtoolset-9-memstomp
+	$PACKAGE_INSTALLER devtoolset-9-oprofile
 	$PACKAGE_INSTALLER devtoolset-9-oprofile-devel
+	$PACKAGE_INSTALLER devtoolset-9-oprofile-jit
+	$PACKAGE_INSTALLER devtoolset-9-perftools
+	$PACKAGE_INSTALLER devtoolset-9-strace
+	$PACKAGE_INSTALLER devtoolset-9-systemtap
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-client
 	$PACKAGE_INSTALLER devtoolset-9-systemtap-devel
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-initscript
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-runtime
 	$PACKAGE_INSTALLER devtoolset-9-systemtap-sdt-devel
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-server
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-testsuite
+	$PACKAGE_INSTALLER devtoolset-9-toolchain
+	$PACKAGE_INSTALLER devtoolset-9-valgrind
 	$PACKAGE_INSTALLER devtoolset-9-valgrind-devel
 	$PACKAGE_INSTALLER scons
 	/opt/rh/devtoolset-9/enable
