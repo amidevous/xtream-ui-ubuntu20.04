@@ -314,7 +314,7 @@ cd /root
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 cd /root
 rm -rf /root/ffmpeg_build
-rm -rf /root/xavs-code
+mkdir -p /home/xtreamcodes/iptv_xtream_codes/bin/
 cd /home/xtreamcodes/iptv_xtream_codes/bin/
 wget https://bitbucket.org/emre1393/xtreamui_mirror/downloads/ffmpeg_v5.0.1_amd64.zip -O ffmpeg_v5.0.1_amd64.zip
 rm -f /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg
