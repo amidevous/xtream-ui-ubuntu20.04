@@ -552,6 +552,23 @@ EOF
 	$PACKAGE_INSTALLER libgeoip-devel
 	$PACKAGE_INSTALLER geoip-devel
 	$PACKAGE_INSTALLER podman
+	$PACKAGE_INSTALLER bison
+	$PACKAGE_INSTALLER boost-devel
+	$PACKAGE_INSTALLER cmake
+	$PACKAGE_INSTALLER libevent-devel
+	$PACKAGE_INSTALLER flex
+	$PACKAGE_INSTALLER cracklib-devel
+	$PACKAGE_INSTALLER Judy-devel
+	$PACKAGE_INSTALLER libaio-devel
+	$PACKAGE_INSTALLER xz-devel
+	$PACKAGE_INSTALLER lz4-devel
+	$PACKAGE_INSTALLER lzo-devel
+	$PACKAGE_INSTALLER libpmem-devel
+	$PACKAGE_INSTALLER readline-devel
+	$PACKAGE_INSTALLER policycoreutils-python
+	$PACKAGE_INSTALLER libzstd-devel
+	$PACKAGE_INSTALLER librabbitmq-devel
+	$PACKAGE_INSTALLER libedit-devel
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
