@@ -866,6 +866,12 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get -y --force-yes dist-upgrade
+	apt-get -y --force-yes install sqlite3-dev
+	apt-get -y --force-yes install libsqlite3-dev
+	apt-get -y --force-yes build-dep php7.4
+	apt-get -y --force-yes install apache2-dev
+	apt-get -y --force-yes install apache2-threaded-dev
+	apt-get -y --force-yes install libaprutil1-dev
 	apt-get -y --force-yes install debhelper 
 	apt-get -y --force-yes install cdbs
 	apt-get -y --force-yes install lintian
