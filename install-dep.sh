@@ -705,9 +705,6 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install python-pip
 	apt-get -y install python2-pip
 	apt-get -y install python3-pip
-	debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
-	debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-	apt-get -y install postfix
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
 	apt-get -y build-dep php7.4
@@ -785,6 +782,10 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install libgeoip-devel
 	apt-get -y install geoip-devel
 	apt-get -y install podman
+	apt-get -y purge postfix
+	debconf-set-selections <<< "postfix postfix/mailname string redhat"
+	debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+	DEBIAN_FRONTEND=noninteractive apt-get -y install postfix
 	
 fi
 	systemctl start mariadb
