@@ -49,7 +49,7 @@ wget http://nginx.org/download/nginx-1.24.0.tar.gz -O /root/phpbuild/nginx-1.24.
 tar -xzvf nginx-1.24.0.tar.gz
 git clone https://github.com/leev/ngx_http_geoip2_module.git
 cd /root/phpbuild/nginx-1.24.0
-if [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" || "$OS" = "Fedora" ]] ; then
+if [[ "$OS" = "Fedora" ]] ; then
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
 --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
@@ -83,6 +83,38 @@ if [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" || "$OS" = "Fedora" ]] ; then
 --with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
 --with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
+elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" ]] ; then
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx/nginx.pid \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h
 else
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
@@ -151,7 +183,7 @@ rm -rf /root/phpbuild/nginx-rtmp-module-1.2.2
 wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.2.zip
 unzip /root/phpbuild/v1.2.2.zip
 cd /root/phpbuild/nginx-1.24.0
-if [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" || "$OS" = "Fedora" ]] ; then
+if [[ "$OS" = "Fedora" ]] ; then
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
 --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
@@ -187,6 +219,40 @@ if [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" || "$OS" = "Fedora" ]] ; then
 --with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
 --with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
+elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" ]] ; then
+./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
+--http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
+--http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
+--http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp \
+--lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock \
+--http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp \
+--http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp \
+--conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf \
+--error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_error.log \
+--http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_access.log \
+--pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx.pid \
+--add-module=/root/phpbuild/nginx-rtmp-module-1.2.2 \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_v2_module \
+--with-pcre \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-threads \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-cpu-opt=generic \
+--without-http_rewrite_module \
+--add-module=/root/phpbuild/ngx_http_geoip2_module \
+--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h
 else
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
 --lock-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx_rtmp.lock \
