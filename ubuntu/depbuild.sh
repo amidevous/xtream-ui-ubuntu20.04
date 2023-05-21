@@ -71,26 +71,26 @@ else
 fi
 echo -e "\n-- Updating repositories and packages sources"
 if [[ "$OS" = "CentOs" ]] ; then
-    PACKAGE_INSTALLER="yum -y -q install"
-    PACKAGE_REMOVER="yum -y -q remove"
-    PACKAGE_UPDATER="yum -y -q update"
+    PACKAGE_INSTALLER="yum -y install"
+    PACKAGE_REMOVER="yum -y remove"
+    PACKAGE_UPDATER="yum -y update"
     PACKAGE_UTILS="yum-utils"
-    PACKAGE_GROUPINSTALL="yum -y -q groupinstall"
+    PACKAGE_GROUPINSTALL="yum -y groupinstall"
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
-    BUILDDEP="yum-builddep -y -q"
+    BUILDDEP="yum-builddep -y"
     MYSQLCNF=/etc/my.cnf
 elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
-    PACKAGE_INSTALLER="dnf -y -q install"
-    PACKAGE_REMOVER="dnf -y -q remove"
-    PACKAGE_UPDATER="dnf -y -q update"
+    PACKAGE_INSTALLER="dnf -y install"
+    PACKAGE_REMOVER="dnf -y remove"
+    PACKAGE_UPDATER="dnf -y update"
     PACKAGE_UTILS="dnf-utils" 
-    PACKAGE_GROUPINSTALL="dnf -y -q groupinstall"
+    PACKAGE_GROUPINSTALL="dnf -y groupinstall"
     PACKAGE_SOURCEDOWNLOAD="dnf download --source"
-    BUILDDEP="dnf build-dep -y -q"
+    BUILDDEP="dnf build-dep -y"
     MYSQLCNF=/etc/my.cnf
 elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
-    PACKAGE_INSTALLER="apt-get -yqq install"
-    PACKAGE_REMOVER="apt-get -yqq purge"
+    PACKAGE_INSTALLER="apt-get -y install"
+    PACKAGE_REMOVER="apt-get -y purge"
     MYSQLCNF=/etc/mysql/mariadb.cnf
     inst() {
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
