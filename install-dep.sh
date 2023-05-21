@@ -615,17 +615,20 @@ deb-src http://old-releases.ubuntu.com/ubuntu $(lsb_release -sc)-updates main re
 deb-src http://old-releases.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
 EOF
 	apt-get update
-	apt-get install software-properties-common dirmngr --install-recommends -y
-	apt-get install apt-apt-key -y
+	apt-get -y --force-yes install software-properties-common --install-recommends
+	apt-get -y --force-yes install python-software-properties --install-recommends
+	apt-get -y --force-yes install dirmngr --install-recommends
+	apt-get -y --force-yes install python-software-properties --install-recommends
+	apt-get -y --force-yes install apt-apt-key
+	apt-get -y --force-yes install apt-transport-https
+	apt-get -y --force-yes install ca-certificates
         add-apt-repository -y ppa:ondrej/apache2
-	add-apt-repository -y -s ppa:ondrej/php
-cat > /etc/apt/sources.list.d/podman.list <<EOF
-deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/ /
-EOF
+	add-apt-repository -y ppa:ondrej/php
 wget -qO- "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/Release.key" | sudo apt-key add -
 	apt-get update
+	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xCBCB082A1BB943DB
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.2/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64] https://mirrors.nxthost.com/mariadb/repo/10.2/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 	else
 	cat > /etc/apt/sources.list <<EOF
@@ -639,8 +642,13 @@ deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 deb-src http://archive.canonical.com/ubuntu $(lsb_release -sc) partner
 EOF
 	apt-get update
-	apt-get install software-properties-common dirmngr --install-recommends -y
-	apt-get install apt-apt-key -y
+	apt-get -y --force-yes install software-properties-common --install-recommends
+	apt-get -y --force-yes install python-software-properties --install-recommends
+	apt-get -y --force-yes install dirmngr --install-recommends
+	apt-get -y --force-yes install python-software-properties --install-recommends
+	apt-get -y --force-yes install apt-apt-key
+	apt-get -y --force-yes install apt-transport-https
+	apt-get -y --force-yes install ca-certificates
         add-apt-repository -y ppa:ondrej/apache2
 	add-apt-repository -y -s ppa:ondrej/php
 cat > /etc/apt/sources.list.d/podman.list <<EOF
