@@ -699,117 +699,125 @@ fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get -y dist-upgrade
-	apt-get -y install debhelper 
-	apt-get -y install cdbs
-	apt-get -y install lintian
-	apt-get -y install build-essential
-	apt-get -y install fakeroot
-	apt-get -y install devscripts
-	apt-get -y install dh-make
-	apt-get -y install mariadb-server
-	apt-get -y install curl
-	apt-get -y install libxslt1-dev
-	apt-get -y install libcurl3-gnutls
-	apt-get -y install libgeoip-dev
-	apt-get -y install python
-	apt-get -y install python2
-	apt-get -y install python33
-	apt-get -y install e2fsprogs
-	apt-get -y install wget
-	apt-get -y install mcrypt
-	apt-get -y install nscd
-	apt-get -y install htop
-	apt-get -y install zip
-	apt-get -y install unzip
-	apt-get -y install mc
-	apt-get -y install python3-paramiko
-	apt-get -y install python-paramiko
-	apt-get -y install python2-paramiko
-	apt-get -y install python-pip
-	apt-get -y install python2-pip
-	apt-get -y install python3-pip
-	apt-get -y dist-upgrade
-	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
-	apt-get -y build-dep php7.4
-	apt-get -y install libmariadb-dev
-	apt-get -y install libmariadb-dev-compat
-	apt-get -y install libmariadbd-dev
-	apt-get -y install dbconfig-mysql
-	apt-get -y install autoconf
-	apt-get -y install automake
-	apt-get -y install build-essential
-	apt-get -y install cmake
-	apt-get -y install git-core
-	apt-get -y install git
-	apt-get -y install libass-dev
-	apt-get -y install libfreetype6-dev
-	apt-get -y install libgnutls28-dev
-	apt-get -y install libmp3lame-dev
-	apt-get -y install libsdl2-dev
-	apt-get -y install libtool
-	apt-get -y install libva-dev
-	apt-get -y install libvdpau-dev
-	apt-get -y install libvorbis-dev
-	libxcb1-dev libxcb-shm0-dev
-	apt-get -y install libxcb-xfixes0-dev
-	apt-get -y install meson
-	apt-get -y install ninja-build
-	apt-get -y install pkg-config
-	apt-get -y install texinfo
-	apt-get -y install yasm
-	apt-get -y install zlib1g-dev
-	apt-get -y install libxvidcore-dev
-	apt-get -y install libunistring-dev
-	apt-get -y install nasm
-	apt-get -y install libx264-dev
-	apt-get -y install libx265-dev
-	apt-get -y install libnuma-dev
-	apt-get -y install libvpx-dev
-	apt-get -y install libfdk-aac-dev
-	apt-get -y install libopus-dev
-	apt-get -y install unzip
-	apt-get -y install librtmp-dev
-	apt-get -y install libtheora-dev
-	apt-get -y install libbz2-dev
-	apt-get -y install libgmp-dev
-	apt-get -y install libssl-dev
-	apt-get -y install zip
-	apt-get -y install libdav1d-dev
-	apt-get -y install libaom-dev
-	apt-get -y install reprepro
-	apt-get -y install subversion
-	apt-get -y install zstd
-	apt-get -y install libpcre3
-	apt-get -y install libpcre3-dev
-	apt-get -y install pcre3
-	apt-get -y install libpcre
-	apt-get -y install libpcre-dev
-	apt-get -y install pcre
-	apt-get -y install libpcre2
-	apt-get -y install libpcre2-dev
-	apt-get -y install pcre2
-	apt-get -y install libgd-dev
-	apt-get -y install libxslt-dev
-	apt-get -y install libgeoip-dev
-	apt-get -y install tar
-	apt-get -y install curl
-	apt-get -y install wget
-	apt-get -y install git
-	apt-get -y install libmaxminddb-dev
-	apt-get -y install libmcrypt-dev
-	apt-get -y install mcrypt-dev
-	apt-get -y install libmcrypt-devel
-	apt-get -y install mcrypt-devel
-	apt-get -y install mcrypt
-	apt-get -y install libgeoip-dev
-	apt-get -y install libgeoip-devel
-	apt-get -y install geoip-devel
-	apt-get -y install podman
+	apt-get -y --force-yes dist-upgrade
+	apt-get -y --force-yes install debhelper 
+	apt-get -y --force-yes install cdbs
+	apt-get -y --force-yes install lintian
+	apt-get -y --force-yes install build-essential
+	apt-get -y --force-yes install fakeroot
+	apt-get -y --force-yes install devscripts
+	apt-get -y --force-yes install dh-make
+	apt-get -y --force-yes install mariadb-server
+	apt-get -y --force-yes install curl
+	apt-get -y --force-yes install libxslt1-dev
+	apt-get -y --force-yes install libcurl3-gnutls
+	apt-get -y --force-yes install libgeoip-dev
+	apt-get -y --force-yes install python
+	apt-get -y --force-yes install python2
+	apt-get -y --force-yes install python33
+	apt-get -y --force-yes install e2fsprogs
+	apt-get -y --force-yes install wget
+	apt-get -y --force-yes install mcrypt
+	apt-get -y --force-yes install nscd
+	apt-get -y --force-yes install htop
+	apt-get -y --force-yes install zip
+	apt-get -y --force-yes install unzip
+	apt-get -y --force-yes install mc
+	apt-get -y --force-yes install python3-paramiko
+	apt-get -y --force-yes install python-paramiko
+	apt-get -y --force-yes install python2-paramiko
+	apt-get -y --force-yes install python-pip
+	apt-get -y --force-yes install python2-pip
+	apt-get -y --force-yes install python3-pip
+	apt-get -y --force-yes dist-upgrade
+	apt-get -y --force-yes install debhelper
+	apt-get -y --force-yes install cdbs
+	apt-get -y --force-yes install lintian
+	apt-get -y --force-yes install build-essential
+	apt-get -y --force-yes install fakeroot
+	apt-get -y --force-yes install devscripts
+	apt-get -y --force-yes install dh-make
+	apt-get -y --force-yes install wget
+	apt-get -y --force-yes build-dep php7.4
+	apt-get -y --force-yes install libmariadb-dev
+	apt-get -y --force-yes install libmariadb-dev-compat
+	apt-get -y --force-yes install libmariadbd-dev
+	apt-get -y --force-yes install dbconfig-mysql
+	apt-get -y --force-yes install autoconf
+	apt-get -y --force-yes install automake
+	apt-get -y --force-yes install build-essential
+	apt-get -y --force-yes install cmake
+	apt-get -y --force-yesinstall git-core
+	apt-get -y --force-yes install git
+	apt-get -y --force-yes install libass-dev
+	apt-get -y --force-yes install libfreetype6-dev
+	aapt-get -y --force-yes install libgnutls28-dev
+	apt-get -y --force-yes install libmp3lame-dev
+	apt-get -y --force-yes install libsdl2-dev
+	apt-get -y --force-yes install libtool
+	apt-get -y --force-yes install libva-dev
+	apt-get -y --force-yes install libvdpau-dev
+	apt-get -y --force-yes install libvorbis-dev
+	apt-get -y --force-yes install libxcb1-dev
+	apt-get -y --force-yes install libxcb-shm0-dev
+	apt-get -y --force-yes install libxcb-xfixes0-dev
+	apt-get -y --force-yes install meson
+	apt-get -y --force-yes install ninja-build
+	apt-get -y --force-yes install pkg-config
+	apt-get -y --force-yes install texinfo
+	apt-get -y --force-yes install yasm
+	apt-get -y --force-yes install zlib1g-dev
+	apt-get -y --force-yes install libxvidcore-dev
+	apt-get -y --force-yes install libunistring-dev
+	apt-get -y --force-yes install nasm
+	aapt-get -y --force-yes install libx264-dev
+	apt-get -y --force-yes install libx265-dev
+	apt-get -y --force-yes install libnuma-dev
+	apt-get -y --force-yes install libvpx-dev
+	apt-get -y --force-yes install libfdk-aac-dev
+	apt-get -y --force-yes install libopus-dev
+	apt-get -y --force-yes install unzip
+	apt-get -y --force-yes install librtmp-dev
+	apt-get -y --force-yes install libtheora-dev
+	aapt-get -y --force-yes install libbz2-dev
+	apt-get -y --force-yes install libgmp-dev
+	apt-get -y --force-yes install libssl-dev
+	apt-get -y --force-yes install zip
+	apt-get -y --force-yes install libdav1d-dev
+	apt-get -y --force-yes install libaom-dev
+	apt-get -y --force-yes install reprepro
+	apt-get -y --force-yes install subversion
+	apt-get -y --force-yes install zstd
+	apt-get -y --force-yes install libpcre3
+	apt-get -y --force-yes install libpcre3-dev
+	apt-get -y --force-yesapt-get -y install pcre3
+	apt-get -y --force-yes install libpcre
+	apt-get -y --force-yes install libpcre-dev
+	apt-get -y --force-yes install pcre
+	apt-get -y --force-yes install libpcre2
+	apt-get -y --force-yes install libpcre2-dev
+	apt-get -y --force-yes install pcre2
+	apt-get -y --force-yes install libgd-dev
+	apt-get -y --force-yes install libxslt-dev
+	apt-get -y --force-yes install libgeoip-dev
+	apt-get -y --force-yes install tar
+	apt-get -y --force-yes install curl
+	apt-get -y --force-yes install wget
+	apt-get -y --force-yes install git
+	apt-get -y --force-yes install libmaxminddb-dev
+	apt-get -y --force-yes install libmcrypt-dev
+	apt-get -y --force-yes install mcrypt-dev
+	apt-get -y --force-yes install libmcrypt-devel
+	apt-get -y --force-yes install mcrypt-devel
+	apt-get -y --force-yes install mcrypt
+	apt-get -y --force-yes install libgeoip-dev
+	apt-get -y --force-yes install libgeoip-devel
+	apt-get -y --force-yes install geoip-devel
+	apt-get -y --force-yes install podman
 	apt-get -y purge postfix
 	debconf-set-selections <<< "postfix postfix/mailname string redhat"
 	debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-	DEBIAN_FRONTEND=noninteractive apt-get -y install postfix
+	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install postfix
 	
 fi
 	systemctl start mariadb
