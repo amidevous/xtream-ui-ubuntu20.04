@@ -865,7 +865,18 @@ fi
 if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
+	apt-get update
 	apt-get -y --force-yes dist-upgrade
+	apt-get -y --force-yes install mariadb-server
+	apt-get -y --force-yes install mariadb-common
+	apt-get -y --force-yes install libmariadbclient-dev
+	apt-get -y --force-yes install libmariadbclient18
+	apt-get -y --force-yes install libmariadbd-dev
+	apt-get -y --force-yes install libmysqlclient18
+	apt-get -y --force-yes install mariadb-client
+	apt-get -y --force-yes install mariadb-common
+	apt-get -y --force-yes install mariadb-test
+	apt-get -y --force-yes install mysql-common
 	apt-get -y --force-yes install sqlite3-dev
 	apt-get -y --force-yes install libsqlite3-dev
 	apt-get -y --force-yes build-dep php5
@@ -944,7 +955,6 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install fakeroot
 	apt-get -y --force-yes install devscripts
 	apt-get -y --force-yes install dh-make
-	apt-get -y --force-yes install mariadb-server
 	apt-get -y --force-yes install curl
 	apt-get -y --force-yes install libxslt1-dev
 	apt-get -y --force-yes install libcurl3-gnutls
