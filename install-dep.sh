@@ -362,6 +362,7 @@ EOF
 	# Removal of conflicting packages prior to installation.
 	yumpurge bind-chroot
 	yumpurge qpid-cpp-client
+	$PACKAGE_UPDATER
 	$PACKAGE_INSTALLER yum-plugin-copr
 	$PACKAGE_INSTALLER yum-plugins-copr
 	$PACKAGE_INSTALLER dnf-plugin-core
