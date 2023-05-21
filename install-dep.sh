@@ -879,6 +879,16 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install dh-apache2
 	apt-get -y --force-yes install dpkg-dev
 	apt-get -y --force-yes install firebird-dev
+	apt-get -y --force-yes install firebird1.5-dev
+	apt-get -y --force-yes install firebird1.6-dev
+	apt-get -y --force-yes install firebird1.7-dev
+	apt-get -y --force-yes install firebird1.8-dev
+	apt-get -y --force-yes install firebird1.9-dev
+	apt-get -y --force-yes install firebird2.0-dev
+	apt-get -y --force-yes install firebird2.1-dev
+	apt-get -y --force-yes install firebird2.2-dev
+	apt-get -y --force-yes install firebird2.3-dev
+	apt-get -y --force-yes install firebird2.4-dev
 	apt-get -y --force-yes install firebird2.5-dev
 	apt-get -y --force-yes install debhelper
 	apt-get -y --force-yes install cdbs
