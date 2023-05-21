@@ -1052,6 +1052,12 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 
 	
 fi
+if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
+yum -y install tcl-devel
+rpm -i https://vault.centos.org/centos/7/os/Source/SPackages/sqlite-3.7.17-8.el7_7.1.src.rpm
+
+
+fi
 	systemctl start mariadb
 	systemctl enable mariadb
 	service start mariadb
