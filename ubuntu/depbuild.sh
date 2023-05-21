@@ -627,4 +627,3 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 fi
 	systemctl start mariadb
 	systemctl enable mariadb
-fi
