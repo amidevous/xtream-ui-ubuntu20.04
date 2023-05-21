@@ -624,6 +624,7 @@ EOF
 	apt-get -y --force-yes install ca-certificates
         add-apt-repository -y ppa:ondrej/apache2
 	add-apt-repository -y ppa:ondrej/php
+	add-apt-repository -y ppa:maxmind/ppa
 wget -qO- "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/Release.key" | sudo apt-key add -
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xCBCB082A1BB943DB
@@ -651,6 +652,7 @@ EOF
 	apt-get -y --force-yes install ca-certificates
         add-apt-repository -y ppa:ondrej/apache2
 	add-apt-repository -y -s ppa:ondrej/php
+	add-apt-repository -y ppa:maxmind/ppa
 cat > /etc/apt/sources.list.d/podman.list <<EOF
 deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/ /
 EOF
