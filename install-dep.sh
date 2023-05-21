@@ -169,6 +169,8 @@ EOF
 		enablerepo updates
 		# enable official repository Fedora Epel
 		enablerepo epel
+		enablerepo centos-sclo-rh
+		enablerepo centos-sclo-sclo
 		enablerepo mariadb
 		enablerepo rpmfusion-free
 		enablerepo rpmfusion-free-updates
@@ -569,6 +571,31 @@ EOF
 	$PACKAGE_INSTALLER libzstd-devel
 	$PACKAGE_INSTALLER librabbitmq-devel
 	$PACKAGE_INSTALLER libedit-devel
+	if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
+	$PACKAGE_INSTALLER devtoolset-9
+	$PACKAGE_INSTALLER devtoolset-9-binutils
+	$PACKAGE_INSTALLER devtoolset-9-gcc-c++
+	$PACKAGE_INSTALLER devtoolset-9-gdb
+	$PACKAGE_INSTALLER devtoolset-9-gcc
+	$PACKAGE_INSTALLER devtoolset-9-binutils-devel
+	$PACKAGE_INSTALLER devtoolset-9-dyninst-devel
+	$PACKAGE_INSTALLER devtoolset-9-elfutils-devel
+	$PACKAGE_INSTALLER devtoolset-9-elfutils-libelf-devel
+	$PACKAGE_INSTALLER devtoolset-9-gcc-plugin-devel
+	$PACKAGE_INSTALLER devtoolset-9-libasan-devel
+	$PACKAGE_INSTALLER devtoolset-9-libatomic-devel
+	$PACKAGE_INSTALLER devtoolset-9-libitm-devel
+	$PACKAGE_INSTALLER devtoolset-9-libquadmath-devel
+	$PACKAGE_INSTALLER devtoolset-9-libstdc++-devel
+	$PACKAGE_INSTALLER devtoolset-9-libtsan-devel
+	$PACKAGE_INSTALLER devtoolset-9-libubsan-devel
+	$PACKAGE_INSTALLER devtoolset-9-oprofile-devel
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-devel
+	$PACKAGE_INSTALLER devtoolset-9-systemtap-sdt-devel
+	$PACKAGE_INSTALLER devtoolset-9-valgrind-devel
+	/opt/rh/devtoolset-9/enable
+	source /opt/rh/devtoolset-9/enable
+	fi
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
