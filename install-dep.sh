@@ -705,8 +705,6 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install python-pip
 	apt-get -y install python2-pip
 	apt-get -y install python3-pip
-	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
-	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections
 	apt-get -y install postfix
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
