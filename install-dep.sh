@@ -878,6 +878,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install libmysqlclient-dev
 	apt-get -y --force-yes install dh-apache2
 	apt-get -y --force-yes install dpkg-dev
+	apt-get -y --force-yes install firebird-dev
 	apt-get -y --force-yes install debhelper
 	apt-get -y --force-yes install cdbs
 	apt-get -y --force-yes install lintian
