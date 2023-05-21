@@ -33,6 +33,10 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 #wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/install-dep.sh -O /root/depbuild.sh && bash /root/install-dep.sh
+if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
+/opt/rh/devtoolset-9/enable
+source /opt/rh/devtoolset-9/enable
+fi
 rm -rf /root/phpbuild
 mkdir -p /root/phpbuild
 cd /root/phpbuild
