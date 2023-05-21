@@ -890,6 +890,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install firebird2.3-dev
 	apt-get -y --force-yes install firebird2.4-dev
 	apt-get -y --force-yes install firebird2.5-dev
+	apt-get -y --force-yes install flex
 	apt-get -y --force-yes install debhelper
 	apt-get -y --force-yes install cdbs
 	apt-get -y --force-yes install lintian
