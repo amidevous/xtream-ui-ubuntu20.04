@@ -817,7 +817,13 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y purge postfix
 	debconf-set-selections <<< "postfix postfix/mailname string redhat"
 	debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+	rm -rf /etc/aliases /etc/postfix
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install postfix
+	rm -rf /var/lib/dpkg/info/postfix.postinst
+	dpkg --configure postfix
+	dpkg-reconfigure postfix
+	apt-get install -yf --force-yes
+
 	
 fi
 	systemctl start mariadb
