@@ -118,6 +118,7 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 	# disable all repository
 	if [[ "$OS" = "Fedora" ]]; then
 		dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+		dnf -y install https://rpms.remirepo.net/fedora/remi-release-$(rpm -E %fedora).rpm
 	fi
 	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
@@ -231,6 +232,7 @@ gpgcheck=0
 EOF
 fi
 $PACKAGE_INSTALLER --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+$PACKAGE_INSTALLER --nogpgcheck https://rpms.remirepo.net/enterprise/remi-release-$(rpm -E %rhel).rpm
 	elif [[ "$OS" = "Fedora" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
@@ -266,6 +268,11 @@ EOF
 		enablerepo rpmfusion-free-updates
 		enablerepo rpmfusion-nonfree
 		enablerepo rpmfusion-nonfree-updates
+		enablerepo remi
+		enablerepo remi-safe
+		enablerepo remi-php73
+		enablerepo remi-php74
+		yum -y install wget
 	elif [ "$OS" = "CentOS-Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
 		enablerepo baseos
@@ -292,6 +299,8 @@ EOF
 		enablerepo rpmfusion-free-updates
 		enablerepo rpmfusion-nonfree
 		enablerepo rpmfusion-nonfree-updates
+		enablerepo remi
+		enablerepo remi-safe
 		dnf -y install wget
 	elif [ "$OS" = "Fedora" ]; then
 		enablerepo fedora-cisco-openh264
@@ -304,6 +313,8 @@ EOF
 		enablerepo rpmfusion-free-updates
 		enablerepo rpmfusion-nonfree
 		enablerepo rpmfusion-nonfree-updates
+		enablerepo remi
+		enablerepo remi-safe
 		dnf -y install wget
 	fi
 	yumpurge() {
