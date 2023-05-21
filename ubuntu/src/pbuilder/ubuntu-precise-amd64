@@ -127,7 +127,10 @@ DEBOOTSTRAPOPTS=(
 # Keyrings to use for package verification with apt, not used for debootstrap
 # (use DEBOOTSTRAPOPTS). By default the debian-archive-keyring package inside
 # the chroot is used.
-APTKEYRINGS=()
+#APTKEYRINGS=()
+#APTKEYRINGS=()
+APTKEYRINGS=(/usr/share/keyrings/ubuntu-archive-removed-keys.gpg)
+
 
 # Set the PATH I am going to use inside pbuilder: default is "/usr/sbin:/usr/bin:/sbin:/bin"
 export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
