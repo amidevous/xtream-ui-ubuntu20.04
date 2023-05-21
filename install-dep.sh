@@ -868,7 +868,16 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes dist-upgrade
 	apt-get -y --force-yes install sqlite3-dev
 	apt-get -y --force-yes install libsqlite3-dev
+	apt-get -y --force-yes build-dep php5
+	apt-get -y --force-yes build-dep php5.6
+	apt-get -y --force-yes build-dep php7.0
+	apt-get -y --force-yes build-dep php7.1
+	apt-get -y --force-yes build-dep php7.2
+	apt-get -y --force-yes build-dep php7.3
 	apt-get -y --force-yes build-dep php7.4
+	apt-get -y --force-yes build-dep php8.0
+	apt-get -y --force-yes build-dep php8.1
+	apt-get -y --force-yes build-dep php8.2
 	apt-get -y --force-yes install apache2-dev
 	apt-get -y --force-yes install apache2-threaded-dev
 	apt-get -y --force-yes install libaprutil1-dev
@@ -891,6 +900,43 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install firebird2.4-dev
 	apt-get -y --force-yes install firebird2.5-dev
 	apt-get -y --force-yes install flex
+	apt-get -y --force-yes install freetds-dev
+	apt-get -y --force-yes install libacl1-dev
+	apt-get -y --force-yes install libapparmor-dev
+	apt-get -y --force-yes install libapr1-dev
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
+	apt-get -y --force-yes install 
 	apt-get -y --force-yes install debhelper
 	apt-get -y --force-yes install cdbs
 	apt-get -y --force-yes install lintian
