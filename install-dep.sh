@@ -630,6 +630,10 @@ EOF
 	$PACKAGE_INSTALLER devtoolset-9-valgrind
 	$PACKAGE_INSTALLER devtoolset-9-valgrind-devel
 	$PACKAGE_INSTALLER scons
+	$PACKAGE_INSTALLER check
+	$PACKAGE_INSTALLER check-devel
+	$PACKAGE_INSTALLER kernel-devel
+	$PACKAGE_INSTALLER kernel-headers
 	/opt/rh/devtoolset-9/enable
 	source /opt/rh/devtoolset-9/enable
 	fi
