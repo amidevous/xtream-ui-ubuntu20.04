@@ -873,6 +873,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install apache2-threaded-dev
 	apt-get -y --force-yes install libaprutil1-dev
 	apt-get -y --force-yes install bison
+	apt-get -y --force-yes install chrpath
 	apt-get -y --force-yes install debhelper 
 	apt-get -y --force-yes install cdbs
 	apt-get -y --force-yes install lintian
