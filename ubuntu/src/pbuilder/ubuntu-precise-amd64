@@ -23,7 +23,7 @@ BUILDDIR=/build
 # Debian buildds too.  You can set it to $BUILDDIR to get a working HOME, if
 # you need to.
 BUILD_HOME=/nonexistent
-MIRRORSITE=http://fr.archive.ubuntu.com/ubuntu
+MIRRORSITE=http://old-releases.ubuntu.com/ubuntu
 COMPONENTS="main restricted universe multiverse"
 DISTRIBUTION=precise
 OTHERMIRROR="deb-src $MIRRORSITE $DISTRIBUTION $COMPONENTS"
