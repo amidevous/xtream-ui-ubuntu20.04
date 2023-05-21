@@ -58,7 +58,8 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	fi
 
 echo "Detected : $OS  $VER  $ARCH"
-if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
+if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "36" || "$VER" = "37" || "$VER" = "38" ) && "$ARCH" == "x86_64" ||
@@ -123,6 +124,15 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 	fi
 	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
+if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
+cat > /etc/yum.repos.d/mariadb.repo <<EOF
+[mariadb]
+name=MariaDB RPM source
+baseurl=http://mirror.mariadb.org/yum/10.2/rhel/$VER/x86_64/
+enabled=1
+gpgcheck=0
+EOF
+else
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -130,6 +140,7 @@ baseurl=http://mirror.mariadb.org/yum/11.0.1/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
+fi
 	elif [[ "$OS" = "Fedora" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
@@ -253,21 +264,60 @@ EOF
 	$PACKAGE_INSTALLER dnf-plugins-core
 	$PACKAGE_INSTALLER dnf-plugin-copr
 	$PACKAGE_INSTALLER dnf-plugins-copr
-	$PACKAGE_INSTALLER sudo vim make zip unzip chkconfig bash-completion wget
-    if  [[ "$VER" = "7" ]]; then
-    	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
-    else
-    	$PACKAGE_INSTALLER glibc32 bzip2-libs 
-    fi
-	$PACKAGE_INSTALLER sudo curl curl-devel perl-libwww-perl libxml2 libxml2-devel zip bzip2-devel gcc gcc-c++ at make
-	$PACKAGE_INSTALLER ca-certificates nano psmisc
+	$PACKAGE_INSTALLER sudo
+	$PACKAGE_INSTALLER vim
+	$PACKAGE_INSTALLER make
+	$PACKAGE_INSTALLER wget
+    	$PACKAGE_INSTALLER ld-linux.so.2
+    	$PACKAGE_INSTALLER  libbz2.so.1
+    	$PACKAGE_INSTALLER libdb-4.7.so
+    	$PACKAGE_INSTALLER libgd.so.2
+    	$PACKAGE_INSTALLER db-devel
+    	$PACKAGE_INSTALLER libdb-devel
+    	$PACKAGE_INSTALLER gd-devel
+    	$PACKAGE_INSTALLER glibc32
+    	$PACKAGE_INSTALLER bzip2-libs 
+	$PACKAGE_INSTALLER curl-devel
+	$PACKAGE_INSTALLER perl-libwww-perl
+	$PACKAGE_INSTALLER libxml2
+	$PACKAGE_INSTALLER libxml2-devel
+	$PACKAGE_INSTALLER bzip2-devel
+	$PACKAGE_INSTALLER gcc
+	$PACKAGE_INSTALLER gcc-c++
+	$PACKAGE_INSTALLER at
+	$PACKAGE_INSTALLER make
+	$PACKAGE_INSTALLER ca-certificates
+	$PACKAGE_INSTALLER nano
+	$PACKAGE_INSTALLER psmisc
 	$PACKAGE_GROUPINSTALL --with-optional -y "C Development Tools and Libraries" "Development Tools" "Fedora Packager"
-	$PACKAGE_INSTALLER sudo vim make zip unzip at bash-completion ca-certificates jq sshpass net-tools curl
+	$PACKAGE_INSTALLER at
+	$PACKAGE_INSTALLER bash-completion
+	$PACKAGE_INSTALLER ca-certificates
+	$PACKAGE_INSTALLER jq
+	$PACKAGE_INSTALLER sshpass
+	$PACKAGE_INSTALLER net-tools
+	$PACKAGE_INSTALLER curl
 	$PACKAGE_INSTALLER e2fslibs
 	$PACKAGE_INSTALLER e2fsprogs
 	$PACKAGE_INSTALLER e2fsprogs-libs
 	$PACKAGE_INSTALLER libcurl-devel
-	$PACKAGE_INSTALLER libxslt-devel GeoIP-devel wget nscd htop unzip httpd httpd-devel zip mc libpng-devel python3 python3-pip
+	$PACKAGE_INSTALLER libxslt-devel
+	$PACKAGE_INSTALLER GeoIP-devel
+	$PACKAGE_INSTALLER wget
+	$PACKAGE_INSTALLER nscd
+	$PACKAGE_INSTALLER htop
+	$PACKAGE_INSTALLER unzip
+	$PACKAGE_INSTALLER httpd
+	$PACKAGE_INSTALLER httpd-devel
+	$PACKAGE_INSTALLER zip
+	$PACKAGE_INSTALLER mc
+	$PACKAGE_INSTALLER libpng-devel
+	$PACKAGE_INSTALLER python3
+	$PACKAGE_INSTALLER python3-pip
+	$PACKAGE_INSTALLER python
+	$PACKAGE_INSTALLER python-pip
+	$PACKAGE_INSTALLER python2
+	$PACKAGE_INSTALLER python2-pip
 	$PACKAGE_INSTALLER mcrypt
 	$PACKAGE_INSTALLER mcrypt-devel
 	$PACKAGE_INSTALLER libmcrypt
