@@ -56,6 +56,8 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	find / -name '*.rpmsave' -exec rm -f {} \;
 	OS="CentOS-Stream"
 	fi
+	mkdir -p /etc/yum.repos.d/
+
 
 echo "Detected : $OS  $VER  $ARCH"
 if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ||
@@ -116,12 +118,6 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 	# disable all repository
 	if [[ "$OS" = "Fedora" ]]; then
 		dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-	elif [[ "$OS" = "CentOS-Stream" ]]; then
-		dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
-		dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
-	elif [[ "$OS" = "CentOS" ]]; then
-		dnf -y install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
-		dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 	fi
 	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
 if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
@@ -132,7 +128,100 @@ baseurl=http://mirror.mariadb.org/yum/10.2/rhel/$VER/x86_64/
 enabled=1
 gpgcheck=0
 EOF
+cat > CentOS-Base.repo <<EOF
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the 
+# remarked out baseurl= line instead.
+#
+#
+
+[base]
+name=CentOS-\$releasever - Base
+enabled=1
+baseurl=https://vault.centos.org/6.10/os/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#released updates 
+[updates]
+name=CentOS-\$releasever - Updates
+enabled=1
+baseurl=https://vault.centos.org/6.10/updates/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that may be useful
+[extras]
+name=CentOS-\$releasever - Extras
+enabled=1
+baseurl=https://vault.centos.org/6.10/extras/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-\$releasever - Plus
+baseurl=https://vault.centos.org/6.10/centosplus/\$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#contrib - packages by Centos Users
+[contrib]
+name=CentOS-\$releasever - Contrib
+baseurl=https://vault.centos.org/6.10/contrib/\$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+EOF
+	rm -rf /etc/yum.repos.d/CentOS-Base.repo
+	cp CentOS-Base.repo /etc/yum.repos.d/
+	$PACKAGE_INSTALLER centos-release
+	$PACKAGE_INSTALLER centos-release-scl
+	$PACKAGE_INSTALLER centos-release-scl-rh
+	rm -rf /etc/yum.repos.d/CentOS-Base.repo
+	cp CentOS-Base.repo /etc/yum.repos.d/
+	rm -rf CentOS-Base.repo
+	$PACKAGE_INSTALLER epel-release
+cat > epel.repo <<EOF
+[epel]
+name=Extra Packages for Enterprise Linux 6 - \$basearch
+baseurl=https://archives.fedoraproject.org/pub/archive/epel/6/\$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 6 - \$basearch - Debug
+baseurl=https://archives.fedoraproject.org/pub/archive/epel/6/\$basearch/debug
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+[epel-source]
+name=Extra Packages for Enterprise Linux 6 - \$basearch - Source
+baseurl=https://archives.fedoraproject.org/pub/archive/epel/6/SRPMS
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+EOF
+rm -f /etc/yum.repos.d/epel.repo
+cp epel.repo /etc/yum.repos.d/
+yum -y update
+rm -f /etc/yum.repos.d/epel.repo
+cp epel.repo /etc/yum.repos.d/
+rm -f epel.repo
 else
+$PACKAGE_INSTALLER epel-release
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
@@ -141,6 +230,7 @@ enabled=1
 gpgcheck=0
 EOF
 fi
+$PACKAGE_INSTALLER --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 	elif [[ "$OS" = "Fedora" ]]; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
@@ -232,6 +322,7 @@ EOF
 	# We need to disable SELinux...
 	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
+
 	# Stop conflicting services and iptables to ensure all services will work
 	if  [[ "$VER" = "7" || "$VER" = "8" || "$VER" = "34" || "$VER" = "35" || "$VER" = "36" ]]; then
 		systemctl  stop sendmail.service
@@ -571,7 +662,36 @@ EOF
 	$PACKAGE_INSTALLER libzstd-devel
 	$PACKAGE_INSTALLER librabbitmq-devel
 	$PACKAGE_INSTALLER libedit-devel
+	$PACKAGE_INSTALLER scons
+	$PACKAGE_INSTALLER check
+	$PACKAGE_INSTALLER check-devel
+	$PACKAGE_INSTALLER kernel-devel
+	$PACKAGE_INSTALLER kernel-headers
+	$PACKAGE_INSTALLER help2man
+	$PACKAGE_INSTALLER gettext
+	$PACKAGE_INSTALLER gettext-devel
+	$PACKAGE_INSTALLER zlib-static
+	$PACKAGE_INSTALLER sharutils
+	$PACKAGE_INSTALLER libstdc++-static
+	$PACKAGE_INSTALLER libstdc++-devel
+	$PACKAGE_INSTALLER m4
+	$PACKAGE_INSTALLER emacs
+	$PACKAGE_INSTALLER perl-macros
+	$PACKAGE_INSTALLER perl-podlators
+	$PACKAGE_INSTALLER python-requests
+	$PACKAGE_INSTALLER python2-requests
+	$PACKAGE_INSTALLER python26-requests
+	$PACKAGE_INSTALLER python3-requests
+	$PACKAGE_INSTALLER binutils-devel
+	$PACKAGE_INSTALLER libtirpc-devel
+	$PACKAGE_INSTALLER tbb
+	$PACKAGE_INSTALLER tbb-devel
+	$PACKAGE_INSTALLER bsdtar
+	$PACKAGE_INSTALLER libmicrohttpd-devel
+	$PACKAGE_INSTALLER libmicrohttpd
 	if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
+	$PACKAGE_INSTALLER centos-release-scl
+	$PACKAGE_INSTALLER centos-release-scl-rh
 	$PACKAGE_INSTALLER devtoolset-9
 	$PACKAGE_INSTALLER devtoolset-9-runtime
 	$PACKAGE_INSTALLER devtoolset-9-annobin
@@ -629,11 +749,6 @@ EOF
 	$PACKAGE_INSTALLER devtoolset-9-toolchain
 	$PACKAGE_INSTALLER devtoolset-9-valgrind
 	$PACKAGE_INSTALLER devtoolset-9-valgrind-devel
-	$PACKAGE_INSTALLER scons
-	$PACKAGE_INSTALLER check
-	$PACKAGE_INSTALLER check-devel
-	$PACKAGE_INSTALLER kernel-devel
-	$PACKAGE_INSTALLER kernel-headers
 	/opt/rh/devtoolset-9/enable
 	source /opt/rh/devtoolset-9/enable
 	fi
