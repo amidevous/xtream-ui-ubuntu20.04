@@ -501,6 +501,7 @@ EOF
 	$PACKAGE_INSTALLER mcrypt$PACKAGE_INSTALLER libgeoip-dev
 	$PACKAGE_INSTALLER libgeoip-devel
 	$PACKAGE_INSTALLER geoip-devel
+	$PACKAGE_INSTALLER podman
 elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
@@ -525,6 +526,10 @@ EOF
 	apt-get install apt-apt-key -y
         add-apt-repository -y ppa:ondrej/apache2
 	add-apt-repository -y -s ppa:ondrej/php
+cat > /etc/apt/sources.list.d/podman.list <<EOF
+deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/ /
+EOF
+wget -qO- "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/Release.key" | sudo apt-key add -
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/11.0.1/ubuntu/ $(lsb_release -cs) main"
@@ -564,6 +569,10 @@ cat > /etc/apt/sources.list.d/apache2.list <<EOF
 deb https://packages.sury.org/apache2/ $(lsb_release -sc) main
 deb-src https://packages.sury.org/apache2/ $(lsb_release -sc) main
 EOF
+cat > /etc/apt/sources.list.d/podman.list <<EOF
+deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_$VER/ /
+EOF
+wget -qO- "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_$VER/Release.key" | sudo apt-key add -
 	wget --no-check-certificate -qO- https://packages.sury.org/php/apt.gpg | apt-key add -
 	wget --no-check-certificate -qO- https://packages.sury.org/apache2/apt.gpg | apt-key add -
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
@@ -630,6 +639,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install libgeoip-dev
 	apt-get -y install libgeoip-devel
 	apt-get -y install geoip-devel
+	apt-get -y install podman
 	
 fi
 	systemctl start mariadb
