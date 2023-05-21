@@ -593,6 +593,7 @@ EOF
 	$PACKAGE_INSTALLER devtoolset-9-systemtap-devel
 	$PACKAGE_INSTALLER devtoolset-9-systemtap-sdt-devel
 	$PACKAGE_INSTALLER devtoolset-9-valgrind-devel
+	$PACKAGE_INSTALLER scons
 	/opt/rh/devtoolset-9/enable
 	source /opt/rh/devtoolset-9/enable
 	fi
