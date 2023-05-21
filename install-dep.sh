@@ -606,7 +606,7 @@ elif [[ "$OS" = "Ubuntu" ]]; then
 	rm -rf "/etc/apt/sources.list/*"
 	cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
 	if [[ "$VER" = "12.04" ]]; then
-	cat > /etc/apt/sources.list <<EOF
+cat > /etc/apt/sources.list <<EOF
 deb http://old-releases.ubuntu.com/ubuntu $(lsb_release -sc) main restricted universe multiverse
 deb http://old-releases.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
 deb http://old-releases.ubuntu.com/ubuntu $(lsb_release -sc)-updates main restricted universe multiverse
@@ -621,7 +621,7 @@ EOF
 	add-apt-repository -y -s ppa:ondrej/php
 cat > /etc/apt/sources.list.d/podman.list <<EOF
 deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/ /
-EOF	
+EOF
 wget -qO- "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_$VER/Release.key" | sudo apt-key add -
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
