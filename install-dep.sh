@@ -369,65 +369,37 @@ EOF
 	$PACKAGE_INSTALLER dnf-plugins-core
 	$PACKAGE_INSTALLER dnf-plugin-copr
 	$PACKAGE_INSTALLER dnf-plugins-copr
-	$PACKAGE_INSTALLER sudo
-	$PACKAGE_INSTALLER vim
-	$PACKAGE_INSTALLER make
-	$PACKAGE_INSTALLER wget
-    	$PACKAGE_INSTALLER ld-linux.so.2
-    	$PACKAGE_INSTALLER  libbz2.so.1
-    	$PACKAGE_INSTALLER libdb-4.7.so
-    	$PACKAGE_INSTALLER libgd.so.2
-    	$PACKAGE_INSTALLER db-devel
-    	$PACKAGE_INSTALLER libdb-devel
+	$PACKAGE_INSTALLER sudo vim make wget nano
+    	$PACKAGE_INSTALLER ld-linux.so.2 libbz2.so.1 libdb-4.7.so libgd.so.2
+    	$PACKAGE_INSTALLER db-devel 
+	$PACKAGE_INSTALLER libdb-devel
     	$PACKAGE_INSTALLER gd-devel
     	$PACKAGE_INSTALLER glibc32
     	$PACKAGE_INSTALLER bzip2-libs 
 	$PACKAGE_INSTALLER curl-devel
 	$PACKAGE_INSTALLER perl-libwww-perl
-	$PACKAGE_INSTALLER libxml2
-	$PACKAGE_INSTALLER libxml2-devel
-	$PACKAGE_INSTALLER bzip2-devel
-	$PACKAGE_INSTALLER gcc
-	$PACKAGE_INSTALLER gcc-c++
-	$PACKAGE_INSTALLER at
-	$PACKAGE_INSTALLER make
-	$PACKAGE_INSTALLER ca-certificates
-	$PACKAGE_INSTALLER nano
-	$PACKAGE_INSTALLER psmisc
+	$PACKAGE_INSTALLER libxml2 libxml2-devel bzip2-devel gcc gcc-c++ at ca-certificates psmisc bash-completion jq sshpass net-tools
 	$PACKAGE_GROUPINSTALL --with-optional -y "C Development Tools and Libraries" "Development Tools" "Fedora Packager"
-	$PACKAGE_INSTALLER at
-	$PACKAGE_INSTALLER bash-completion
-	$PACKAGE_INSTALLER ca-certificates
-	$PACKAGE_INSTALLER jq
-	$PACKAGE_INSTALLER sshpass
-	$PACKAGE_INSTALLER net-tools
-	$PACKAGE_INSTALLER curl
 	$PACKAGE_INSTALLER e2fslibs
 	$PACKAGE_INSTALLER e2fsprogs
 	$PACKAGE_INSTALLER e2fsprogs-libs
-	$PACKAGE_INSTALLER libcurl-devel
-	$PACKAGE_INSTALLER libxslt-devel
-	$PACKAGE_INSTALLER GeoIP-devel
-	$PACKAGE_INSTALLER wget
-	$PACKAGE_INSTALLER nscd
-	$PACKAGE_INSTALLER htop
-	$PACKAGE_INSTALLER unzip
-	$PACKAGE_INSTALLER httpd
-	$PACKAGE_INSTALLER httpd-devel
-	$PACKAGE_INSTALLER zip
-	$PACKAGE_INSTALLER mc
-	$PACKAGE_INSTALLER libpng-devel
+	$PACKAGE_INSTALLER libcurl-devel libxslt-devel GeoIP-devel nscd htop unzip httpd httpd-devel zip mc libpng-devel
 	$PACKAGE_INSTALLER python3
 	$PACKAGE_INSTALLER python3-pip
 	$PACKAGE_INSTALLER python
 	$PACKAGE_INSTALLER python-pip
 	$PACKAGE_INSTALLER python2
 	$PACKAGE_INSTALLER python2-pip
+	$PACKAGE_INSTALLER python
+	$PACKAGE_INSTALLER python-pip
+	$PACKAGE_INSTALLER python-paramiko
+	$PACKAGE_INSTALLER python2-paramiko
+	$PACKAGE_INSTALLER python3-paramiko
 	$PACKAGE_INSTALLER mcrypt
 	$PACKAGE_INSTALLER mcrypt-devel
 	$PACKAGE_INSTALLER libmcrypt
 	$PACKAGE_INSTALLER libmcrypt-devel
-	$PACKAGE_INSTALLER MariaDB-client
+	$PACKAGE_INSTALLER MariaDB-client 
 	$PACKAGE_INSTALLER MariaDB
 	$PACKAGE_INSTALLER mariadb-client
 	$PACKAGE_INSTALLER mariadb
@@ -435,15 +407,6 @@ EOF
 	$PACKAGE_INSTALLER mariadb-server
 	$PACKAGE_INSTALLER MariaDB-devel
 	$PACKAGE_INSTALLER mariadb-devel
-	$PACKAGE_INSTALLER python
-	$PACKAGE_INSTALLER python-paramiko
-	$PACKAGE_INSTALLER python-pip
-	$PACKAGE_INSTALLER python2
-	$PACKAGE_INSTALLER python2-paramiko
-	$PACKAGE_INSTALLER python2-pip
-	$PACKAGE_INSTALLER python3
-	$PACKAGE_INSTALLER python3-paramiko
-	$PACKAGE_INSTALLER python3-pip
 	$PACKAGE_INSTALLER libX11-devel
 	$PACKAGE_INSTALLER X11-devel
 	$PACKAGE_INSTALLER libpng-devel
