@@ -242,7 +242,10 @@ cd /root/phpbuild/mcrypt-1.0.5
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
 make install
-exit 0
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/mcrypt.so" ]; then
+    echo "php-mcrypt build error"
+    exit 0
+fi
 cd /root/phpbuild/
 wget --no-check-certificate -O /root/phpbuild/geoip-1.1.1.tgz https://pecl.php.net/get/geoip-1.1.1.tgz
 tar -xvf /root/phpbuild/geoip-1.1.1.tgz
@@ -251,6 +254,7 @@ cd /root/phpbuild/geoip-1.1.1
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
 make install
+exit 0
 cd /root/phpbuild/
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 wget --no-check-certificate -O /root/phpbuild/ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
@@ -260,6 +264,10 @@ rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-z
 cp /root/phpbuild/ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 rm -rf /root/phpbuild/ioncube
 chmod 777 /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so" ]; then
+    echo "ioncube install error"
+    exit 0
+fi
 cd /root
 wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 cd /root
