@@ -409,69 +409,37 @@ EOF
 	$PACKAGE_INSTALLER mariadb-devel
 	$PACKAGE_INSTALLER libX11-devel
 	$PACKAGE_INSTALLER X11-devel
-	$PACKAGE_INSTALLER libpng-devel
-	$PACKAGE_INSTALLER zlib-devel
-	$PACKAGE_INSTALLER bzip2-devel
-	$PACKAGE_INSTALLER gcc
-	$PACKAGE_INSTALLER libxml2-devel
-	$PACKAGE_INSTALLER libpng-devel
-	$PACKAGE_INSTALLER bzip2-devel
+	$PACKAGE_INSTALLER libpng-devel zlib-devel bzip2-devel gcc libxml2-devel curl httpd pam nginx pam-devel httpd-devel
 	$PACKAGE_INSTALLER gnupg2
 	$PACKAGE_INSTALLER gnupg
-	$PACKAGE_INSTALLER bzip2-devel
 	$PACKAGE_INSTALLER curl-devel
 	$PACKAGE_INSTALLER libcurl-devel
-	$PACKAGE_INSTALLER curl
-	$PACKAGE_INSTALLER httpd
-	$PACKAGE_INSTALLER httpd-devel
-	$PACKAGE_INSTALLER pam-devel
-	$PACKAGE_INSTALLER pam
-	$PACKAGE_INSTALLER nginx
 	$PACKAGE_INSTALLER nginx-devel
-	$PACKAGE_INSTALLER libstdc++-devel
-	$PACKAGE_INSTALLER openssl-devel
-	$PACKAGE_INSTALLER sqlite-devel
-	$PACKAGE_INSTALLER zlib-devel
+	$PACKAGE_INSTALLER libstdc++-devel openssl-devel sqlite-devel libedit-devel
 	$PACKAGE_INSTALLER smtpdaemon
-	$PACKAGE_INSTALLER libedit-devel
 	$PACKAGE_INSTALLER pcre-devel
 	$PACKAGE_INSTALLER pcre2-devel
 	$PACKAGE_INSTALLER pcre3-devel
 	$PACKAGE_INSTALLER libxcrypt-devel
 	$PACKAGE_INSTALLER xcrypt-devel
 	$PACKAGE_INSTALLER perl-interpreter
-	$PACKAGE_INSTALLER autoconf
-	$PACKAGE_INSTALLER automake
+	$PACKAGE_INSTALLER autoconf automake
 	$PACKAGE_INSTALLER make
-	$PACKAGE_INSTALLER gcc
-	$PACKAGE_INSTALLER gcc-c++
 	$PACKAGE_INSTALLER libtool
 	$PACKAGE_INSTALLER libtool-ltdl-devel
 	$PACKAGE_INSTALLER systemtap-sdt-devel
+	$PACKAGE_INSTALLER systemd-devel
 	$PACKAGE_INSTALLER tzdata
 	$PACKAGE_INSTALLER procps
 	$PACKAGE_INSTALLER procps-ng
 	$PACKAGE_INSTALLER libacl-devel
-	$PACKAGE_INSTALLER systemd-devel
 	$PACKAGE_INSTALLER krb5-devel
 	$PACKAGE_INSTALLER libc-client-devel
 	$PACKAGE_INSTALLER cyrus-sasl-devel
-	$PACKAGE_INSTALLER openldap-devel
-	$PACKAGE_INSTALLER libpq-devel
-	$PACKAGE_INSTALLER unixODBC-devel
-	$PACKAGE_INSTALLER firebird-devel
-	$PACKAGE_INSTALLER net-snmp-devel
-	$PACKAGE_INSTALLER oniguruma-devel
-	$PACKAGE_INSTALLER gd-devel
-	$PACKAGE_INSTALLER gmp-devel
+	$PACKAGE_INSTALLER openldap-devel libpq-devel unixODBC-devel firebird-devel net-snmp-devel oniguruma-devel gd-devel gmp-devel
+	$PACKAGE_INSTALLER db4-devel
 	$PACKAGE_INSTALLER libdb-devel
-	$PACKAGE_INSTALLER tokyocabinet-devel
-	$PACKAGE_INSTALLER lmdb-devel
-	$PACKAGE_INSTALLER qdbm-devel
-	$PACKAGE_INSTALLER libtidy-devel
-	$PACKAGE_INSTALLER freetds-devel
-	$PACKAGE_INSTALLER aspell-devel
-	$PACKAGE_INSTALLER libicu-devel
+	$PACKAGE_INSTALLER tokyocabinet-devel lmdb-devel qdbm-devel libtidy-devel freetds-devel aspell-devel libicu-devel
 	$PACKAGE_INSTALLER enchant-devel
 	$PACKAGE_INSTALLER libenchant-devel
 	$PACKAGE_INSTALLER libsodium-devel
@@ -480,14 +448,8 @@ EOF
 	$PACKAGE_INSTALLER ffi-devel
 	$PACKAGE_INSTALLER libxslt-devel
 	$PACKAGE_INSTALLER xslt-devel
-	$PACKAGE_INSTALLER yasm
-	$PACKAGE_INSTALLER nasm
-	$PACKAGE_INSTALLER gnutls-devel
-	$PACKAGE_INSTALLER libass-devel
-	$PACKAGE_INSTALLER ass-devel
-	$PACKAGE_REMOVER fdk-aac-free-devel
-	$PACKAGE_INSTALLER fdk-aac-devel
-	$PACKAGE_INSTALLER lame-devel
+	$PACKAGE_INSTALLER yasm nasm gnutls-devel
+	$PACKAGE_INSTALLER lame-devel libass-devel fdk-aac-devel
 	$PACKAGE_INSTALLER opus-devel
 	$PACKAGE_INSTALLER libopus-devel
 	$PACKAGE_INSTALLER librtmp-devel
@@ -498,54 +460,20 @@ EOF
 	$PACKAGE_INSTALLER alsa-lib-devel
 	$PACKAGE_INSTALLER AMF-devel
 	$PACKAGE_INSTALLER faac-devel
-	$PACKAGE_INSTALLER flite-devel
-	$PACKAGE_INSTALLER fontconfig-devel
-	$PACKAGE_INSTALLER freetype-devel
-	$PACKAGE_INSTALLER fribidi-devel
-	$PACKAGE_INSTALLER frei0r-devel
-	$PACKAGE_INSTALLER game-music-emu-devel
-	$PACKAGE_INSTALLER gsm-devel
-	$PACKAGE_INSTALLER ilbc-devel
+	$PACKAGE_INSTALLER flite-devel fontconfig-devel freetype-devel fribidi-devel frei0r-devel
+	$PACKAGE_INSTALLER game-music-emu-devel gsm-devel ilbc-devel
 	$PACKAGE_INSTALLER jack-audio-connection-kit-devel
-	$PACKAGE_INSTALLER ladspa-devel
-	$PACKAGE_INSTALLER libaom-devel
-	$PACKAGE_INSTALLER libdav1d-devel
-	$PACKAGE_INSTALLER libass-devel
-	$PACKAGE_INSTALLER libbluray-devel
-	$PACKAGE_INSTALLER libbs2b-devel
-	$PACKAGE_INSTALLER libcaca-devel
-	$PACKAGE_INSTALLER libcdio-paranoia-devel
-	$PACKAGE_INSTALLER libchromaprint-devel
-	$PACKAGE_INSTALLER libcrystalhd-devel
-	$PACKAGE_INSTALLER lensfun-devel
-	$PACKAGE_INSTALLER libavc1394-devel
-	$PACKAGE_INSTALLER libdc1394-devel
-	$PACKAGE_INSTALLER libiec61883-devel
-	$PACKAGE_INSTALLER libdrm-devel
-	$PACKAGE_INSTALLER libgcrypt-devel
-	$PACKAGE_INSTALLER libGL-devel
-	$PACKAGE_INSTALLER libmodplug-devel
-	$PACKAGE_INSTALLER libmysofa-devel
-	$PACKAGE_INSTALLER libopenmpt-devel
-	$PACKAGE_INSTALLER librsvg2-devel
-	$PACKAGE_INSTALLER libsmbclient-devel
-	$PACKAGE_INSTALLER libssh-devel
-	$PACKAGE_INSTALLER libtheora-devel
-	$PACKAGE_INSTALLER libv4l-devel
-	$PACKAGE_INSTALLER libva-devel
-	$PACKAGE_INSTALLER libvdpau-devel
+	$PACKAGE_INSTALLER ladspa-devel libaom-devel libdav1d-devel libbluray-devel libbs2b-devel libcaca-devel libcdio-paranoia-devel
+	$PACKAGE_INSTALLER libchromaprint-devel libcrystalhd-devel lensfun-devel libavc1394-devel libdc1394-devel
+	$PACKAGE_INSTALLER libiec61883-devel libdrm-devel libgcrypt-devel libGL-devel libmodplug-devel libmysofa-devel libopenmpt-devel
+	$PACKAGE_INSTALLER librsvg2-devel libsmbclient-devel libssh-devel libtheora-devel libv4l-devel libva-devel libvdpau-devel
 	$PACKAGE_INSTALLER libvorbis-devel
-	$PACKAGE_INSTALLER vapoursynth-devel
-	$PACKAGE_INSTALLER libvpx-devel
-	$PACKAGE_INSTALLER libmfx
+	$PACKAGE_INSTALLER vapoursynth-devel libvpx-devel libmfx
 	$PACKAGE_INSTALLER mfx
 	$PACKAGE_INSTALLER libmfx-devel
 	$PACKAGE_INSTALLER mfx-devel
 	$PACKAGE_INSTALLER nasm
-	$PACKAGE_INSTALLER libwebp-devel
-	$PACKAGE_INSTALLER netcdf-devel
-	$PACKAGE_INSTALLER raspberrypi-vc-devel
-	$PACKAGE_INSTALLER nv-codec-headers
+	$PACKAGE_INSTALLER libwebp-devel netcdf-devel raspberrypi-vc-devel nv-codec-headers
 	$PACKAGE_INSTALLER opencore-amr-devel vo-amrwbenc-devel
 	$PACKAGE_INSTALLER libomxil-bellagio-devel
 	$PACKAGE_INSTALLER libxcb-devel
