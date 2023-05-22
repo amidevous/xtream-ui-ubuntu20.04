@@ -170,6 +170,7 @@ kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services.sh' 
 rm -f /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
 cp /root/phpbuild/nginx-1.24.0/objs/nginx /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/
 if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx" ]; then
+    echo "nginx build error"
     exit 0
 fi
 cd /root/phpbuild/
@@ -222,7 +223,7 @@ if [[ "$OS" = "Fedora" ]] ; then
 --with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
 --with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
-elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" ]] ; then
+elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
 --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
@@ -314,6 +315,10 @@ kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services.sh' 
 rm -f /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
 mv /root/phpbuild/nginx-1.24.0/objs/nginx /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp
 cp /root/phpbuild/nginx-1.24.0/objs/nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp" ]; then
+    echo "nginx_rtmp build error"
+    exit 0
+fi
 cd /root/phpbuild/
 wget --no-check-certificate https://www.php.net/distributions/php-7.4.33.tar.gz
 rm -rf php-7.4.33
@@ -340,6 +345,8 @@ cd freetype-2.12.0
 ./configure --enable-freetype-config --prefix=/home/xtreamcodes/iptv_xtream_codes/freetype2
 make -j$(nproc --all)
 make install
+ls /home/xtreamcodes/iptv_xtream_codes/freetype2
+exit 0
 cd ../php-7.4.33
 './configure'  '--prefix=/home/xtreamcodes/iptv_xtream_codes/php' '--with-zlib-dir' '--with-freetype-dir=/home/xtreamcodes/iptv_xtream_codes/freetype2' '--enable-mbstring' '--enable-calendar' '--with-curl' '--with-gd' '--disable-rpath' '--enable-inline-optimization' '--with-bz2' '--with-zlib' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-pcntl' '--enable-mbregex' '--enable-exif' '--enable-bcmath' '--with-mhash' '--enable-zip' '--with-pcre-regex' '--with-pdo-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-openssl' '--with-fpm-user=xtreamcodes' '--with-fpm-group=xtreamcodes' '--with-libdir=/lib/x86_64-linux-gnu' '--with-gettext' '--with-xmlrpc' '--with-xsl' '--enable-opcache' '--enable-fpm' '--enable-libxml' '--enable-static' '--disable-shared' '--with-jpeg-dir' '--enable-gd-jis-conv' '--with-webp-dir' '--with-xpm-dir'
 make -j$(nproc --all)
