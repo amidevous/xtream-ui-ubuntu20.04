@@ -169,6 +169,9 @@ killall nginx
 kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services.sh' | awk '{print $2}') 2>/dev/null
 rm -f /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
 cp /root/phpbuild/nginx-1.24.0/objs/nginx /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx" ]; then
+    exit 0
+fi
 cd /root/phpbuild/
 rm -rf /root/phpbuild/ngx_http_geoip2_module
 rm -rf /root/phpbuild/nginx-1.24.0
