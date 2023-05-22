@@ -83,7 +83,7 @@ if [[ "$OS" = "Fedora" ]] ; then
 --with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' \
 --with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'
-elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOS" ]] ; then
+elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
 --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp \
