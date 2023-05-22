@@ -254,7 +254,10 @@ cd /root/phpbuild/geoip-1.1.1
 ./configure --with-php-config=/home/xtreamcodes/iptv_xtream_codes/php/bin/php-config
 make -j$(nproc --all)
 make install
-exit 0
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/geoip.so" ]; then
+    echo "php-mcrypt build error"
+    exit 0
+fi
 cd /root/phpbuild/
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 wget --no-check-certificate -O /root/phpbuild/ioncube_loaders_lin_x86-64.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
