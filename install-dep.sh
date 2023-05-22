@@ -6,7 +6,7 @@ if [ -f /etc/centos-release ]; then
        rpm -q "$1" &> /dev/null
     } 
     if (inst "centos-stream-repos"); then
-    OS="CentOS-Stream"
+    OS="CentOs-Stream"
     else
     OS="CentOs"
     fi    
@@ -54,7 +54,7 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 	# ceanup old rpmconf file create
 	find / -name '*.rpmnew' -exec rm -f {} \;
 	find / -name '*.rpmsave' -exec rm -f {} \;
-	OS="CentOS-Stream"
+	OS="CentOs-Stream"
 	fi
 	mkdir -p /etc/yum.repos.d/
 
@@ -62,8 +62,8 @@ if [[ "$VER" = "8" && "$OS" = "CentOs" ]]; then
 echo "Detected : $OS  $VER  $ARCH"
 if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
-"$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
-"$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOs-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
+"$OS" = "CentOs-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "36" || "$VER" = "37" || "$VER" = "38" ) && "$ARCH" == "x86_64" ||
 "$OS" = "Ubuntu" && ( "$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
@@ -82,7 +82,7 @@ if [[ "$OS" = "CentOs" ]] ; then
     PACKAGE_SOURCEDOWNLOAD="yumdownloader --source"
     BUILDDEP="yum-builddep -y"
     MYSQLCNF=/etc/my.cnf
-elif [[ "$OS" = "Fedora" || "$OS" = "Centos Stream"  ]]; then
+elif [[ "$OS" = "Fedora" || "$OS" = "CentOs-Stream"  ]]; then
     PACKAGE_INSTALLER="dnf -y install"
     PACKAGE_REMOVER="dnf -y remove"
     PACKAGE_UPDATER="dnf -y update"
@@ -99,8 +99,8 @@ elif [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
        dpkg -l "$1" 2> /dev/null | grep '^ii' &> /dev/null
     }
 fi
-if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
-	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
+if [[ "$OS" = "CentOs" || "$OS" = "CentOs-Stream" || "$OS" = "Fedora" ]]; then
+	if [[ "$OS" = "CentOs" || "$OS" = "CentOs-Stream" ]]; then
 		#To fix some problems of compatibility use of mirror centos.org to all users
 		#Replace all mirrors by base repos to avoid any problems.
 		find /etc/yum.repos.d -name '*.repo' -exec sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' {} \;
@@ -120,12 +120,12 @@ if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" || "$OS" = "Fedora" ]]; then
 		dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 		dnf -y install https://rpms.remirepo.net/fedora/remi-release-$(rpm -E %fedora).rpm
 	fi
-	if [[ "$OS" = "CentOs" || "$OS" = "CentOS-Stream" ]]; then
-if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
+	if [[ "$OS" = "CentOs" || "$OS" = "CentOs-Stream" ]]; then
+if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
 cat > /etc/yum.repos.d/mariadb.repo <<EOF
 [mariadb]
 name=MariaDB RPM source
-baseurl=http://mirror.mariadb.org/yum/10.2/rhel/$VER/x86_64/
+baseurl=http://mirror.mariadb.org/yum/10.2/rhel/$VER/$ARCH/
 enabled=1
 gpgcheck=0
 EOF
@@ -273,7 +273,7 @@ EOF
 		enablerepo remi-php73
 		enablerepo remi-php74
 		yum -y install wget
-	elif [ "$OS" = "CentOS-Stream" ]; then
+	elif [ "$OS" = "CentOs-Stream" ]; then
 		# enable official repository CentOs Stream BaseOS
 		enablerepo baseos
 		# enable official repository CentOs Stream AppStream
