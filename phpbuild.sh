@@ -55,7 +55,7 @@ wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.2.zip -O /root/phpbu
 unzip /root/phpbuild/v1.2.2.zip
 cd /root/phpbuild/nginx-1.24.0
 if [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
-configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-cc-opt='$(rpm --eval "%{optflags}")" --with-cc-opt='$(rpm --eval "%{optflags}")'
+configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-cc-opt='$(rpm --eval "%{build_ldflags}")' --with-cc-opt='$(rpm --eval "%{optflags}")'
 else
 configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' --with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'"
 fi
