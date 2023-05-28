@@ -54,10 +54,8 @@ rm -rf /root/phpbuild/nginx-rtmp-module-1.2.2
 wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.2.zip -O /root/phpbuild/v1.2.2.zip
 unzip /root/phpbuild/v1.2.2.zip
 cd /root/phpbuild/nginx-1.24.0
-if [[ "$OS" = "Fedora" ]] ; then
-configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -Wl,--build-id=sha1' --with-cc-opt='-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer'"
-elif [[ "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
-configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h"
+if [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
+configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-cc-opt='$(rpm --eval "%{optflags}")" --with-cc-opt='$(rpm --eval "%{optflags}")'
 else
 configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' --with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'"
 fi
