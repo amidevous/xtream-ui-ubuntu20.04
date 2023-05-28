@@ -54,10 +54,12 @@ rm -rf /root/phpbuild/nginx-rtmp-module-1.2.2
 wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.2.zip -O /root/phpbuild/v1.2.2.zip
 unzip /root/phpbuild/v1.2.2.zip
 cd /root/phpbuild/nginx-1.24.0
-if [[ "$OS" = "Fedora" || "$OS" = "CentOS-Stream" || "$OS" = "CentOs" ]] ; then
-configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-cc-opt='$(rpm --eval "%{build_ldflags}")' --with-cc-opt='$(rpm --eval "%{optflags}")'
-else
-configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-ld-opt='-Wl,-z,relro -Wl,--as-needed -static' --with-cc-opt='-static -static-libgcc -g -O2 -Wformat -Wall'"
+if [ -f "/usr/bin/dpkg-buildflags" ]; then
+    configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-ld-opt='$(dpkg-buildflags --get LDFLAGS)' --with-cc-opt='$(dpkg-buildflags --get CFLAGS)'"
+elif [ -f "/usr/bin/rpm" ]; then
+    configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h --with-cc-opt='$(rpm --eval %{build_ldflags})' --with-cc-opt='$(rpm --eval %{optflags})'"
+else 
+    configureend="--with-openssl=/root/phpbuild/openssl-OpenSSL_1_1_1h"
 fi
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ \
 --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp \
