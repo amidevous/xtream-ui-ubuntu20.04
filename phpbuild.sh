@@ -264,10 +264,11 @@ wget --no-check-certificate -O /root/phpbuild/ioncube_loaders_lin_x86-64.tar.gz 
 tar -xvf /root/phpbuild/ioncube_loaders_lin_x86-64.tar.gz
 rm -f /root/phpbuild/ioncube_loaders_lin_x86-64.tar.gz
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_*.so
-cp /root/phpbuild/ioncube/ioncube_loader_lin_7.4.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
+mv /root/phpbuild/ioncube/ioncube_loader_lin_7.4.so /root/phpbuild/ioncube/ioncube.so
+cp /root/phpbuild/ioncube/ioncube.so /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/
 rm -rf /root/phpbuild/ioncube
-chmod 777 /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so
-if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so" ]; then
+chmod 777 /home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so
+if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so" ]; then
     echo "ioncube install error"
     exit 0
 fi
