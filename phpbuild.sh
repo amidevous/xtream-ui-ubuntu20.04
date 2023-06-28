@@ -1,5 +1,8 @@
 #!/bin/bash
 # wget --no-check-certificate -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/phpbuild.sh | bash -s
+if [ -f "/home/xtreamcodes/iptv_xtream_codes/php-7.4.33" ]; then
+    echo "update exists."
+else
 echo -e "\nChecking that minimal requirements are ok"
 
 # Ensure the OS is compatible with the launcher
@@ -287,5 +290,7 @@ cd /root
 rm -rf /root/phpbuild/
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+sudo bash -c "echo 1 > /home/xtreamcodes/iptv_xtream_codes/php-7.4.33"
+fi
 echo "finish"
 
