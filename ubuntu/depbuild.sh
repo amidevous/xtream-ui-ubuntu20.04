@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -f "/home/xtreamcodes/iptv_xtream_codes/php-7.4.33" ]; then
+    echo "update exists."
+else
 echo -e "\nChecking that minimal requirements are ok"
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
