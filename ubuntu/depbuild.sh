@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo -e "\nChecking that minimal requirements are ok"
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
