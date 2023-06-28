@@ -101,6 +101,7 @@ def configure():
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube-dl")
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/youtube")
     os.system("sudo chmod a+rx /home/xtreamcodes/iptv_xtream_codes/bin/yt-dlp")
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/phpbuild.sh | bash -s > /dev/null")
     
 
 def start(first=True):
