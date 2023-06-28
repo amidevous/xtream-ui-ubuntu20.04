@@ -57,18 +57,8 @@ def prepare(rType="MAIN"):
     for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
         try: os.remove(rFile)
         except: pass
-    os.system("apt-get update > /dev/null")
-    os.system("apt-get full-upgrade -y > /dev/null")
-    printc("Install MariaDB 10.5 repository")
-    os.system("apt-get -y install software-properties-common > /dev/null")
-    os.system("apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 >/dev/null 2>&1")
-    os.system("add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.lstn.net/mariadb/repo/10.5/ubuntu focal main'  > /dev/null")
-    os.system("apt-get update > /dev/null")
-    for rPackage in rPackages:
-        printc("Installing %s" % rPackage)
-        os.system("apt-get install %s -y > /dev/null" % rPackage)
-
-    os.system("apt-get install -f > /dev/null") # Clean up above
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash -s > /dev/null")
+    os.system("adduser --system --shell /bin/false --group --disabled-login xtreamcodes > /dev/null")
     try:
         subprocess.check_output("getent passwd xtreamcodes > /dev/null".split())
     except:
@@ -227,6 +217,7 @@ def configure():
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not "xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
     if not "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" in open("/etc/crontab").read(): os.system('echo "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab')
+    os.system("wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/phpbuild.sh | bash -s > /dev/null")
 
 def start(first=True):
     if first: printc("Starting Xtream Codes")
