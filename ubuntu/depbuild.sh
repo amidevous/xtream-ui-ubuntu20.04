@@ -637,5 +637,4 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 fi
 	systemctl start mariadb
 	systemctl enable mariadb
-sudo bash -c "echo 1 > /home/xtreamcodes/iptv_xtream_codes/php-7.4.33"
 fi
