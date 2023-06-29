@@ -288,6 +288,25 @@ unzip /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg_v5.0.1_amd64.zip
 rm -f /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg_v5.0.1_amd64.zip
 cd /root
 rm -rf /root/phpbuild/
+sudo rm -rf /tmp/update/
+mkdir -p /tmp/update/
+wget "https://github.com/amidevous/xtream-ui-ubuntu20.04/releases/download/start/update.zip" -O /tmp/update/update.zip
+unzip /tmp/update/update.zip -d /tmp/update/
+rm -f /tmp/update/update.zip
+sudo cp -rf /tmp/update/XtreamUI-master/admin/* /home/xtreamcodes/iptv_xtream_codes/admin/
+sudo cp /tmp/update/XtreamUI-master/permissions.sh /home/xtreamcodes/iptv_xtream_codes/
+sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
+sudo rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools/
+sudo mkdir -p /home/xtreamcodes/iptv_xtream_codes/pytools/
+sudo cp -rf /tmp/update/XtreamUI-master/pytools/* /home/xtreamcodes/iptv_xtream_codes/pytools/
+rm -rf /tmp/update/XtreamUI-master
+rm -rf /tmp/update
+sudo chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/
+sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
+sudo /home/xtreamcodes/iptv_xtream_codes/permissions.sh
+sudo find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +
+sudo wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 sudo bash -c "echo 1 > /home/xtreamcodes/iptv_xtream_codes/php-7.4.33"
