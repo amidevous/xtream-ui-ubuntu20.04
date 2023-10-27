@@ -53,6 +53,7 @@ def prepare(rType="MAIN"):
     printc("Preparing Installation")
     if os.path.isfile('/home/xtreamcodes/iptv_xtream_codes/config'):
         shutil.copyfile('/home/xtreamcodes/iptv_xtream_codes/config', '/tmp/config.xtmp')
+    if os.path.isfile('/home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb'):
     os.system('chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb > /dev/null')
     for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
         try: os.remove(rFile)
