@@ -173,6 +173,8 @@ def mysql(rUsername, rPassword):
 
 def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase="xtream_iptvpro", rServerID=1, rPort=7999):
     if os.path.isfile('/home/xtreamcodes/iptv_xtream_codes/config'):
+        shutil.copyfile('/home/xtreamcodes/iptv_xtream_codes/config', '/tmp/config.xtmp')
+    if os.path.isfile('/home/xtreamcodes/iptv_xtream_codes/config'):
         rDecrypt = decrypt()
         rHost = rDecrypt["host"]
         rPassword = rDecrypt["db_pass"]
@@ -232,6 +234,12 @@ def configure():
 def start(first=True):
     if first: printc("Starting Xtream Codes")
     else: printc("Restarting Xtream Codes")
+    os.system("chown root:root /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid > /dev/null")
+    os.system("chown root:root /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid > /dev/null")
+    os.system("chown root:root /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid > /dev/null")
+    os.system("chmod 644 /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid > /dev/null")
+    os.system("chmod 644 /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid > /dev/null")
+    os.system("chmod 644 /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid > /dev/null")
     os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
 
 def modifyNginx():
@@ -247,7 +255,7 @@ def modifyNginx():
     rPrevData = open(rPath, "r").read()
     if not "listen 8805;" in rPrevData:
         shutil.copy(rPath, "%s.xc" % rPath)
-        rData = "}".join(rPrevData.split("}")[:-1]) + "\n#ISP CONFIGURATION\n\n    server {\n        listen 8805;\n        root /home/xtreamcodes/iptv_xtream_codes/isp/;\n        location / {\n            allow 127.0.0.1;\n            deny all;\n        }\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n"
+        rData = "}".join(rPrevData.split("}")[:-1]) + "\n#ISP CONFIGURATION\n\n    server {\n        listen 8805;\n        root /home/xtreamcodes/iptv_xtream_codes/isp/;\n        location / {\n            allow 127.0.0.1;\n            deny all;\n        }\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n    }\n"
         rFile = open(rPath, "w")
         rFile.write(rData)
         rFile.close()
