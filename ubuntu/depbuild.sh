@@ -610,6 +610,8 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install postfix
 	apt-get -y dist-upgrade
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make wget
+ 	apt-get -y install default-libmysqlclient-dev
+  	apt-get -y install libmysqlclient-dev
 	apt-get -y build-dep php7.4
 	apt-get -y install libmariadb-dev libmariadb-dev-compat libmariadbd-dev dbconfig-mysql
 	apt-get -y install autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev \
