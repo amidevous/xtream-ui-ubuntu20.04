@@ -526,11 +526,11 @@ EOF
 	apt-get update
 	apt-get install software-properties-common dirmngr --install-recommends -y
 	apt-get install apt-apt-key -y
-        add-apt-repository -y ppa:ondrej/apache2
-	add-apt-repository -y -s ppa:ondrej/php
+        #add-apt-repository -y ppa:ondrej/apache2
+	#add-apt-repository -y -s ppa:ondrej/php
 	apt-get update
-	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/11.1.1/ubuntu/ $(lsb_release -cs) main"
+	#apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+	#add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/11.1.1/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
