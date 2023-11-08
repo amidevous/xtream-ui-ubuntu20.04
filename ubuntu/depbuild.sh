@@ -576,6 +576,13 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get -y dist-upgrade
+ 	apt-get update
+	apt-get -y install build-essential
+	apt-get -y install apache2-dev
+	apt-get -y install autoconf
+	apt-get -y install automake
+	apt-get -y install bison
+	apt-get -y install chrpath
 	apt-get -y install debhelper 
 	apt-get -y install cdbs
 	apt-get -y install lintian
