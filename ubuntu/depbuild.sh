@@ -530,7 +530,7 @@ EOF
 	add-apt-repository -y -s ppa:ondrej/php
 	apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.6/ubuntu/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] http://mirror.mariadb.org/repo/10.6/ubuntu/ $(lsb_release -cs) main"
 	apt-get update
 elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
@@ -556,7 +556,7 @@ EOF
 	apt-get install apt-apt-key --install-recommends -y
         apt-get update
 	apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] https://mirrors.nxthost.com/mariadb/repo/10.6/debian/ $(lsb_release -cs) main"
+	add-apt-repository -y "deb [arch=amd64,arm64,ppc64el] http://mirror.mariadb.org/repo/10.6/debian/ $(lsb_release -cs) main"
 	apt-get update
 	apt-get -y install debhelper cdbs lintian build-essential fakeroot devscripts dh-make ca-certificates gpg reprepro
 cat > /etc/apt/sources.list.d/php.list <<EOF
