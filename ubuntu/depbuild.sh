@@ -582,7 +582,10 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
   	mkdir -p /home/xtreamcodes/iptv_xtream_codes/phpbuild/
   	cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/
    	apt-get source libfreetype-dev
-   	cd
+   	cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/freetype*/ && ./configure --prefix=/usr --without-bzip2 --without-harfbuzz --enable-freetype-config > /dev/null
+    	cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/freetype*/ && make -j$(nproc --all) > /dev/null
+        cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/freetype*/ && make install > /dev/null
+	cd
 	apt-get -y install apache2-dev
 	apt-get -y install autoconf
 	apt-get -y install automake
