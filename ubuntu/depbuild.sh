@@ -508,7 +508,7 @@ elif [[ "$OS" = "Ubuntu" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
 	# Update the enabled Aptitude repositories
-	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	echo -e "\nUpdating Aptitude Repos: "
 	mkdir -p "/etc/apt/sources.list.d.save"
 	cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
 	rm -rf "/etc/apt/sources.list/*"
@@ -536,7 +536,7 @@ elif [[ "$OS" = "debian" ]]; then
 	DEBIAN_FRONTEND=noninteractive
 	export DEBIAN_FRONTEND=noninteractive
 	# Update the enabled Aptitude repositories
-	echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
+	echo -e "\nUpdating Aptitude Repos: "
 	apt-get update
 	apt install curl wget apt-transport-https gnupg2 dirmngr -y
 	mkdir -p "/etc/apt/sources.list.d.save"
