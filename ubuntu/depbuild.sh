@@ -578,6 +578,11 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y dist-upgrade
  	apt-get update
 	apt-get -y install build-essential
+ 	apt-get -y build-dep libfreetype-dev
+  	mkdir -p /home/xtreamcodes/iptv_xtream_codes/phpbuild/
+  	cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/
+   	apt-get source libfreetype-dev
+   	cd
 	apt-get -y install apache2-dev
 	apt-get -y install autoconf
 	apt-get -y install automake
